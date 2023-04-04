@@ -1,59 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/titleLabel"
+        android:id="@+id/locationLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/shortContentLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="105dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:text="현재 위치">
+    </TextView>
 
     <TextView
         android:id="@+id/currentLocationLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="60dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="15dp"
+        android:layout_below="@+id/locationLabel"
+        android:layout_centerHorizontal="true"
+        android:textSize="12sp"
+        android:text="중앙대">
+    </TextView>
 
+    <LinearLayout
+        android:id="@+id/currentPostCard"
+        android:layout_below="@id/currentLocationLabel"
+        android:layout_marginTop="120dp"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_centerHorizontal="true"
+        android:background="#FFF5C2"
+        android:elevation="4dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
+        </TextView>
+
+        <TextView
+            android:id="@+id/shortContentLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">
+        </TextView>
+
+    </LinearLayout>
+
+
+
+
+    
     <Button
         android:id="@+id/addPostButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="37dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_below="@+id/currentPostCard"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="32dp"
+        android:layout_width="63dp"
+        android:layout_height="63dp">
 
-    <Button
-        android:id="@+id/settingsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </Button>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
