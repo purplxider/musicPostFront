@@ -37,17 +37,25 @@
 
         <TextView
             android:id="@+id/titleLabel"
+            android:layout_marginTop="47dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:fontFamily="@font/spoqahansanssneo_regular"
+            android:textSize="24sp"
             android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
         </TextView>
 
         <TextView
             android:id="@+id/shortContentLabel"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:fontFamily="@font/nanum_bs"
+            android:textSize="22sp"
             android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">
         </TextView>
 
@@ -64,7 +72,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="32dp"
         android:layout_width="63dp"
-        android:layout_height="63dp">
+        android:layout_height="63dp"
+        android:text="+">
 
     </Button>
 
