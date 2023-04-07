@@ -6,28 +6,28 @@
     <TextView
         android:id="@+id/locationLabel"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:text="현재 위치">
     </TextView>
 
     <TextView
         android:id="@+id/currentLocationLabel"
         android:layout_width="wrap_content"
-        android:layout_height="15dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/locationLabel"
         android:layout_centerHorizontal="true"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:text="중앙대">
     </TextView>
 
     <LinearLayout
         android:id="@+id/currentPostCard"
         android:layout_below="@id/currentLocationLabel"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="95dp"
         android:layout_width="320dp"
         android:layout_height="320dp"
         android:layout_centerHorizontal="true"
@@ -37,7 +37,7 @@
 
         <TextView
             android:id="@+id/titleLabel"
-            android:layout_marginTop="47dp"
+            android:layout_marginTop="40dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:layout_width="wrap_content"
@@ -59,6 +59,66 @@
             android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">
         </TextView>
 
+        <LinearLayout
+            android:id="@+id/embeddedMusicPlayer"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/musicPlayButton"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:background="@drawable/round"
+                android:layout_gravity="center"
+                android:text="II"
+                >
+
+            </Button>
+
+            <LinearLayout
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/musicTitleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="You're So Great"
+                    android:fontFamily="@font/spoqahansanssneo_bold"
+                    android:textSize="22sp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/musicArtistLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blur"
+                    android:fontFamily="@font/spoqahansanssneo_light"
+                    android:textSize="16sp"
+                    >
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/postLocationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="중앙대"
+                    android:fontFamily="@font/spoqahansanssneo_light"
+                    android:textSize="13sp">
+
+                </TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 
@@ -68,13 +128,13 @@
     <Button
         android:id="@+id/addPostButton"
         android:layout_below="@+id/currentPostCard"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="100dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="32dp"
         android:layout_width="63dp"
         android:layout_height="63dp"
         android:background="@drawable/round"
-        
+        android:elevation="4dp"
         android:text="+">
 
     </Button>

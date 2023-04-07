@@ -10,43 +10,52 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
+    TextView locationLabel;
     LinearLayout currentPostCard;
     TextView titleLabel;
     TextView shortContentLabel;
+    Button musicPlayButton;
+    TextView musicTitleLabel;
+    TextView musicArtistLabel;
+    TextView postLocationLabel;
+    Button addPostButton;
 
+    View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bindComponents(); // 화면에 있는 component 가져오기
+        setEventListeners(); // 이벤트 리스너 설정
+
+    }
+
+    public void bindComponents() {
+        locationLabel = (TextView)findViewById(R.id.locationLabel);
         currentPostCard = (LinearLayout)findViewById(R.id.currentPostCard);
         titleLabel = (TextView)findViewById(R.id.titleLabel);
         shortContentLabel = (TextView)findViewById(R.id.shortContentLabel);
+        musicPlayButton = (Button)findViewById(R.id.musicPlayButton);
+        musicTitleLabel = (TextView)findViewById(R.id.musicTitleLabel);
+        musicArtistLabel = (TextView)findViewById(R.id.musicArtistLabel);
+        postLocationLabel = (TextView)findViewById(R.id.postLocationLabel);
+        addPostButton = (Button)findViewById(R.id.addPostButton);
+    }
 
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        };
-        View.OnDragListener dragListener = new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View view, DragEvent dragEvent) {
-                System.out.println("abcdefg");
-                titleLabel.setText("즐거운 봄 산책 되세요!");
-                shortContentLabel.setText("해가 떠오르고 날씨가 좋을 때 듣기 좋은 곡입니다. 밝고 경쾌한 멜로디와 가사가 기분을 좋게해줍니다...더보기");
-                return true;
-            }
-        };
-
+    public void setEventListeners() {
         currentPostCard.setOnClickListener(clickListener);
         titleLabel.setOnClickListener(clickListener);
         shortContentLabel.setOnClickListener(clickListener);
-
-        currentPostCard.setOnDragListener(dragListener);
-        titleLabel.setOnDragListener(dragListener);
-        shortContentLabel.setOnDragListener(dragListener);
     }
 }
+
