@@ -73,6 +73,8 @@
         android:layout_marginRight="32dp"
         android:layout_width="63dp"
         android:layout_height="63dp"
+        android:background="@drawable/round"
+        
         android:text="+">
 
     </Button>
