@@ -2,6 +2,7 @@ package com.example.musicpost;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.DragEvent;
@@ -23,10 +24,11 @@ public class MainActivity extends AppCompatActivity {
     TextView postLocationLabel;
     Button addPostButton;
 
-    View.OnClickListener clickListener = new View.OnClickListener() {
+    View.OnClickListener postClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+            Intent intent = new Intent(getApplicationContext(), PostActivity.class);
+            startActivity(intent);
         }
     };
 
@@ -53,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setEventListeners() {
-        currentPostCard.setOnClickListener(clickListener);
-        titleLabel.setOnClickListener(clickListener);
-        shortContentLabel.setOnClickListener(clickListener);
+        addPostButton.setOnClickListener(postClickListener);
     }
 }
 
