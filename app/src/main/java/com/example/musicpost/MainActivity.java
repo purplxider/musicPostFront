@@ -9,13 +9,14 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     TextView locationLabel;
-    LinearLayout currentPostCard;
+    RelativeLayout currentPostCard;
     TextView titleLabel;
     TextView shortContentLabel;
     Button musicPlayButton;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void bindComponents() {
         locationLabel = (TextView)findViewById(R.id.locationLabel);
-        currentPostCard = (LinearLayout)findViewById(R.id.currentPostCard);
+        currentPostCard = (RelativeLayout)findViewById(R.id.currentPostCard);
         titleLabel = (TextView)findViewById(R.id.titleLabel);
         shortContentLabel = (TextView)findViewById(R.id.shortContentLabel);
         musicPlayButton = (Button)findViewById(R.id.musicPlayButton);

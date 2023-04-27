@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PostActivity">
-        </activity>
+        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".MusicSearchActivity"></activity>
     </application>
 
 </manifest>

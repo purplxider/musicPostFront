@@ -61,18 +61,17 @@
 
         </TextView>
 
-        <TextView
+        <Button
+            android:id="@+id/searchMusicButton"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:fontFamily="@font/spoqahansanssneo_bold"
-            android:textSize="25sp"
             android:text=">">
 
-        </TextView>
+        </Button>
 
 
         <Button

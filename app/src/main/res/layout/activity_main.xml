@@ -24,7 +24,7 @@
         android:text="중앙대">
     </TextView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/currentPostCard"
         android:layout_below="@id/currentLocationLabel"
         android:layout_marginTop="95dp"
@@ -32,14 +32,14 @@
         android:layout_height="320dp"
         android:layout_centerHorizontal="true"
         android:background="#FFF5C2"
-        android:elevation="4dp"
-        android:orientation="vertical">
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/titleLabel"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spoqahansanssneo_regular"
@@ -54,19 +54,19 @@
             android:layout_marginRight="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/titleLabel"
             android:fontFamily="@font/nanum_bs"
             android:textSize="22sp"
             android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">
         </TextView>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/embeddedMusicPlayer"
             android:layout_marginTop="14dp"
             android:layout_marginLeft="14dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_below="@+id/shortContentLabel">
 
             <Button
                 android:id="@+id/musicPlayButton"
@@ -79,11 +79,11 @@
 
             </Button>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_toRightOf="@+id/musicPlayButton">
 
                 <TextView
                     android:id="@+id/musicTitleLabel"
@@ -98,6 +98,7 @@
                     android:id="@+id/musicArtistLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/musicTitleLabel"
                     android:text="Blur"
                     android:fontFamily="@font/spoqahansanssneo_light"
                     android:textSize="16sp"
@@ -109,17 +110,18 @@
                     android:id="@+id/postLocationLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/musicArtistLabel"
                     android:text="중앙대"
                     android:fontFamily="@font/spoqahansanssneo_light"
                     android:textSize="13sp">
 
                 </TextView>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 
