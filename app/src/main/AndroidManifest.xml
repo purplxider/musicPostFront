@@ -11,6 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicPost"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="bgmzm9on2u" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
