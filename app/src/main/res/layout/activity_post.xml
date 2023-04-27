@@ -4,115 +4,84 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
         android:background="@drawable/bottom_border">
         <Button
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:layout_marginStart="15dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp">
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:text="X">
 
         </Button>
 
-        <Space
-            android:layout_weight="3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </Space>
-
         <TextView
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:fontFamily="@font/spoqahansanssneo_bold"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:text="포스트">
         </TextView>
 
-        <Space
-            android:layout_weight="3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-
-        </Space>
-
-        <TextView
-            android:layout_weight="1"
+        <Button
             android:layout_marginEnd="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
             android:fontFamily="@font/spoqahansanssneo_bold"
             android:text="저장"
             android:textSize="16sp">
 
-        </TextView>
-    </LinearLayout>
-    <LinearLayout
+        </Button>
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/bottom_border"
         >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/currentMusic"
             android:layout_marginStart="22dp"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:fontFamily="@font/spoqahansanssneo_meduim"
             android:text="듣고 있는 음악"
             android:textSize="20sp"
-            >
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
 
         </TextView>
 
-        <Space
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </Space>
         <TextView
             android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
             android:fontFamily="@font/spoqahansanssneo_bold"
             android:textSize="25sp"
             android:text=">">
 
         </TextView>
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/embeddedMusicPlayer"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
 
         <Button
             android:id="@+id/musicPlayButton"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="17dp"
+            android:layout_below="@id/currentMusic"
             android:background="@drawable/round"
             android:layout_gravity="center"
             android:text="II"
@@ -120,46 +89,40 @@
 
         </Button>
 
-        <LinearLayout
-            android:layout_marginLeft="15dp"
+        <TextView
+            android:id="@+id/musicTitleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:layout_below="@+id/currentMusic"
+            android:layout_toRightOf="@id/musicPlayButton"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="22dp"
+            android:text="You're So Great"
+            android:fontFamily="@font/spoqahansanssneo_bold"
+            android:textSize="22sp">
+        </TextView>
 
-            <TextView
-                android:id="@+id/musicTitleLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="You're So Great"
-                android:fontFamily="@font/spoqahansanssneo_bold"
-                android:textSize="22sp">
+        <TextView
+            android:id="@+id/musicArtistLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/musicTitleLabel"
+            android:layout_toRightOf="@id/musicPlayButton"
+            android:layout_marginStart="22dp"
+            android:layout_marginBottom="25dp"
+            android:text="Blur"
+            android:fontFamily="@font/spoqahansanssneo_light"
+            android:textSize="16sp">
             </TextView>
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/musicArtistLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Blur"
-                android:fontFamily="@font/spoqahansanssneo_light"
-                android:textSize="16sp"
-                >
-
-            </TextView>
-        </LinearLayout>
-    </LinearLayout>
-    </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@drawable/bottom_border">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="110dp"
-                android:orientation="vertical">
             <TextView
+                android:id="@+id/currentLocation"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
@@ -170,9 +133,11 @@
 
             </TextView>
             <TextView
+                android:id="@+id/selectedLocationLabel"
                 android:layout_marginStart="22dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/currentLocation"
                 android:fontFamily="@font/spoqahansanssneo_light"
                 android:textSize="20sp"
                 android:text="중앙대"
@@ -180,38 +145,36 @@
 
             </TextView>
             <TextView
+                android:id="@+id/detailedLocationLabel"
                 android:layout_marginStart="22dp"
                 android:layout_marginBottom="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/selectedLocationLabel"
                 android:fontFamily="@font/spoqahansanssneo_light"
                 android:textSize="15sp"
                 android:text="서울특별시 동작구 흑석로 84">
 
             </TextView>
-            </LinearLayout>
 
-            <Space
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </Space>
             <Button
-                android:layout_gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="21dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=">">
 
             </Button>
-        </LinearLayout>
+        </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/bottom_border">
+
         <TextView
+            android:id="@+id/title"
             android:layout_marginTop="12dp"
             android:layout_marginStart="23dp"
             android:layout_width="wrap_content"
@@ -221,10 +184,12 @@
             android:text="제목">
 
         </TextView>
+
         <EditText
             android:layout_marginStart="22dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="15dp"
+            android:layout_below="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spoqahansanssneo_meduim"
@@ -232,13 +197,13 @@
             android:text="이런 노래는 어떤가요?">
 
         </EditText>
-    </LinearLayout>
-    <LinearLayout
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/bottom_border">
         <TextView
+            android:id="@+id/content"
             android:layout_marginTop="12dp"
             android:layout_marginStart="22dp"
             android:layout_width="wrap_content"
@@ -253,6 +218,7 @@
             android:layout_marginEnd="50dp"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="15dp"
+            android:layout_below="@+id/content"
             android:minLines="10"
             android:maxLines="999999999"
             android:layout_width="match_parent"
@@ -265,5 +231,5 @@
             android:text="이런 내용입니다.">
 
         </EditText>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
