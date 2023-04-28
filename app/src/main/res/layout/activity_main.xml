@@ -74,21 +74,18 @@
                 android:layout_height="54dp"
                 android:background="@drawable/round"
                 android:layout_gravity="center"
+                android:layout_centerVertical="true"
                 android:text="II"
                 >
 
             </Button>
 
-            <RelativeLayout
-                android:layout_marginLeft="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/musicPlayButton">
-
                 <TextView
                     android:id="@+id/musicTitleLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toRightOf="@id/musicPlayButton"
                     android:text="You're So Great"
                     android:fontFamily="@font/spoqahansanssneo_bold"
                     android:textSize="22sp">
@@ -98,7 +95,9 @@
                     android:id="@+id/musicArtistLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
                     android:layout_below="@id/musicTitleLabel"
+                    android:layout_toRightOf="@id/musicPlayButton"
                     android:text="Blur"
                     android:fontFamily="@font/spoqahansanssneo_light"
                     android:textSize="16sp"
@@ -110,14 +109,14 @@
                     android:id="@+id/postLocationLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
                     android:layout_below="@id/musicArtistLabel"
+                    android:layout_toRightOf="@id/musicPlayButton"
                     android:text="중앙대"
                     android:fontFamily="@font/spoqahansanssneo_light"
                     android:textSize="13sp">
 
                 </TextView>
-
-            </RelativeLayout>
 
         </RelativeLayout>
 

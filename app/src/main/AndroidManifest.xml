@@ -12,10 +12,6 @@
         android:theme="@style/Theme.MusicPost"
         tools:targetApi="31">
 
-        <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="bgmzm9on2u" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -28,6 +24,7 @@
 
         <activity android:name=".PostActivity"></activity>
         <activity android:name=".MusicSearchActivity"></activity>
+        <activity android:name=".DetailedPostActivity"></activity>
     </application>
 
 </manifest>

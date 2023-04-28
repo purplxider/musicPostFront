@@ -28,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener detailedClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
+            startActivity(intent);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setEventListeners() {
         addPostButton.setOnClickListener(postClickListener);
+        currentPostCard.setOnClickListener(detailedClickListener);
     }
 }
 

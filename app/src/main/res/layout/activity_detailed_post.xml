@@ -1,8 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="22dp"
+        android:elevation="4dp"
+        >
+
+        <Button
+            android:id="@+id/musicPlayButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="21dp"
+            android:background="@drawable/round"
+            android:layout_gravity="center"
+            android:text="II"
+            >
+
+        </Button>
+
+        <TextView
+            android:id="@+id/musicTitleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/musicPlayButton"
+            android:layout_marginTop="21dp"
+            android:layout_marginStart="22dp"
+            android:text="You're So Great"
+            android:fontFamily="@font/spoqahansanssneo_bold"
+            android:textSize="22sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/musicArtistLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/musicTitleLabel"
+            android:layout_toRightOf="@id/musicPlayButton"
+            android:layout_marginStart="22dp"
+            android:layout_marginBottom="21dp"
+            android:text="Blur"
+            android:fontFamily="@font/spoqahansanssneo_light"
+            android:textSize="16sp">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:elevation="4dp"
+        android:background="@color/yellow">
+
+        <TextView
+            android:id="@+id/titleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="저는 친구들이랑 같이\n이곳에 오면 이 노래를 들어요"
+            android:textSize="22sp"
+            android:fontFamily="@font/spoqahansanssneo_bold">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="20dp"
+            android:text="X"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@id/titleLabel"
+            android:background="?android:attr/selectableItemBackground">
+
+        </Button>
+
+        <TextView
+            android:id="@+id/currentLocationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleLabel"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="중앙대"
+            android:textSize="16sp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/originalPosterLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleLabel"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentRight="true"
+            android:text="User 1"
+            android:textSize="16sp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/detailedContentLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/currentLocationLabel"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="노들섬에서 한강을 즐기며\n노래를 듣기에 딱인 곡입니다.\n가사도 그런 풍경을 노래하고 있어서\n더욱 분위기를 더해줍니다. 해가\n떠오르고 날씨가 좋을 때 듣기 좋은
+\n곡입니다. 밝고 경쾌한 멜로디와 가사가
+\n기분 좋게 해줍니다. 노들섬에서 여름밤을
+\n보내며 듣기 좋은 곡 중 하나입니다.
+\n감성적인 가사와 함께 로큰롤적인
+\n멜로디로 즐길 수 있습니다. 여유로운
+\n분위기와 함께 듣기 좋은 곡입니다.
+\n즐거운 노들섬 여행 되세요!"
+            android:textSize="20sp"
+            android:fontFamily="@font/nanum_bs"
+            android:textAlignment="center"
+            >
+
+        </TextView>
+
+        <Button
+            android:id="@+id/likeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detailedContentLabel"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="like">
+
+        </Button>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/commentToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        android:text="댓글 펼치기"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/spoqahansanssneo_regular"
+        android:background="?android:attr/selectableItemBackground">
+
+    </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="근처 장소의 비슷한 노래"
+        android:textSize="20sp"
+        android:fontFamily="@font/spoqahansanssneo_bold">
+    </TextView>
+
+    <RelativeLayout
+        android:id="@+id/recommendedPostCard"
+        android:layout_gravity="center"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:background="#FFF5C2"
+        android:elevation="4dp">
+
+    <TextView
+        android:id="@+id/recommendedPostTitleLabel"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqahansanssneo_regular"
+        android:textSize="24sp"
+        android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
+    </TextView>
+
+    <TextView
+        android:id="@+id/recommendedPostShortContentLabel"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recommendedPostTitleLabel"
+        android:fontFamily="@font/nanum_bs"
+        android:textSize="22sp"
+        android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">
+    </TextView>
+
+    <RelativeLayout
+        android:id="@+id/recommendedPostEmbeddedMusicPlayer"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recommendedPostShortContentLabel">
+
+        <Button
+            android:id="@+id/recommendedPostMusicPlayButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/round"
+            android:layout_centerVertical="true"
+            android:text="II"
+            >
+
+        </Button>
+
+            <TextView
+                android:id="@+id/recommendedPostMusicTitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@id/recommendedPostMusicPlayButton"
+                android:text="You're So Great"
+                android:fontFamily="@font/spoqahansanssneo_bold"
+                android:textSize="22sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/recommendedPostMusicArtistLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_below="@id/recommendedPostMusicTitleLabel"
+                android:layout_toRightOf="@id/recommendedPostMusicPlayButton"
+                android:text="Blur"
+                android:fontFamily="@font/spoqahansanssneo_light"
+                android:textSize="16sp"
+                >
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/recommendedPostLocationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_below="@id/recommendedPostMusicArtistLabel"
+                android:layout_toRightOf="@id/recommendedPostMusicPlayButton"
+                android:text="중앙대"
+                android:fontFamily="@font/spoqahansanssneo_light"
+                android:textSize="13sp">
+
+            </TextView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="60dp"></Space>
 </LinearLayout>
+</ScrollView>
