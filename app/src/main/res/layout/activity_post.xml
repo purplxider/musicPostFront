@@ -157,6 +157,7 @@
             </TextView>
 
             <Button
+                android:id="@+id/searchLocationButton"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="21dp"

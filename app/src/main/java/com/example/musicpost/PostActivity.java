@@ -1,20 +1,27 @@
 package com.example.musicpost;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PostActivity extends AppCompatActivity {
     Button searchMusicButton;
+    Button searchLocationButton;
     View.OnClickListener searchMusicListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), MusicSearchActivity.class);
+            startActivity(intent);
+        }
+    };
+
+    View.OnClickListener searchLocationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getApplicationContext(), LocationSearchActivity.class);
             startActivity(intent);
         }
     };
@@ -30,9 +37,11 @@ public class PostActivity extends AppCompatActivity {
 
     public void bindComponents() {
         searchMusicButton = (Button)findViewById(R.id.searchMusicButton);
+        searchLocationButton = (Button)findViewById(R.id.searchLocationButton);
     }
 
     public void setEventListeners() {
         searchMusicButton.setOnClickListener(searchMusicListener);
+        searchLocationButton.setOnClickListener(searchLocationListener);
     }
 }

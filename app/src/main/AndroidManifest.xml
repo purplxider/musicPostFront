@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,6 +16,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicPost"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
 
         <activity
@@ -25,6 +33,9 @@
         <activity android:name=".PostActivity"></activity>
         <activity android:name=".MusicSearchActivity"></activity>
         <activity android:name=".DetailedPostActivity"></activity>
+        <activity android:name=".LocationSearchActivity"></activity>
+
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="76c2eeaa6f57d8057a0917641c853eb3"/>
     </application>
 
 </manifest>
