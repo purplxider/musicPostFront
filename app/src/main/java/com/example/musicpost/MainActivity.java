@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
+            intent.putExtra("source", "main");
             startActivity(intent);
         }
     };
@@ -32,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
+            intent.putExtra("source", "main");
             startActivity(intent);
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //animate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -61,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
     public void setEventListeners() {
         addPostButton.setOnClickListener(postClickListener);
         currentPostCard.setOnClickListener(detailedClickListener);
+    }
+
+    public void animate() {
+        Intent intent = getIntent();
+        String source = intent.getStringExtra("source");
+        if (source.equals("post")) {
+            overridePendingTransition(R.anim.none, R.anim.vertical_exit);}
     }
 }
 

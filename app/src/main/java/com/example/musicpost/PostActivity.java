@@ -24,6 +24,16 @@ public class PostActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), MusicSearchActivity.class);
+            intent.putExtra("source", "post");
+            startActivity(intent);
+        }
+    };
+
+    View.OnClickListener backListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("source", "post");
             startActivity(intent);
         }
     };
@@ -32,18 +42,18 @@ public class PostActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), LocationSearchActivity.class);
+            intent.putExtra("source", "post");
             startActivity(intent);
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        animate();
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.vertical_enter, R.anim.none);
         setContentView(R.layout.activity_post);
         bindComponents();
         setEventListeners();
-
         Intent intent = getIntent();
         String address = intent.getStringExtra("address");
         String name = intent.getStringExtra("name");
@@ -72,5 +82,13 @@ public class PostActivity extends AppCompatActivity {
     public void setEventListeners() {
         searchMusicButton.setOnClickListener(searchMusicListener);
         searchLocationButton.setOnClickListener(searchLocationListener);
+        backButton.setOnClickListener(backListener);
     }
+
+    public void animate() {
+        Intent intent = getIntent();
+        String source = intent.getStringExtra("source");
+        if (source.equals("main")) {overridePendingTransition(R.anim.vertical_enter, R.anim.none);}
+        else if (source.equals("locationSearch")) {overridePendingTransition(R.anim.horizontal_exit, R.anim.none);}
+        }
 }

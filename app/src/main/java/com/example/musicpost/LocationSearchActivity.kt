@@ -49,6 +49,8 @@ class LocationSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationSearchBinding.inflate(layoutInflater)
         val view = binding.root
+        overridePendingTransition(R.anim.horizontal_enter, R.anim.horizontal_exit)
+        animate()
         setContentView(view)
 
 // 리사이클러 뷰
@@ -91,6 +93,7 @@ class LocationSearchActivity : AppCompatActivity() {
             val intent = Intent(this@LocationSearchActivity, PostActivity::class.java).apply {
                 putExtra("name", name)
                 putExtra("address", address)
+                putExtra("source", "locationSearch")
             }
             startActivity(intent)
         }
@@ -112,6 +115,7 @@ class LocationSearchActivity : AppCompatActivity() {
         call.enqueue(object: Callback<ResultSearchKeyword> {
             override fun onResponse(call: Call<ResultSearchKeyword>, response: Response<ResultSearchKeyword>) {
 // 통신 성공
+                binding.constraintLayout.visibility = View.VISIBLE
                 addItemsAndMarkers(response.body())
             }
 
@@ -173,8 +177,14 @@ class LocationSearchActivity : AppCompatActivity() {
                 lon = location.longitude
             }
         })
-        val mapPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
+        //val mapPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
+        val mapPoint = MapPoint.mapPointWithGeoCoord(37.5661, 126.9788)
+
         binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
+    }
+
+    fun animate() {
+        overridePendingTransition(R.anim.horizontal_enter, R.anim.none)
     }
 
     private val resultLauncher = registerForActivityResult<String, Boolean>(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
