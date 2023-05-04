@@ -4,6 +4,7 @@ import KakaoAPI
 import ListLayout
 import ResultSearchKeyword
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -41,15 +42,14 @@ class LocationSearchActivity : AppCompatActivity() {
     private var keyword = "" // 검색 키워드
     private var lat = 0.0
     private var lon = 0.0
+    private var name = ""
+    private var address = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationSearchBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-        lat = 37.5661
-        lon = 126.9788
 
 // 리사이클러 뷰
         binding.rvList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -59,6 +59,8 @@ class LocationSearchActivity : AppCompatActivity() {
             override fun onClick(v: View, position: Int) {
                 val mapPoint = MapPoint.mapPointWithGeoCoord(listItems[position].y, listItems[position].x)
                 binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
+                name = listItems[position].name
+                address = listItems[position].address
             }
         })
 
@@ -83,6 +85,14 @@ class LocationSearchActivity : AppCompatActivity() {
             pageNumber++
             binding.tvPageNumber.text = pageNumber.toString()
             searchKeyword(keyword, pageNumber, lon, lat, 100)
+        }
+
+        binding.btnSaveLocation.setOnClickListener {
+            val intent = Intent(this@LocationSearchActivity, PostActivity::class.java).apply {
+                putExtra("name", name)
+                putExtra("address", address)
+            }
+            startActivity(intent)
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -163,6 +173,8 @@ class LocationSearchActivity : AppCompatActivity() {
                 lon = location.longitude
             }
         })
+        val mapPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
+        binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
     }
 
     private val resultLauncher = registerForActivityResult<String, Boolean>(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
