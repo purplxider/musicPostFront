@@ -9,6 +9,7 @@
         android:layout_height="50dp"
         android:background="@drawable/bottom_border">
         <Button
+            android:id="@+id/backButton"
             android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,6 +31,7 @@
         </TextView>
 
         <Button
+            android:id="@+id/saveButton"
             android:layout_marginEnd="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -139,7 +141,7 @@
                 android:layout_below="@+id/currentLocation"
                 android:fontFamily="@font/spoqahansanssneo_light"
                 android:textSize="20sp"
-                android:text="중앙대"
+                android:text="위치를 설정해주세요"
                 >
 
             </TextView>
@@ -152,7 +154,7 @@
                 android:layout_below="@id/selectedLocationLabel"
                 android:fontFamily="@font/spoqahansanssneo_light"
                 android:textSize="15sp"
-                android:text="서울특별시 동작구 흑석로 84">
+                android:text="">
 
             </TextView>
 
@@ -186,6 +188,7 @@
         </TextView>
 
         <EditText
+            android:id="@+id/titleTextBox"
             android:layout_marginStart="22dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="15dp"
@@ -214,6 +217,7 @@
 
         </TextView>
         <EditText
+            android:id="@+id/postContentTextBox"
             android:layout_marginStart="22dp"
             android:layout_marginEnd="50dp"
             android:layout_marginTop="18dp"
