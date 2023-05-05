@@ -95,7 +95,6 @@ public class PostActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), LocationSearchActivity.class);
             intent.putExtra("source", "post");
-            startActivity(intent);
             searchActivityResultLauncher.launch(intent);
             overridePendingTransition(R.anim.horizontal_enter, R.anim.none);
         }
