@@ -1,13 +1,20 @@
 package com.example.musicpost;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.security.MessageDigest;
 
 public class MainActivity extends AppCompatActivity {
     TextView locationLabel;
@@ -46,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         bindComponents(); // 화면에 있는 component 가져오기
         setEventListeners(); // 이벤트 리스너 설정
-
+        getAppKeyHash();
     }
 
     public void bindComponents() {
@@ -64,6 +71,21 @@ public class MainActivity extends AppCompatActivity {
     public void setEventListeners() {
         addPostButton.setOnClickListener(postClickListener);
         currentPostCard.setOnClickListener(detailedClickListener);
+    }
+
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+
+                String something = Base64.encodeToString(md.digest(), Base64.NO_WRAP);
+                Log.e("Debug key", something);
+            }
+        } catch (Exception e) {
+            Log.e("Not found", e.toString());
+        }
     }
 }
 

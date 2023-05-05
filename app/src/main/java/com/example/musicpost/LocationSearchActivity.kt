@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,11 +19,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicpost.databinding.ActivityLocationSearchBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnSuccessListener
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import retrofit2.Call
@@ -31,14 +31,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class LocationSearchActivity : AppCompatActivity() {
+class LocationSearchActivity : AppCompatActivity(), LocationListener {
     companion object {
         const val BASE_URL = "https://dapi.kakao.com/"
         const val API_KEY = "KakaoAK 167a97c75a92a1ecafc82ee8107258bc" // REST API 키
+        private const val REQUEST_LOCATION_PERMISSION = 1
     }
 
     private lateinit var binding : ActivityLocationSearchBinding
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val listItems = arrayListOf<ListLayout>() // 리사이클러 뷰 아이템
     private val listAdapter = ListAdapter(listItems) // 리사이클러 뷰 어댑터
     private var pageNumber = 1 // 검색 페이지 번호
@@ -47,12 +47,23 @@ class LocationSearchActivity : AppCompatActivity() {
     private var lon = 0.0
     private var name = ""
     private var address = ""
+    private lateinit var locationManager: LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationSearchBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        // Get the location manager
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        // Request location updates
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0f, this)
+            System.out.println(" " + lat + " " + lon)
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        }
 
 // 리사이클러 뷰
         binding.rvList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -71,25 +82,12 @@ class LocationSearchActivity : AppCompatActivity() {
         binding.btnSearch.setOnClickListener {
             keyword = binding.etSearchField.text.toString()
             pageNumber = 1
-            lat = 37.5661
-            lon = 126.9788
+            //lat = 37.5661
+            //lon = 126.9788
             searchKeyword(keyword, pageNumber, lon, lat, 100)
             hideKeyboard()
         }
 
-// 이전 페이지 버튼
-        binding.btnPrevPage.setOnClickListener {
-            pageNumber--
-            binding.tvPageNumber.text = pageNumber.toString()
-            searchKeyword(keyword, pageNumber, lon, lat, 100)
-        }
-
-// 다음 페이지 버튼
-        binding.btnNextPage.setOnClickListener {
-            pageNumber++
-            binding.tvPageNumber.text = pageNumber.toString()
-            searchKeyword(keyword, pageNumber, lon, lat, 100)
-        }
 // 완료 버튼
         binding.btnSaveLocation.setOnClickListener {
             val intent = Intent().apply {
@@ -102,8 +100,7 @@ class LocationSearchActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getCurrentLocation()
+        //getCurrentLocation()
     }
 
     // 키워드 검색 함수
@@ -160,47 +157,23 @@ class LocationSearchActivity : AppCompatActivity() {
             }
             listAdapter.notifyDataSetChanged()
 
-            binding.btnNextPage.isEnabled = !searchResult.meta.is_end // 페이지가 더 있을 경우 다음 버튼 활성화
-            binding.btnPrevPage.isEnabled = pageNumber != 1 // 1페이지가 아닐 경우 이전 버튼 활성화
-
         } else {
 // 검색 결과 없음
             Toast.makeText(this, "검색 결과가 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
-
-    private fun getCurrentLocation() {
-        // Checking Location Permission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            resultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            return
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, OnSuccessListener { location: Location? ->
-            if (location != null) {
-                lat = location.latitude
-                lon = location.longitude
-            }
-        })
-        //val mapPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
-        val mapPoint = MapPoint.mapPointWithGeoCoord(37.5661, 126.9788)
-
-        binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
-    }
-
-    fun animate() {
-        overridePendingTransition(R.anim.horizontal_enter, R.anim.none)
-    }
-
-    private val resultLauncher = registerForActivityResult<String, Boolean>(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) {
-            getCurrentLocation()
-        } else {
-            Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private fun hideKeyboard() {
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.etSearchField.getWindowToken(), 0)
+    }
+
+    override fun onLocationChanged(location: Location) {
+        lat = location.latitude
+        lon = location.longitude
+        System.out.println(" " + lat + " " + lon)
+        val mapPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
+        //val mapPoint = MapPoint.mapPointWithGeoCoord(37.5661, 126.9788)
+
+        binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
     }
 }
