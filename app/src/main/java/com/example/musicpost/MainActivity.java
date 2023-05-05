@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
             intent.putExtra("source", "main");
             startActivity(intent);
+            overridePendingTransition(R.anim.vertical_enter, R.anim.none);
         }
     };
 
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //animate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -64,13 +64,6 @@ public class MainActivity extends AppCompatActivity {
     public void setEventListeners() {
         addPostButton.setOnClickListener(postClickListener);
         currentPostCard.setOnClickListener(detailedClickListener);
-    }
-
-    public void animate() {
-        Intent intent = getIntent();
-        String source = intent.getStringExtra("source");
-        if (source.equals("post")) {
-            overridePendingTransition(R.anim.none, R.anim.vertical_exit);}
     }
 }
 

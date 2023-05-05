@@ -4,12 +4,15 @@ import KakaoAPI
 import ListLayout
 import ResultSearchKeyword
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -49,8 +52,6 @@ class LocationSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationSearchBinding.inflate(layoutInflater)
         val view = binding.root
-        overridePendingTransition(R.anim.horizontal_enter, R.anim.horizontal_exit)
-        animate()
         setContentView(view)
 
 // 리사이클러 뷰
@@ -73,6 +74,7 @@ class LocationSearchActivity : AppCompatActivity() {
             lat = 37.5661
             lon = 126.9788
             searchKeyword(keyword, pageNumber, lon, lat, 100)
+            hideKeyboard()
         }
 
 // 이전 페이지 버튼
@@ -88,14 +90,16 @@ class LocationSearchActivity : AppCompatActivity() {
             binding.tvPageNumber.text = pageNumber.toString()
             searchKeyword(keyword, pageNumber, lon, lat, 100)
         }
-
+// 완료 버튼
         binding.btnSaveLocation.setOnClickListener {
-            val intent = Intent(this@LocationSearchActivity, PostActivity::class.java).apply {
+            val intent = Intent().apply {
                 putExtra("name", name)
                 putExtra("address", address)
                 putExtra("source", "locationSearch")
             }
-            startActivity(intent)
+            setResult(Activity.RESULT_OK, intent)
+            onBackPressedDispatcher.onBackPressed()
+            overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -195,4 +199,8 @@ class LocationSearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun hideKeyboard() {
+        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.etSearchField.getWindowToken(), 0)
+    }
 }

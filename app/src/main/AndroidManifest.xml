@@ -34,7 +34,7 @@
         <activity android:name=".MusicSearchActivity"></activity>
         <activity android:name=".DetailedPostActivity"></activity>
         <activity android:name=".LocationSearchActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustNothing"></activity>
 
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="76c2eeaa6f57d8057a0917641c853eb3"/>
     </application>
