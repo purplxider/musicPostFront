@@ -17,13 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
     TextView locationLabel;
     RelativeLayout currentPostCard;
-    RelativeLayout nextPostCard;
+    RelativeLayout newPostCard;
     TextView titleLabel;
+    TextView newTitleLabel;
     TextView shortContentLabel;
+    TextView newShortContentLabel;
     Button musicPlayButton;
+    Button newMusicPlayButton;
     TextView musicTitleLabel;
+    TextView newMusicTitleLabel;
     TextView musicArtistLabel;
+    TextView newMusicArtistLabel;
     TextView postLocationLabel;
+    TextView newPostLocationLabel;
     Button addPostButton;
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
@@ -64,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
         musicArtistLabel = (TextView)findViewById(R.id.musicArtistLabel);
         postLocationLabel = (TextView)findViewById(R.id.postLocationLabel);
         addPostButton = (Button)findViewById(R.id.addPostButton);
+        newPostCard = (RelativeLayout)findViewById(R.id.newPostCard);
+        newTitleLabel = (TextView)findViewById(R.id.newTitleLabel);
+        newShortContentLabel = (TextView)findViewById(R.id.newShortContentLabel);
+        newMusicPlayButton = (Button)findViewById(R.id.newMusicPlayButton);
+        newMusicTitleLabel = (TextView)findViewById(R.id.newMusicTitleLabel);
+        newMusicArtistLabel = (TextView)findViewById(R.id.newMusicArtistLabel);
+        newPostLocationLabel = (TextView)findViewById(R.id.newPostLocationLabel);
     }
 
     public void setEventListeners() {
@@ -96,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
                     if (!isDragging && Math.abs(deltaX) > Math.abs(deltaY)) {
                         // If the drag is mostly in the horizontal direction, start the curl animation
                         isDragging = true;
-                        if (deltaX < 0) startLeftCurlAnimation();
-                        else startRightCurlAnimation();
+                        if (deltaX < 0) startLeftCurlAnimation(v);
+                        else startRightCurlAnimation(v);
                         return true;
                     }
                     break;
@@ -112,12 +125,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void startLeftCurlAnimation() {
-        currentPostCard.setPivotX(0);
-        currentPostCard.setPivotY(0);
+    private void startLeftCurlAnimation(View postcard) {
+        postcard.setPivotX(0);
+        postcard.setPivotY(0);
         // Create an ObjectAnimator to animate the page's curl
-        ObjectAnimator animY = ObjectAnimator.ofFloat(currentPostCard, "rotationY", 0, -90);
-        ObjectAnimator animX = ObjectAnimator.ofFloat(currentPostCard, "rotationX", 0, 60);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(postcard, "rotationY", 0, -90);
+        ObjectAnimator animX = ObjectAnimator.ofFloat(postcard, "rotationX", 0, 60);
         AnimatorSet animSet = new AnimatorSet();
         animSet.playTogether(animX, animY);
         animSet.setDuration(650);
@@ -126,12 +139,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 // remove the old view
-                RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
-                mainLayout.removeView(currentPostCard);
-                RelativeLayout newPostCard = createNewCard();
-                currentPostCard = newPostCard;
-                mainLayout.addView(currentPostCard);
-                currentPostCard.setOnTouchListener(cardFlipListener);
+                if (currentPostCard.getVisibility() == View.VISIBLE) {
+                    currentPostCard.setVisibility(View.GONE);
+                    currentPostCard.setRotationX(0);
+                    currentPostCard.setRotationY(0);
+                    newPostCard.setVisibility(View.VISIBLE);
+                    newPostCard.setOnClickListener(detailedClickListener);
+                    newPostCard.setOnTouchListener(cardFlipListener);
+                } else {
+                    newPostCard.setVisibility(View.GONE);
+                    newPostCard.setRotationX(0);
+                    newPostCard.setRotationY(0);
+                    currentPostCard.setVisibility(View.VISIBLE);
+                    currentPostCard.setOnClickListener(detailedClickListener);
+                    currentPostCard.setOnTouchListener(cardFlipListener);
+                }
             }
         });
 
@@ -140,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void startRightCurlAnimation() {
-        currentPostCard.setPivotX(currentPostCard.getWidth());
-        currentPostCard.setPivotY(0);
+    private void startRightCurlAnimation(View postcard) {
+        postcard.setPivotX(postcard.getWidth());
+        postcard.setPivotY(0);
         // Create an ObjectAnimator to animate the page's curl
-        ObjectAnimator animY = ObjectAnimator.ofFloat(currentPostCard, "rotationY", 0, 90);
-        ObjectAnimator animX = ObjectAnimator.ofFloat(currentPostCard, "rotationX", 0, 60);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(postcard, "rotationY", 0, 90);
+        ObjectAnimator animX = ObjectAnimator.ofFloat(postcard, "rotationX", 0, 60);
         AnimatorSet animSet = new AnimatorSet();
         animSet.playTogether(animX, animY);
         animSet.setDuration(650);
@@ -154,22 +176,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 // remove the old view
-                RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
-                mainLayout.removeView(currentPostCard);
-                RelativeLayout newPostCard = createNewCard();
-                currentPostCard = newPostCard;
-                mainLayout.addView(currentPostCard);
-                currentPostCard.setOnTouchListener(cardFlipListener);
+                if (currentPostCard.getVisibility() == View.VISIBLE) {
+                    currentPostCard.setVisibility(View.GONE);
+                    currentPostCard.setRotationX(0);
+                    currentPostCard.setRotationY(0);
+                    newPostCard.setVisibility(View.VISIBLE);
+                    newPostCard.setOnClickListener(detailedClickListener);
+                    newPostCard.setOnTouchListener(cardFlipListener);
+                } else {
+                    newPostCard.setVisibility(View.GONE);
+                    newPostCard.setRotationX(0);
+                    newPostCard.setRotationY(0);
+                    currentPostCard.setVisibility(View.VISIBLE);
+                    currentPostCard.setOnClickListener(detailedClickListener);
+                    currentPostCard.setOnTouchListener(cardFlipListener);
+                }
             }
         });
 
         // Start the animation
         animSet.start();
-    }
-
-    private RelativeLayout createNewCard() {
-        RelativeLayout newCard = new RelativeLayout(this);
-        return newCard;
     }
 }
 
