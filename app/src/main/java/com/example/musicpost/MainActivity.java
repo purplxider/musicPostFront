@@ -13,6 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     TextView locationLabel;
@@ -46,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
-            intent.putExtra("source", "main");
             startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     };
 
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         private float startY;
         private float currentX;
         private float currentY;
+        private final int clickThreshold = 10;
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
@@ -115,6 +119,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
+                    // Check if the touch was a click
+                    float endX = event.getX();
+                    float endY = event.getY();
+                    float distanceX = Math.abs(endX - startX);
+                    float distanceY = Math.abs(endY - startY);
+
+                    if (!isDragging && distanceX < clickThreshold && distanceY < clickThreshold) {
+                        // Trigger a click event
+                        v.performClick();
+                        return true;
+                    }
+                    // Reset the dragging flag and touch event coordinates
+                    isDragging = false;
+                    startX = startY = 0f;
+                    break;
                 case MotionEvent.ACTION_CANCEL:
                     // Reset the dragging flag and touch event coordinates
                     isDragging = false;
@@ -143,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     currentPostCard.setVisibility(View.GONE);
                     currentPostCard.setRotationX(0);
                     currentPostCard.setRotationY(0);
+                    setColor(newPostCard);
                     newPostCard.setVisibility(View.VISIBLE);
                     newPostCard.setOnClickListener(detailedClickListener);
                     newPostCard.setOnTouchListener(cardFlipListener);
@@ -150,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     newPostCard.setVisibility(View.GONE);
                     newPostCard.setRotationX(0);
                     newPostCard.setRotationY(0);
+                    setColor(currentPostCard);
                     currentPostCard.setVisibility(View.VISIBLE);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     currentPostCard.setOnTouchListener(cardFlipListener);
@@ -180,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     currentPostCard.setVisibility(View.GONE);
                     currentPostCard.setRotationX(0);
                     currentPostCard.setRotationY(0);
+                    setColor(newPostCard);
                     newPostCard.setVisibility(View.VISIBLE);
                     newPostCard.setOnClickListener(detailedClickListener);
                     newPostCard.setOnTouchListener(cardFlipListener);
@@ -187,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                     newPostCard.setVisibility(View.GONE);
                     newPostCard.setRotationX(0);
                     newPostCard.setRotationY(0);
+                    setColor(currentPostCard);
                     currentPostCard.setVisibility(View.VISIBLE);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     currentPostCard.setOnTouchListener(cardFlipListener);
@@ -196,6 +219,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Start the animation
         animSet.start();
+    }
+
+    private void setColor(RelativeLayout postcard) {
+        Random random = new Random();
+        int randomNumber = random.nextInt(3);
+        if (randomNumber == 0) postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
+        else if (randomNumber == 1) postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+        else if (randomNumber == 2) postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
     }
 }
 
