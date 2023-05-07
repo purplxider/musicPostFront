@@ -1,8 +1,8 @@
 package com.example.musicpost
 
 import KakaoAPI
-import ListLayout
-import ResultSearchKeyword
+import LocationListLayout
+import ResultLocationSearchKeyword
 import android.Manifest
 import android.app.Activity
 import android.content.Context
@@ -16,9 +16,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,8 +38,8 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
     }
 
     private lateinit var binding : ActivityLocationSearchBinding
-    private val listItems = arrayListOf<ListLayout>() // 리사이클러 뷰 아이템
-    private val listAdapter = ListAdapter(listItems) // 리사이클러 뷰 어댑터
+    private val listItems = arrayListOf<LocationListLayout>() // 리사이클러 뷰 아이템
+    private val locationListAdapter = LocationListAdapter(listItems) // 리사이클러 뷰 어댑터
     private var pageNumber = 1 // 검색 페이지 번호
     private var keyword = "" // 검색 키워드
     private var lat = 0.0
@@ -68,9 +66,9 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
 
 // 리사이클러 뷰
         binding.rvList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rvList.adapter = listAdapter
+        binding.rvList.adapter = locationListAdapter
 // 리스트 아이템 클릭 시 해당 위치로 이동
-        listAdapter.setItemClickListener(object: ListAdapter.OnItemClickListener {
+        locationListAdapter.setItemClickListener(object: LocationListAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 val mapPoint = MapPoint.mapPointWithGeoCoord(listItems[position].y, listItems[position].x)
                 binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
@@ -83,8 +81,6 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
         binding.btnSearch.setOnClickListener {
             keyword = binding.etSearchField.text.toString()
             pageNumber = 1
-            //lat = 37.5661
-            //lon = 126.9788
             searchKeyword(keyword, pageNumber, lon, lat, 100)
             hideKeyboard()
         }
@@ -112,16 +108,15 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
                 .build()
         val api = retrofit.create(KakaoAPI::class.java) // 통신 인터페이스를 객체로 생성
         val call = api.getSearchKeyword(API_KEY, keyword, page, x, y, radius) // 검색 조건 입력
-        System.out.println(call.request().url().toString())
 // API 서버에 요청
-        call.enqueue(object: Callback<ResultSearchKeyword> {
-            override fun onResponse(call: Call<ResultSearchKeyword>, response: Response<ResultSearchKeyword>) {
+        call.enqueue(object: Callback<ResultLocationSearchKeyword> {
+            override fun onResponse(call: Call<ResultLocationSearchKeyword>, response: Response<ResultLocationSearchKeyword>) {
 // 통신 성공
                 binding.constraintLayout.visibility = View.VISIBLE
                 addItemsAndMarkers(response.body())
             }
 
-            override fun onFailure(call: Call<ResultSearchKeyword>, t: Throwable) {
+            override fun onFailure(call: Call<ResultLocationSearchKeyword>, t: Throwable) {
 // 통신 실패
                 Log.w("LocalSearch", "통신 실패: ${t.message}")
 
@@ -130,7 +125,7 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
     }
 
     // 검색 결과 처리 함수
-    private fun addItemsAndMarkers(searchResult: ResultSearchKeyword?) {
+    private fun addItemsAndMarkers(searchResult: ResultLocationSearchKeyword?) {
         if (!searchResult?.documents.isNullOrEmpty()) {
 // 검색 결과 있음
             listItems.clear() // 리스트 초기화
@@ -138,7 +133,7 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
             for (document in searchResult!!.documents) {
 
 // 결과를 리사이클러 뷰에 추가
-                val item = ListLayout(document.place_name,
+                val item = LocationListLayout(document.place_name,
                         document.road_address_name,
                         document.address_name,
                         document.x.toDouble(),
@@ -156,7 +151,7 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
                 }
                 binding.mapView.addPOIItem(point)
             }
-            listAdapter.notifyDataSetChanged()
+            locationListAdapter.notifyDataSetChanged()
 
         } else {
 // 검색 결과 없음

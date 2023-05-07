@@ -14,5 +14,5 @@ interface KakaoAPI {
             @Query("x") x: Double,
             @Query("y") y: Double,
             @Query("radius") radius: Int
-    ): Call<ResultSearchKeyword> // 받아온 정보가 ResultSearchKeyword 클래스의 구조로 담김
+    ): Call<ResultLocationSearchKeyword> // 받아온 정보가 ResultSearchKeyword 클래스의 구조로 담김
 }

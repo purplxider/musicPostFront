@@ -79,7 +79,7 @@ public class PostActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MusicSearchActivity.class);
             intent.putExtra("source", "post");
             startActivity(intent);
-            overridePendingTransition(R.anim.horizontal_enter, R.anim.horizontal_exit);
+            overridePendingTransition(R.anim.horizontal_enter, R.anim.none);
         }
     };
 
