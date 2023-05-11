@@ -38,11 +38,14 @@ class MusicListAdapter(val itemList: ArrayList<MusicListLayout>, val mediaPlayer
         holder.artists.text = names
 
         holder.musicPlayButton.setOnClickListener{
-            System.out.println(mediaPlayer)
-            mediaPlayer?.reset()
-            mediaPlayer?.setDataSource(itemList[position].preview_url)
-            mediaPlayer?.prepare()
-            mediaPlayer?.start()
+            if (mediaPlayer!!.isPlaying) {
+                mediaPlayer.pause()
+            } else {
+                mediaPlayer?.reset()
+                mediaPlayer?.setDataSource(itemList[position].preview_url)
+                mediaPlayer?.prepare()
+                mediaPlayer?.start()
+            }
         }
 
 // 아이템 클릭 이벤트

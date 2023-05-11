@@ -73,6 +73,7 @@ public class PostActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
+        mediaPlayer.release();
         overridePendingTransition(R.anim.none, R.anim.vertical_exit);
     }
 
@@ -113,14 +114,18 @@ public class PostActivity extends AppCompatActivity {
             if (musicURL == null) {
 
             } else {
-                mediaPlayer.reset();
-                try {
-                    mediaPlayer.setDataSource(musicURL);
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                } else {
+                    mediaPlayer.reset();
+                    try {
+                        mediaPlayer.setDataSource(musicURL);
+                        mediaPlayer.prepare();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    mediaPlayer.start();
                 }
-                mediaPlayer.start();
             }
         }
     };
