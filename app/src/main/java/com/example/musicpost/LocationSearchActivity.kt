@@ -25,6 +25,7 @@ import com.example.musicpost.databinding.ActivityLocationSearchBinding
 import net.daum.mf.map.api.MapCircle
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapReverseGeoCoder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,14 +58,14 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
 
         // Request location updates
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0f, this)
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
 
         binding = ActivityLocationSearchBinding.inflate(layoutInflater)
         val view = binding.root
-        binding.etSearchField.setBackgroundColor(Color.TRANSPARENT)
+        getLocation()
         setContentView(view)
 
 // 리사이클러 뷰
@@ -182,5 +183,15 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
         binding.mapView.addPOIItem(point)
         binding.mapView.addCircle(radius)
         binding.mapView.setMapCenterPointAndZoomLevel(locationPoint, 0, true)
+    }
+
+    private fun getLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (lastKnownLocation != null) {
+                val locationPoint = MapPoint.mapPointWithGeoCoord(lastKnownLocation.latitude, lastKnownLocation.longitude)
+                binding.mapView.setMapCenterPointAndZoomLevel(locationPoint, 0, false);
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/spoqahansanssneo_regular"
         android:textSize="18sp"
         android:text="현재 위치">
     </TextView>
@@ -21,104 +22,102 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/locationLabel"
         android:layout_centerHorizontal="true"
+        android:fontFamily="@font/spoqahansanssneo_light"
         android:textSize="16sp"
-        android:text="중앙대">
+        android:text="서울특별시 동작구 흑석로 84">
     </TextView>
+
 
     <RelativeLayout
         android:id="@+id/currentPostCard"
-        android:layout_below="@id/currentLocationLabel"
-        android:layout_marginTop="95dp"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:background="#FFF5C2"
         android:elevation="4dp">
 
         <TextView
             android:id="@+id/titleLabel"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="18dp"
+
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="18dp"
             android:fontFamily="@font/spoqahansanssneo_regular"
-            android:textSize="24sp"
-            android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
-        </TextView>
+            android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요"
+            android:textSize="20sp"></TextView>
 
         <TextView
             android:id="@+id/shortContentLabel"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="18dp"
             android:fontFamily="@font/nanum_bs"
-            android:textSize="22sp"
-            android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">
-        </TextView>
+            android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다"
+            android:textAlignment="center"
+            android:textSize="20sp"></TextView>
 
         <RelativeLayout
             android:id="@+id/embeddedMusicPlayer"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginBottom="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/shortContentLabel">
+            android:layout_below="@+id/shortContentLabel"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp">
 
             <Button
                 android:id="@+id/musicPlayButton"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:background="@drawable/round"
-                android:layout_gravity="center"
                 android:layout_centerVertical="true"
-                android:text="II"
-                >
+                android:layout_gravity="center"
+                android:background="@drawable/round"
+                android:text="II">
 
             </Button>
 
-                <TextView
-                    android:id="@+id/musicTitleLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_toRightOf="@id/musicPlayButton"
-                    android:text="You're So Great"
-                    android:fontFamily="@font/spoqahansanssneo_bold"
-                    android:textSize="22sp">
-                </TextView>
+            <TextView
+                android:id="@+id/musicTitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@id/musicPlayButton"
+                android:fontFamily="@font/spoqahansanssneo_bold"
+                android:text="You're So Great"
+                android:textSize="22sp"></TextView>
 
-                <TextView
-                    android:id="@+id/musicArtistLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_below="@id/musicTitleLabel"
-                    android:layout_toRightOf="@id/musicPlayButton"
-                    android:text="Blur"
-                    android:fontFamily="@font/spoqahansanssneo_light"
-                    android:textSize="16sp"
-                    >
+            <TextView
+                android:id="@+id/musicArtistLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/musicTitleLabel"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@id/musicPlayButton"
+                android:fontFamily="@font/spoqahansanssneo_light"
+                android:text="Blur"
+                android:textSize="16sp">
 
-                </TextView>
+            </TextView>
 
-                <TextView
-                    android:id="@+id/postLocationLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_below="@id/musicArtistLabel"
-                    android:layout_toRightOf="@id/musicPlayButton"
-                    android:text="중앙대"
-                    android:fontFamily="@font/spoqahansanssneo_light"
-                    android:textSize="13sp">
+            <TextView
+                android:id="@+id/postLocationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/musicArtistLabel"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@id/musicPlayButton"
+                android:fontFamily="@font/spoqahansanssneo_light"
+                android:text="중앙대"
+                android:textSize="13sp">
 
-                </TextView>
+            </TextView>
 
         </RelativeLayout>
 
@@ -126,11 +125,9 @@
 
     <RelativeLayout
         android:id="@+id/newPostCard"
-        android:layout_below="@id/currentLocationLabel"
-        android:layout_marginTop="95dp"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:background="#FFF5C2"
         android:elevation="4dp"
         android:visibility="gone">
@@ -138,33 +135,35 @@
         <TextView
             android:id="@+id/newTitleLabel"
             android:layout_marginTop="40dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spoqahansanssneo_regular"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
         </TextView>
 
         <TextView
             android:id="@+id/newShortContentLabel"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/newTitleLabel"
             android:fontFamily="@font/nanum_bs"
-            android:textSize="22sp"
-            android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다">
         </TextView>
 
         <RelativeLayout
             android:id="@+id/newEmbeddedMusicPlayer"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="14dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="18dp"
             android:layout_marginBottom="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -229,7 +228,7 @@
     <Button
         android:id="@+id/addPostButton"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="70dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="32dp"
         android:layout_width="63dp"
