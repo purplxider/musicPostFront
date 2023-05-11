@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
 
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     LocationManager locationManager;
     LocationListener locationListener;
     MapReverseGeoCoder reverseGeoCoder;
+    MediaPlayer mediaPlayer = null;
+    String musicURL = "";
     Boolean touchEnabled = true;
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
             intent.putExtra("source", "main");
             startActivity(intent);
+            mediaPlayer.release();
             overridePendingTransition(R.anim.vertical_enter, R.anim.none);
         }
     };
@@ -68,6 +73,17 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        }
+    };
+
+    View.OnClickListener musicPlay = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            } else if (musicURL != "") {
+                mediaPlayer.start();
             }
         }
     };
@@ -89,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
         bindComponents(); // 화면에 있는 component 가져오기
         setEventListeners(); // 이벤트 리스너 설정
+        playMusic();
     }
 
     public void bindComponents() {
@@ -115,6 +132,21 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         addPostButton.setOnClickListener(postClickListener);
         currentPostCard.setOnClickListener(detailedClickListener);
         currentPostCard.setOnTouchListener(cardFlipListener);
+        musicPlayButton.setOnClickListener(musicPlay);
+    }
+
+    void playMusic() {
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.reset();
+        if (musicURL != "") {
+            try {
+                mediaPlayer.setDataSource(musicURL);
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            mediaPlayer.start();
+        }
     }
 
     View.OnTouchListener cardFlipListener = new View.OnTouchListener() {
