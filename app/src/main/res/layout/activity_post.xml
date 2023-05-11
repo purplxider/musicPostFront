@@ -98,7 +98,7 @@
             android:layout_toRightOf="@id/musicPlayButton"
             android:layout_marginTop="17dp"
             android:layout_marginStart="22dp"
-            android:text="You're So Great"
+            android:text="음악을 설정하세요"
             android:fontFamily="@font/spoqahansanssneo_bold"
             android:textSize="22sp">
         </TextView>
@@ -111,7 +111,6 @@
             android:layout_toRightOf="@id/musicPlayButton"
             android:layout_marginStart="22dp"
             android:layout_marginBottom="25dp"
-            android:text="Blur"
             android:fontFamily="@font/spoqahansanssneo_light"
             android:textSize="16sp">
             </TextView>
@@ -141,7 +140,7 @@
                 android:layout_below="@+id/currentLocation"
                 android:fontFamily="@font/spoqahansanssneo_light"
                 android:textSize="20sp"
-                android:text="위치를 설정해주세요"
+                android:text="위치를 설정하세요"
                 >
 
             </TextView>
@@ -197,7 +196,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/spoqahansanssneo_meduim"
             android:textSize="16sp"
-            android:text="이런 노래는 어떤가요?">
+            android:hint="제목을 입력하세요">
 
         </EditText>
     </RelativeLayout>
@@ -232,7 +231,7 @@
             android:gravity="top"
             android:padding="10dp"
             android:background="@drawable/box_border"
-            android:text="이런 내용입니다.">
+            android:hint="내용을 입력하세요">
 
         </EditText>
     </RelativeLayout>

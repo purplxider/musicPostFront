@@ -1,9 +1,12 @@
 package com.example.musicpost
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +35,7 @@ class MusicSearchActivity: AppCompatActivity() {
     private lateinit var musicListAdapter: MusicListAdapter
     private var keyword = "" // 검색 키워드
     private lateinit var accessToken : String
+    private var musicURL = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +49,29 @@ class MusicSearchActivity: AppCompatActivity() {
         musicListAdapter = MusicListAdapter(listItems, mediaPlayer)
         binding.recycleList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recycleList.adapter = musicListAdapter
+        musicListAdapter.setItemClickListener(object: MusicListAdapter.OnItemClickListener {
+            override fun onClick(v: View, position: Int) {
+                musicURL = listItems[position].preview_url
+                val intent = Intent().apply {
+                    putExtra("musicTitle", listItems[position].name)
+                    putExtra("musicArtists", listItems[position].artistNames)
+                    putExtra("musicURL", musicURL)
+                }
+                setResult(Activity.RESULT_OK, intent)
+                onBackPressedDispatcher.onBackPressed()
+                overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
+            }
+        })
 
         binding.btnSearch.setOnClickListener {
             keyword = binding.searchEditText.text.toString()
             searchKeyword(keyword)
             hideKeyboard()
+        }
+
+        binding.backButton.setOnClickListener{
+            onBackPressedDispatcher.onBackPressed()
+            overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
         }
     }
 
@@ -98,6 +120,7 @@ class MusicSearchActivity: AppCompatActivity() {
 // 결과를 리사이클러 뷰에 추가
                 val item = MusicListLayout(track.name,
                         track.artists,
+                        "",
                         track.preview_url)
                 listItems.add(item)
             }

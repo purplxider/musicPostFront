@@ -9,12 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MusicListAdapter(val itemList: ArrayList<MusicListLayout>, val mediaPlayer: MediaPlayer?): RecyclerView.Adapter<MusicListAdapter.ViewHolder>(){
-
-
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.listTrackName)
         val artists: TextView = itemView.findViewById(R.id.listArtistName)
         val musicPlayButton: Button = itemView.findViewById(R.id.musicPlayButton)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicListAdapter.ViewHolder {
@@ -35,6 +34,7 @@ class MusicListAdapter(val itemList: ArrayList<MusicListLayout>, val mediaPlayer
             nameList.add(artist.name)
         }
         val names = nameList.joinToString(", ")
+        itemList[position].artistNames = names
         holder.artists.text = names
 
         holder.musicPlayButton.setOnClickListener{

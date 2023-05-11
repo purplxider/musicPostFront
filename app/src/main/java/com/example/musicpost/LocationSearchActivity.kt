@@ -8,6 +8,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -21,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicpost.databinding.ActivityLocationSearchBinding
+import net.daum.mf.map.api.MapCircle
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import retrofit2.Call
@@ -50,19 +52,20 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLocationSearchBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
         // Get the location manager
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Request location updates
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0f, this)
-            System.out.println(" " + lat + " " + lon)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
+
+        binding = ActivityLocationSearchBinding.inflate(layoutInflater)
+        val view = binding.root
+        binding.etSearchField.setBackgroundColor(Color.TRANSPARENT)
+        setContentView(view)
 
 // 리사이클러 뷰
         binding.rvList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -74,6 +77,15 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
                 binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
                 name = listItems[position].name
                 address = listItems[position].address
+
+                val intent = Intent().apply {
+                    putExtra("name", name)
+                    putExtra("address", address)
+                    putExtra("source", "locationSearch")
+                }
+                setResult(Activity.RESULT_OK, intent)
+                onBackPressedDispatcher.onBackPressed()
+                overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
             }
         })
 
@@ -85,19 +97,10 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
             hideKeyboard()
         }
 
-// 완료 버튼
-        binding.btnSaveLocation.setOnClickListener {
-            val intent = Intent().apply {
-                putExtra("name", name)
-                putExtra("address", address)
-                putExtra("source", "locationSearch")
-            }
-            setResult(Activity.RESULT_OK, intent)
+        binding.backButton.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
             overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
         }
-
-        //getCurrentLocation()
     }
 
     // 키워드 검색 함수
@@ -112,7 +115,6 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
         call.enqueue(object: Callback<ResultLocationSearchKeyword> {
             override fun onResponse(call: Call<ResultLocationSearchKeyword>, response: Response<ResultLocationSearchKeyword>) {
 // 통신 성공
-                binding.constraintLayout.visibility = View.VISIBLE
                 addItemsAndMarkers(response.body())
             }
 
@@ -130,6 +132,7 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
 // 검색 결과 있음
             listItems.clear() // 리스트 초기화
             binding.mapView.removeAllPOIItems() // 지도의 마커 모두 제거
+            binding.constraintLayout.visibility = View.VISIBLE
             for (document in searchResult!!.documents) {
 
 // 결과를 리사이클러 뷰에 추가
@@ -166,10 +169,18 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
     override fun onLocationChanged(location: Location) {
         lat = location.latitude
         lon = location.longitude
-        System.out.println(" " + lat + " " + lon)
-        val mapPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
-        //val mapPoint = MapPoint.mapPointWithGeoCoord(37.5661, 126.9788)
-
-        binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
+        val locationPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
+        val point = MapPOIItem()
+        point.apply {
+            itemName = "current"
+            mapPoint = locationPoint
+            markerType = MapPOIItem.MarkerType.YellowPin
+        }
+        val radius = MapCircle(locationPoint, 50, Color.argb(0, 0,0,0), Color.argb(30,85,91,100))
+        binding.mapView.removeAllCircles()
+        binding.mapView.removeAllPOIItems()
+        binding.mapView.addPOIItem(point)
+        binding.mapView.addCircle(radius)
+        binding.mapView.setMapCenterPointAndZoomLevel(locationPoint, 0, true)
     }
 }
