@@ -27,7 +27,6 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements MapReverseGeoCoder.ReverseGeoCodingResultListener {
@@ -54,14 +53,15 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     MediaPlayer mediaPlayer = null;
     String musicURL = "";
     Boolean touchEnabled = true;
+    String color = "yellow";
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
             intent.putExtra("source", "main");
-            startActivity(intent);
             mediaPlayer.release();
+            startActivity(intent);
             overridePendingTransition(R.anim.vertical_enter, R.anim.none);
         }
     };
@@ -71,6 +71,11 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         public void onClick(View view) {
             if (touchEnabled) {
                 Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
+                intent.putExtra("color", color);
+                intent.putExtra("musicURL", musicURL);
+                int playbackPosition = mediaPlayer.getCurrentPosition();
+                intent.putExtra("playbackPosition", playbackPosition);
+                mediaPlayer.release();
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -138,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     void playMusic() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
+        musicURL = "https://p.scdn.co/mp3-preview/88303ffcec157c5d882a6297301576743491924b?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
         if (musicURL != "") {
             try {
                 mediaPlayer.setDataSource(musicURL);
@@ -241,6 +247,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     newPostCard.setOnTouchListener(cardFlipListener);
                     newPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
+                    mediaPlayer.release();
+                    playMusic();
                 } else {
                     newPostCard.setVisibility(View.GONE);
                     newPostCard.setRotationX(0);
@@ -250,6 +258,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     currentPostCard.setOnTouchListener(cardFlipListener);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
+                    mediaPlayer.release();
+                    playMusic();
                 }
             }
         });
@@ -292,6 +302,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     newPostCard.setOnTouchListener(cardFlipListener);
                     newPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
+                    mediaPlayer.release();
+                    playMusic();
                 } else {
                     newPostCard.setVisibility(View.GONE);
                     newPostCard.setRotationX(0);
@@ -301,6 +313,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     currentPostCard.setOnTouchListener(cardFlipListener);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
+                    mediaPlayer.release();
+                    playMusic();
                 }
             }
         });
@@ -312,14 +326,24 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     private void setColor(RelativeLayout postcard) {
         Random random = new Random();
         int randomNumber = random.nextInt(3);
-        if (randomNumber == 0) postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
-        else if (randomNumber == 1) postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
-        else if (randomNumber == 2) postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+        if (randomNumber == 0) {
+            postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
+            color = "yellow";
+        }
+        else if (randomNumber == 1) {
+            postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            color = "blue";
+        }
+        else if (randomNumber == 2) {
+            postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+            color = "green";
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        playMusic();
 
         // Check for location updates
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

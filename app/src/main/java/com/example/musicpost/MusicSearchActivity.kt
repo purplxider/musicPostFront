@@ -58,6 +58,7 @@ class MusicSearchActivity: AppCompatActivity() {
                     putExtra("musicURL", musicURL)
                 }
                 setResult(Activity.RESULT_OK, intent)
+                System.out.println(musicURL);
                 onBackPressedDispatcher.onBackPressed()
                 overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
             }
@@ -94,7 +95,6 @@ class MusicSearchActivity: AppCompatActivity() {
                 .build()
         val api = retrofit.create(SpotifyAPI::class.java) // 통신 인터페이스를 객체로 생성
         val call = api.searchTracks(accessToken, keyword) // 검색 조건 입력
-        System.out.println(call.request().url().toString())
 // API 서버에 요청
         call.enqueue(object: Callback<ResultMusicSearchKeyword> {
             override fun onResponse(call: Call<ResultMusicSearchKeyword>, response: Response<ResultMusicSearchKeyword>) {
