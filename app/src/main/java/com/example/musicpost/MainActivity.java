@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +28,15 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements MapReverseGeoCoder.ReverseGeoCodingResultListener {
     TextView locationLabel;
@@ -54,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     String musicURL = "";
     Boolean touchEnabled = true;
     String color = "yellow";
+    List<PostDto> posts;
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
         @Override
@@ -100,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
+        posts = new ArrayList<>();
+        getPosts();
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -141,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     }
 
     void playMusic() {
+        musicURL = "https://p.scdn.co/mp3-preview/88303ffcec157c5d882a6297301576743491924b?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
         mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
-        musicURL = "https://p.scdn.co/mp3-preview/88303ffcec157c5d882a6297301576743491924b?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
         if (musicURL != "") {
             try {
                 mediaPlayer.setDataSource(musicURL);
@@ -343,7 +355,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     @Override
     protected void onResume() {
         super.onResume();
-        playMusic();
 
         // Check for location updates
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -376,6 +387,47 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 reverseGeoCoder = new MapReverseGeoCoder("76c2eeaa6f57d8057a0917641c853eb3", MapPoint.mapPointWithGeoCoord(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), MainActivity.this, MainActivity.this);
                 reverseGeoCoder.startFindingAddress();
             }
+        }
+    }
+
+    private void getPosts() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://music_post_backend")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetPostAPI getPostAPI = retrofit.create(GetPostAPI.class);
+        Call<ResultGetPosts> call = getPostAPI.getPosts(10);
+        call.enqueue(new Callback<ResultGetPosts>() {
+            @Override
+            public void onResponse(Call<ResultGetPosts> call, Response<ResultGetPosts> response) {
+                if(response.body() != null && response.body().getPosts() != null && !response.body().getPosts().isEmpty()){
+                    for (PostDto post : response.body().getPosts()) {
+                        posts.add(post);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultGetPosts> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "주변에 포스트가 없습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setPost() {
+        PostDto currentPost = posts.get(0);
+        if(currentPostCard.getVisibility() == View.VISIBLE) {
+            titleLabel.setText(currentPost.getTitle());
+            shortContentLabel.setText(currentPost.getDescription());
+            musicTitleLabel.setText(currentPost.getMusic().getSongName());
+            musicArtistLabel.setText(currentPost.getMusic().getArtist());
+            musicURL = currentPost.getMusic().getMusicURL();
+        } else {
+            newTitleLabel.setText(currentPost.getTitle());
+            newShortContentLabel.setText(currentPost.getDescription());
+            newMusicTitleLabel.setText(currentPost.getMusic().getSongName());
+            newMusicArtistLabel.setText(currentPost.getMusic().getArtist());
+            musicURL = currentPost.getMusic().getMusicURL();
         }
     }
 }

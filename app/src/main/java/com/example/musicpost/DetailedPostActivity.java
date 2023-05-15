@@ -30,7 +30,7 @@ public class DetailedPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_post);
         bindComponents(); // 화면에 있는 component 가져오기
             color = getIntent().getStringExtra("color");
-            musicURL = getIntent().getStringExtra("musicURL");
+            musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
             playbackPosition = getIntent().getIntExtra("playbackPosition", 0);
             if (color.equals("yellow")) {
                 musicPlayer.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
@@ -43,9 +43,9 @@ public class DetailedPostActivity extends AppCompatActivity {
                 detailedPostCard.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
             }
 
-            System.out.println(color + " " + musicURL + " " + playbackPosition);
 
-            if (musicURL != "") {
+            if (musicURL != "" && musicURL != null) {
+                System.out.println(musicURL);
                 playMusic();
             }
     }
@@ -67,7 +67,7 @@ public class DetailedPostActivity extends AppCompatActivity {
     void playMusic() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
-        if (musicURL != "") {
+        if (musicURL != "" && musicURL != null) {
             try {
                 mediaPlayer.setDataSource(musicURL);
                 mediaPlayer.prepare();

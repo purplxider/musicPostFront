@@ -80,9 +80,11 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
                 address = listItems[position].address
 
                 val intent = Intent().apply {
+                    putExtra("source", "location")
                     putExtra("name", name)
                     putExtra("address", address)
-                    putExtra("source", "locationSearch")
+                    putExtra("x", lon)
+                    putExtra("y", lat)
                 }
                 setResult(Activity.RESULT_OK, intent)
                 onBackPressedDispatcher.onBackPressed()

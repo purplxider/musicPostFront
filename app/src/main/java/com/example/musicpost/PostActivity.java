@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -17,6 +16,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostActivity extends AppCompatActivity {
     Button backButton;
@@ -32,9 +37,14 @@ public class PostActivity extends AppCompatActivity {
     TextView musicArtistLabel;
     MediaPlayer mediaPlayer = null;
     String musicURL = "";
+    Double x = 0.0;
+    Double y = 0.0;
     ActivityResultLauncher<Intent> searchActivityResultLauncher;
     private String address = "";
     private String name = "위치를 설정해주세요";
+    private String musicTitle = "음악을 설정하세요";
+    private String musicArtists = "";
+    private String username = "test";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +60,20 @@ public class PostActivity extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
-                            String address = "";
-                            String name = "위치를 설정하세요";
-                            String musicTitle = "음악을 설정하세요";
-                            String musicArtists = "";
 
-                            if (data.getStringExtra("address") != null) address = data.getStringExtra("address");
-                            if (data.getStringExtra("name") != null) name = data.getStringExtra("name");
-                            if(data.getStringExtra("musicURL") != null) musicURL = data.getStringExtra("musicURL");
-                            if(data.getStringExtra("musicTitle") != null) musicTitle = data.getStringExtra("musicTitle");
-                            if(data.getStringExtra("musicArtists") != null) musicArtists = data.getStringExtra("musicArtists");
-
+                            if (data.getStringExtra("source").equals("location")) {
+                                if (data.getStringExtra("address") != null) address = data.getStringExtra("address");
+                                if (data.getStringExtra("name") != null) name = data.getStringExtra("name");
+                                x = data.getDoubleExtra("x", 0);
+                                y = data.getDoubleExtra("y", 0);
+                            } else if (data.getStringExtra("source").equals("music")) {
+                                if (data.getStringExtra("musicURL") != null)
+                                    musicURL = data.getStringExtra("musicURL");
+                                if (data.getStringExtra("musicTitle") != null)
+                                    musicTitle = data.getStringExtra("musicTitle");
+                                if (data.getStringExtra("musicArtists") != null)
+                                    musicArtists = data.getStringExtra("musicArtists");
+                            }
                             selectedLocationLabel.setText(name);
                             detailedLocationLabel.setText(address);
                             musicTitleLabel.setText(musicTitle);
@@ -96,8 +109,8 @@ public class PostActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), MusicSearchActivity.class);
             intent.putExtra("source", "post");
-            searchActivityResultLauncher.launch(intent);
             overridePendingTransition(R.anim.horizontal_enter, R.anim.none);
+            searchActivityResultLauncher.launch(intent);
         }
     };
 
@@ -135,8 +148,35 @@ public class PostActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), LocationSearchActivity.class);
             intent.putExtra("source", "post");
-            searchActivityResultLauncher.launch(intent);
             overridePendingTransition(R.anim.horizontal_enter, R.anim.none);
+            searchActivityResultLauncher.launch(intent);
+        }
+    };
+
+    View.OnClickListener savePostListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://music_post_backend")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
+            PostRequestModel postRequestModel = new PostRequestModel(new UserDto(username), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(x, y), name, address);
+            Call<PostResponseModel> call = postPostAPI.postPost(postRequestModel);
+
+            call.enqueue(new Callback<PostResponseModel>() {
+                @Override
+                public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<PostResponseModel> call, Throwable t) {
+
+                }
+            });
+            PostActivity.super.onBackPressed();
         }
     };
 
@@ -145,6 +185,7 @@ public class PostActivity extends AppCompatActivity {
         searchLocationButton.setOnClickListener(searchLocationListener);
         backButton.setOnClickListener(backListener);
         musicPlayButton.setOnClickListener(musicPlay);
+        saveButton.setOnClickListener(savePostListener);
     }
 
 }

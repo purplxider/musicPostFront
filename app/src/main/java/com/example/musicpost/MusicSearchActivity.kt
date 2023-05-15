@@ -53,6 +53,7 @@ class MusicSearchActivity: AppCompatActivity() {
             override fun onClick(v: View, position: Int) {
                 musicURL = listItems[position].preview_url
                 val intent = Intent().apply {
+                    putExtra("source", "music")
                     putExtra("musicTitle", listItems[position].name)
                     putExtra("musicArtists", listItems[position].artistNames)
                     putExtra("musicURL", musicURL)
