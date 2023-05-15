@@ -15,7 +15,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,15 +46,15 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     TextView newTitleLabel;
     TextView shortContentLabel;
     TextView newShortContentLabel;
-    Button musicPlayButton;
-    Button newMusicPlayButton;
+    ImageButton musicPlayButton;
+    ImageButton newMusicPlayButton;
     TextView musicTitleLabel;
     TextView newMusicTitleLabel;
     TextView musicArtistLabel;
     TextView newMusicArtistLabel;
     TextView postLocationLabel;
     TextView newPostLocationLabel;
-    Button addPostButton;
+    ImageButton addPostButton;
     TextView currentLocationLabel;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -83,9 +83,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
                 intent.putExtra("color", color);
                 intent.putExtra("musicURL", musicURL);
-                int playbackPosition = mediaPlayer.getCurrentPosition();
-                intent.putExtra("playbackPosition", playbackPosition);
-                mediaPlayer.release();
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -95,10 +92,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     View.OnClickListener musicPlay = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            ImageButton button = (ImageButton)view;
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
+                button.setImageResource(R.drawable.play);
             } else if (musicURL != "") {
                 mediaPlayer.start();
+                button.setImageResource(R.drawable.stop);
             }
         }
     };
@@ -130,15 +130,15 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         currentPostCard = (RelativeLayout)findViewById(R.id.currentPostCard);
         titleLabel = (TextView)findViewById(R.id.titleLabel);
         shortContentLabel = (TextView)findViewById(R.id.shortContentLabel);
-        musicPlayButton = (Button)findViewById(R.id.musicPlayButton);
+        musicPlayButton = (ImageButton)findViewById(R.id.musicPlayButton);
         musicTitleLabel = (TextView)findViewById(R.id.musicTitleLabel);
         musicArtistLabel = (TextView)findViewById(R.id.musicArtistLabel);
         postLocationLabel = (TextView)findViewById(R.id.postLocationLabel);
-        addPostButton = (Button)findViewById(R.id.addPostButton);
+        addPostButton = (ImageButton)findViewById(R.id.addPostButton);
         newPostCard = (RelativeLayout)findViewById(R.id.newPostCard);
         newTitleLabel = (TextView)findViewById(R.id.newTitleLabel);
         newShortContentLabel = (TextView)findViewById(R.id.newShortContentLabel);
-        newMusicPlayButton = (Button)findViewById(R.id.newMusicPlayButton);
+        newMusicPlayButton = (ImageButton)findViewById(R.id.newMusicPlayButton);
         newMusicTitleLabel = (TextView)findViewById(R.id.newMusicTitleLabel);
         newMusicArtistLabel = (TextView)findViewById(R.id.newMusicArtistLabel);
         newPostLocationLabel = (TextView)findViewById(R.id.newPostLocationLabel);

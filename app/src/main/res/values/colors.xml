@@ -10,5 +10,6 @@
     <color name="yellow">#FFF5C2</color>
     <color name="blue">#D9E8FF</color>
     <color name="green">#EBFFE3</color>
+    <color name="purple">#C8A7FF</color>
     <color name="transparent">#00000000</color>
 </resources>

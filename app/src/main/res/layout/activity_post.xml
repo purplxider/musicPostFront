@@ -8,16 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/bottom_border">
-        <Button
+        <ImageButton
             android:id="@+id/backButton"
             android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:text="X">
+            android:backgroundTint="@color/purple"
+            android:src="@drawable/expand_down">
 
-        </Button>
+        </ImageButton>
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,7 +64,7 @@
 
         </TextView>
 
-        <Button
+        <ImageButton
             android:id="@+id/searchMusicButton"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
@@ -71,12 +72,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:text=">">
+            android:src="@drawable/expand_right"
+            android:backgroundTint="@color/purple">
 
-        </Button>
+        </ImageButton>
 
 
-        <Button
+        <ImageButton
             android:id="@+id/musicPlayButton"
             android:layout_width="54dp"
             android:layout_height="54dp"
@@ -85,10 +87,11 @@
             android:layout_below="@id/currentMusic"
             android:background="@drawable/round"
             android:layout_gravity="center"
-            android:text="II"
+            android:src="@drawable/play"
+            android:backgroundTint="@color/purple"
             >
 
-        </Button>
+        </ImageButton>
 
         <TextView
             android:id="@+id/musicTitleLabel"
@@ -157,16 +160,17 @@
 
             </TextView>
 
-            <Button
+            <ImageButton
                 android:id="@+id/searchLocationButton"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="21dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=">">
+                android:src="@drawable/expand_right"
+                android:backgroundTint="@color/purple">
 
-            </Button>
+            </ImageButton>
         </RelativeLayout>
 
     <RelativeLayout

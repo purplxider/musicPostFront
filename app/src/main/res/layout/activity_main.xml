@@ -72,16 +72,17 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="40dp">
 
-            <Button
+            <ImageButton
                 android:id="@+id/musicPlayButton"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:background="@drawable/round"
-                android:text="II">
+                android:src="@drawable/stop"
+                android:backgroundTint="@color/purple">
 
-            </Button>
+            </ImageButton>
 
             <TextView
                 android:id="@+id/musicTitleLabel"
@@ -169,17 +170,18 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/newShortContentLabel">
 
-            <Button
+            <ImageButton
                 android:id="@+id/newMusicPlayButton"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:background="@drawable/round"
                 android:layout_gravity="center"
                 android:layout_centerVertical="true"
-                android:text="II"
+                android:src="@drawable/stop"
+                android:backgroundTint="@color/purple"
                 >
 
-            </Button>
+            </ImageButton>
 
             <TextView
                 android:id="@+id/newMusicTitleLabel"
@@ -225,7 +227,7 @@
 
 
     
-    <Button
+    <ImageButton
         android:id="@+id/addPostButton"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="70dp"
@@ -235,8 +237,9 @@
         android:layout_height="63dp"
         android:background="@drawable/round"
         android:elevation="4dp"
-        android:text="+">
+        android:src="@drawable/add_round"
+        android:backgroundTint="@color/purple">
 
-    </Button>
+    </ImageButton>
 
 </RelativeLayout>

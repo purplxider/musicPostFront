@@ -3,7 +3,7 @@ package com.example.musicpost;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +17,10 @@ public class DetailedPostActivity extends AppCompatActivity {
     RelativeLayout musicPlayer;
     RelativeLayout detailedPostCard;
     RelativeLayout recommendedPostCard;
-    Button backButton;
-    Button musicPlayButton;
+    ImageButton backButton;
+    ImageButton musicPlayButton;
     String color = "yellow";
     String musicURL = "";
-    int playbackPosition = 0;
     MediaPlayer mediaPlayer;
 
     @Override
@@ -29,25 +28,24 @@ public class DetailedPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_post);
         bindComponents(); // 화면에 있는 component 가져오기
+        mediaPlayer = new MediaPlayer();
             color = getIntent().getStringExtra("color");
             musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
-            playbackPosition = getIntent().getIntExtra("playbackPosition", 0);
             if (color.equals("yellow")) {
+                musicPlayer.setBackgroundResource(R.drawable.rounded_rectangle);
                 musicPlayer.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
                 detailedPostCard.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
             } else if (color.equals("blue")) {
+                musicPlayer.setBackgroundResource(R.drawable.rounded_rectangle);
                 musicPlayer.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
                 detailedPostCard.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
             } else if (color.equals("green")) {
+                musicPlayer.setBackgroundResource(R.drawable.rounded_rectangle);
                 musicPlayer.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
                 detailedPostCard.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
             }
 
-
-            if (musicURL != "" && musicURL != null) {
-                System.out.println(musicURL);
-                playMusic();
-            }
+            System.out.println(musicURL);
     }
 
     public void bindComponents() {
@@ -55,17 +53,17 @@ public class DetailedPostActivity extends AppCompatActivity {
         detailedPostCard = (RelativeLayout)findViewById(R.id.detailedPostCard);
         recommendedPostCard = (RelativeLayout)findViewById(R.id.recommendedPostCard);
         setColor(recommendedPostCard);
-        musicPlayButton = (Button)findViewById(R.id.musicPlayButton);
-        backButton = (Button)findViewById(R.id.backButton);
+        musicPlayButton = (ImageButton)findViewById(R.id.musicPlayButton);
+        backButton = (ImageButton)findViewById(R.id.backButton);
         setEventListeners(); // 이벤트 리스너 설정
     }
 
     public void setEventListeners() {
         backButton.setOnClickListener(backListener);
+        musicPlayButton.setOnClickListener(musicPlayListener);
     }
 
     void playMusic() {
-        mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
         if (musicURL != "" && musicURL != null) {
             try {
@@ -91,8 +89,16 @@ public class DetailedPostActivity extends AppCompatActivity {
         public void onClick(View view) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
+                musicPlayButton.setImageResource(R.drawable.play);
             } else if (musicURL != "") {
+                try {
+                    mediaPlayer.setDataSource(musicURL);
+                    mediaPlayer.prepare();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 mediaPlayer.start();
+                musicPlayButton.setImageResource(R.drawable.stop);
             }
         }
     };

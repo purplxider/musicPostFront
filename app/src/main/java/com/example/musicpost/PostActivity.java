@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -24,15 +25,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostActivity extends AppCompatActivity {
-    Button backButton;
+    ImageButton backButton;
     Button saveButton;
     EditText titleTextBox;
     EditText postContentTextBox;
-    Button searchMusicButton;
-    Button searchLocationButton;
+    ImageButton searchMusicButton;
+    ImageButton searchLocationButton;
     TextView selectedLocationLabel;
     TextView detailedLocationLabel;
-    Button musicPlayButton;
+    ImageButton musicPlayButton;
     TextView musicTitleLabel;
     TextView musicArtistLabel;
     MediaPlayer mediaPlayer = null;
@@ -91,15 +92,15 @@ public class PostActivity extends AppCompatActivity {
     }
 
     public void bindComponents() {
-        searchMusicButton = (Button) findViewById(R.id.searchMusicButton);
-        searchLocationButton = (Button) findViewById(R.id.searchLocationButton);
+        searchMusicButton = (ImageButton) findViewById(R.id.searchMusicButton);
+        searchLocationButton = (ImageButton) findViewById(R.id.searchLocationButton);
         selectedLocationLabel = (TextView) findViewById(R.id.selectedLocationLabel);
         detailedLocationLabel = (TextView) findViewById(R.id.detailedLocationLabel);
-        backButton = (Button) findViewById(R.id.backButton);
+        backButton = (ImageButton) findViewById(R.id.backButton);
         saveButton = (Button) findViewById(R.id.saveButton);
         titleTextBox = (EditText) findViewById(R.id.titleTextBox);
         postContentTextBox = (EditText) findViewById(R.id.postContentTextBox);
-        musicPlayButton = (Button) findViewById(R.id.musicPlayButton);
+        musicPlayButton = (ImageButton) findViewById(R.id.musicPlayButton);
         musicTitleLabel = (TextView) findViewById(R.id.musicTitleLabel);
         musicArtistLabel = (TextView) findViewById(R.id.musicArtistLabel);
     }
@@ -129,6 +130,7 @@ public class PostActivity extends AppCompatActivity {
             } else {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
+                    musicPlayButton.setImageResource(R.drawable.play);
                 } else {
                     mediaPlayer.reset();
                     try {
@@ -138,6 +140,7 @@ public class PostActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                     mediaPlayer.start();
+                    musicPlayButton.setImageResource(R.drawable.stop);
                 }
             }
         }

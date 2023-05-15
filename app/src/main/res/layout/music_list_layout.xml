@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
+        <ImageButton
             android:id="@+id/musicPlayButton"
             android:layout_width="54dp"
             android:layout_height="54dp"
@@ -20,9 +20,10 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/round"
             android:layout_centerVertical="true"
-            android:text="II">
+            android:src="@drawable/play"
+            android:backgroundTint="@color/purple">
 
-        </Button>
+        </ImageButton>
 
         <RelativeLayout
             android:layout_width="wrap_content"

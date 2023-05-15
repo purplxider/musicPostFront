@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -12,7 +13,7 @@ class MusicListAdapter(val itemList: ArrayList<MusicListLayout>, val mediaPlayer
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.listTrackName)
         val artists: TextView = itemView.findViewById(R.id.listArtistName)
-        val musicPlayButton: Button = itemView.findViewById(R.id.musicPlayButton)
+        val musicPlayButton: ImageButton = itemView.findViewById(R.id.musicPlayButton)
 
     }
 
@@ -40,11 +41,13 @@ class MusicListAdapter(val itemList: ArrayList<MusicListLayout>, val mediaPlayer
         holder.musicPlayButton.setOnClickListener{
             if (mediaPlayer!!.isPlaying) {
                 mediaPlayer.pause()
+                holder.musicPlayButton.setImageResource(R.drawable.play)
             } else {
                 mediaPlayer?.reset()
                 mediaPlayer?.setDataSource(itemList[position].preview_url)
                 mediaPlayer?.prepare()
                 mediaPlayer?.start()
+                holder.musicPlayButton.setImageResource(R.drawable.stop);
             }
         }
 

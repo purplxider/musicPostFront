@@ -12,16 +12,17 @@
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/bottom_border">
-        <Button
+        <ImageButton
             android:id="@+id/backButton"
             style="@style/Widget.AppCompat.Button.Small"
             android:layout_marginStart="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="X">
+            android:src="@drawable/close_round"
+            android:backgroundTint="@color/purple">
 
-        </Button>
+        </ImageButton>
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,17 +59,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navigationBar"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_search"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="검색"
         app:layout_constraintStart_toEndOf="@id/et_search_field"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigationBar" />
+        app:layout_constraintTop_toBottomOf="@id/navigationBar"
+        android:src="@drawable/search"
+        android:backgroundTint="@color/purple"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

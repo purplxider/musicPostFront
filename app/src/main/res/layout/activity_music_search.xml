@@ -10,16 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/bottom_border">
-        <Button
+        <ImageButton
             android:id="@+id/backButton"
             style="@style/Widget.AppCompat.Button.Small"
             android:layout_marginStart="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="X">
+            android:src="@drawable/expand_down"
+            android:backgroundTint="@color/purple">
 
-        </Button>
+        </ImageButton>
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,15 +54,15 @@
 
     </EditText>
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_search"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-
-        android:text="검색" />
+        android:backgroundTint="@color/purple"
+        android:src="@drawable/search" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
