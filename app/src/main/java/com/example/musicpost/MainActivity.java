@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements MapReverseGeoCoder.ReverseGeoCodingResultListener {
+    ImageView backgroundImage;
     TextView locationLabel;
     RelativeLayout currentPostCard;
     RelativeLayout newPostCard;
@@ -92,13 +94,14 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     View.OnClickListener musicPlay = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ImageButton button = (ImageButton)view;
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
-                button.setImageResource(R.drawable.play);
-            } else if (musicURL != "") {
+                if (currentPostCard.getVisibility() == View.VISIBLE) musicPlayButton.setImageResource(R.drawable.play);
+                else newMusicPlayButton.setImageResource(R.drawable.play);
+            } else {
                 mediaPlayer.start();
-                button.setImageResource(R.drawable.stop);
+                if (currentPostCard.getVisibility() == View.VISIBLE) musicPlayButton.setImageResource(R.drawable.stop);
+                else newMusicPlayButton.setImageResource(R.drawable.stop);
             }
         }
     };
@@ -121,11 +124,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         };
 
         bindComponents(); // 화면에 있는 component 가져오기
+        cropBackgroundToDevice();
         setEventListeners(); // 이벤트 리스너 설정
         playMusic();
     }
 
     public void bindComponents() {
+        backgroundImage = (ImageView)findViewById(R.id.backgroundImage);
         locationLabel = (TextView)findViewById(R.id.locationLabel);
         currentPostCard = (RelativeLayout)findViewById(R.id.currentPostCard);
         titleLabel = (TextView)findViewById(R.id.titleLabel);
@@ -145,17 +150,25 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         currentLocationLabel = (TextView) findViewById(R.id.currentLocationLabel);
     }
 
+    public void cropBackgroundToDevice() {
+        backgroundImage.setImageResource(R.drawable.mainview);
+        backgroundImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+    }
+
     public void setEventListeners() {
         addPostButton.setOnClickListener(postClickListener);
         currentPostCard.setOnClickListener(detailedClickListener);
         currentPostCard.setOnTouchListener(cardFlipListener);
         musicPlayButton.setOnClickListener(musicPlay);
+        newMusicPlayButton.setOnClickListener(musicPlay);
     }
 
     void playMusic() {
         musicURL = "https://p.scdn.co/mp3-preview/88303ffcec157c5d882a6297301576743491924b?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
         mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
+        musicPlayButton.setImageResource(R.drawable.stop);
+        newMusicPlayButton.setImageResource(R.drawable.stop);
         if (musicURL != "") {
             try {
                 mediaPlayer.setDataSource(musicURL);
