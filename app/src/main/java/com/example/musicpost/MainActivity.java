@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             intent.putExtra("source", "main");
             mediaPlayer.release();
             startActivity(intent);
+            musicPlayButton.setImageResource(R.drawable.play);
+            newMusicPlayButton.setImageResource(R.drawable.play);
             overridePendingTransition(R.anim.vertical_enter, R.anim.none);
         }
     };
@@ -165,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     }
 
     void playMusic() {
-        musicURL = "https://p.scdn.co/mp3-preview/88303ffcec157c5d882a6297301576743491924b?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
+        musicURL = "https://p.scdn.co/mp3-preview/c703198293891e3b276800ea6b187cf7951d3d7d?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
         mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
         musicPlayButton.setImageResource(R.drawable.stop);
@@ -369,6 +371,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     @Override
     protected void onResume() {
         super.onResume();
+        mediaPlayer = new MediaPlayer();
 
         // Check for location updates
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
