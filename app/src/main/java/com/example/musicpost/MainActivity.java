@@ -55,18 +55,24 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     TextView newMusicTitleLabel;
     TextView musicArtistLabel;
     TextView newMusicArtistLabel;
-    TextView postLocationLabel;
-    TextView newPostLocationLabel;
     ImageButton addPostButton;
     TextView currentLocationLabel;
+    TextView currentAddressLabel;
     LocationManager locationManager;
     LocationListener locationListener;
     MapReverseGeoCoder reverseGeoCoder;
     MediaPlayer mediaPlayer = null;
-    String musicURL = "";
-    Boolean touchEnabled = true;
-    String color = "yellow";
-    List<PostDto> posts;
+    private String musicURL = "";
+    private Boolean touchEnabled = true;
+    private String color = "yellow";
+    private List<PostDto> posts;
+    private String title = "";
+    private String location = "";
+    private String description = "";
+    private String poster = "";
+    private String musicTitle = "";
+    private String musicArtist = "";
+
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
         @Override
@@ -86,8 +92,14 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         public void onClick(View view) {
             if (touchEnabled) {
                 Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
+                intent.putExtra("title", title);
+                intent.putExtra("location", location);
+                intent.putExtra("description", description);
+                intent.putExtra("poster", poster);
                 intent.putExtra("color", color);
                 intent.putExtra("musicURL", musicURL);
+                intent.putExtra("musicTitle", musicTitle);
+                intent.putExtra("musicArtist", musicArtist);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -117,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
         posts = new ArrayList<>();
-        getPosts();
+        //getPosts();
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -129,6 +141,10 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         bindComponents(); // 화면에 있는 component 가져오기
         cropBackgroundToDevice();
         setEventListeners(); // 이벤트 리스너 설정
+
+        PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "마음을 편안하게 만드는 잠깐의 음악 여행", "안녕하세요! 과제를 하다가 잠시 쉴 때, 마음을 편안하게 만들어주는 음악을 소개해드리겠습니다. 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠시 동안 음악의 세계로 향해 함께 여행을 떠나볼까요?", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84 중앙대학교", "중앙대학교", new ArrayList<CommentDto>());
+        posts.add(firstPost);
+        setPost(0);
         playMusic();
     }
 
@@ -137,11 +153,12 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         locationLabel = (TextView)findViewById(R.id.locationLabel);
         currentPostCard = (RelativeLayout)findViewById(R.id.currentPostCard);
         titleLabel = (TextView)findViewById(R.id.titleLabel);
+        currentLocationLabel = (TextView)findViewById(R.id.currentLocationLabel);
+        currentAddressLabel = (TextView)findViewById(R.id.currentAddressLabel);
         shortContentLabel = (TextView)findViewById(R.id.shortContentLabel);
         musicPlayButton = (ImageButton)findViewById(R.id.musicPlayButton);
         musicTitleLabel = (TextView)findViewById(R.id.musicTitleLabel);
         musicArtistLabel = (TextView)findViewById(R.id.musicArtistLabel);
-        postLocationLabel = (TextView)findViewById(R.id.postLocationLabel);
         addPostButton = (ImageButton)findViewById(R.id.addPostButton);
         newPostCard = (RelativeLayout)findViewById(R.id.newPostCard);
         newTitleLabel = (TextView)findViewById(R.id.newTitleLabel);
@@ -149,12 +166,10 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         newMusicPlayButton = (ImageButton)findViewById(R.id.newMusicPlayButton);
         newMusicTitleLabel = (TextView)findViewById(R.id.newMusicTitleLabel);
         newMusicArtistLabel = (TextView)findViewById(R.id.newMusicArtistLabel);
-        newPostLocationLabel = (TextView)findViewById(R.id.newPostLocationLabel);
-        currentLocationLabel = (TextView) findViewById(R.id.currentLocationLabel);
     }
 
     public void cropBackgroundToDevice() {
-        backgroundImage.setImageResource(R.drawable.mainview);
+        backgroundImage.setImageResource(R.drawable.mainview1);
         backgroundImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
@@ -167,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     }
 
     void playMusic() {
-        musicURL = "https://p.scdn.co/mp3-preview/c703198293891e3b276800ea6b187cf7951d3d7d?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
+        //musicURL = "https://p.scdn.co/mp3-preview/c703198293891e3b276800ea6b187cf7951d3d7d?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
         mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
         musicPlayButton.setImageResource(R.drawable.stop);
@@ -247,9 +262,14 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         postcard.setPivotX(0);
         postcard.setPivotY(0);
         View nextPostcard;
-        // Create an ObjectAnimator to animate the page's curl
-        if (currentPostCard.getVisibility() == View.VISIBLE) nextPostcard = newPostCard;
-        else nextPostcard = currentPostCard;
+        if (currentPostCard.getVisibility() == View.VISIBLE) {
+            nextPostcard = newPostCard;
+            setPost(1);
+        }
+        else {
+            nextPostcard = currentPostCard;
+            setPost(0);
+        }
         nextPostcard.setAlpha(0f);
         setColor((RelativeLayout) nextPostcard);
         nextPostcard.setVisibility(View.VISIBLE);
@@ -302,9 +322,14 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         postcard.setPivotX(postcard.getWidth());
         postcard.setPivotY(0);
         View nextPostcard;
-        // Create an ObjectAnimator to animate the page's curl
-        if (currentPostCard.getVisibility() == View.VISIBLE) nextPostcard = newPostCard;
-        else nextPostcard = currentPostCard;
+        if (currentPostCard.getVisibility() == View.VISIBLE) {
+            nextPostcard = newPostCard;
+            setPost(1);
+        }
+        else {
+            nextPostcard = currentPostCard;
+            setPost(0);
+        }
         nextPostcard.setAlpha(0f);
         setColor((RelativeLayout) nextPostcard);
         nextPostcard.setVisibility(View.VISIBLE);
@@ -388,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
     @Override
     public void onReverseGeoCoderFoundAddress(MapReverseGeoCoder mapReverseGeoCoder, String s) {
-        currentLocationLabel.setText(s);
+        //currentLocationLabel.setText(s);
     }
 
     @Override
@@ -436,21 +461,32 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         });
     }
 
-    private void setPost() {
+    private void setPost(int i) {
         PostDto currentPost = posts.get(0);
-        if(currentPostCard.getVisibility() == View.VISIBLE) {
+        System.out.println(currentPost);
+        //posts.remove(0);
+        if(i == 0) {
             titleLabel.setText(currentPost.getTitle());
             shortContentLabel.setText(currentPost.getDescription());
             musicTitleLabel.setText(currentPost.getMusic().getSongName());
             musicArtistLabel.setText(currentPost.getMusic().getArtist());
-            musicURL = currentPost.getMusic().getMusic_url();
         } else {
             newTitleLabel.setText(currentPost.getTitle());
             newShortContentLabel.setText(currentPost.getDescription());
             newMusicTitleLabel.setText(currentPost.getMusic().getSongName());
             newMusicArtistLabel.setText(currentPost.getMusic().getArtist());
-            musicURL = currentPost.getMusic().getMusic_url();
         }
+
+        currentLocationLabel.setText(currentPost.getLocation_name());
+        currentAddressLabel.setText(currentPost.getAddress());
+        musicURL = currentPost.getMusic().getMusic_url();
+
+        title = currentPost.getTitle();
+        description = currentPost.getDescription();
+        location = currentPost.getLocation_name();
+        poster = currentPost.getOriginalPoster().getUsername();
+        musicArtist = currentPost.getMusic().getArtist();
+        musicTitle = currentPost.getMusic().getSongName();
     }
 }
 

@@ -19,7 +19,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/spoqahansanssneo_regular"
         android:textSize="18sp"
-        android:text="현재 위치">
+        android:text="포스트 위치">
     </TextView>
 
     <TextView
@@ -27,6 +27,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/locationLabel"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/spoqahansanssneo_regular"
+        android:textSize="16sp"
+        android:text="서울특별시 동작구 흑석로 84">
+    </TextView>
+
+    <TextView
+        android:id="@+id/currentAddressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentLocationLabel"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/spoqahansanssneo_light"
         android:textSize="16sp"
@@ -113,18 +124,6 @@
 
             </TextView>
 
-            <TextView
-                android:id="@+id/postLocationLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/musicArtistLabel"
-                android:layout_marginStart="15dp"
-                android:layout_toRightOf="@id/musicPlayButton"
-                android:fontFamily="@font/spoqahansanssneo_light"
-                android:text="중앙대"
-                android:textSize="13sp">
-
-            </TextView>
 
         </RelativeLayout>
 
@@ -211,19 +210,6 @@
                 android:fontFamily="@font/spoqahansanssneo_light"
                 android:textSize="16sp"
                 >
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/newPostLocationLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_below="@id/newMusicArtistLabel"
-                android:layout_toRightOf="@id/newMusicPlayButton"
-                android:text="중앙대"
-                android:fontFamily="@font/spoqahansanssneo_light"
-                android:textSize="13sp">
 
             </TextView>
 

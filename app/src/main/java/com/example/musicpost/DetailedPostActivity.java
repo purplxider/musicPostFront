@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -23,6 +24,21 @@ public class DetailedPostActivity extends AppCompatActivity {
     String musicURL = "";
     MediaPlayer mediaPlayer;
     ImageButton recommendedPostMusicPlayButton;
+    TextView titleLabel;
+    TextView currentLocationLabel;
+    TextView originalPosterLabel;
+    TextView detailedContentLabel;
+    TextView musicTitleLabel;
+    TextView musicArtistLabel;
+    ImageButton likeButton;
+    Boolean liked = false;
+
+    private String title = "";
+    private String location = "";
+    private String description = "";
+    private String poster = "";
+    private String musicTitle = "";
+    private String musicArtist = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +46,21 @@ public class DetailedPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_post);
         bindComponents(); // 화면에 있는 component 가져오기
         mediaPlayer = new MediaPlayer();
-            color = getIntent().getStringExtra("color");
-            musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
+        title = getIntent().getStringExtra("title");
+        titleLabel.setText(title);
+        location = getIntent().getStringExtra("location");
+        currentLocationLabel.setText(location);
+        description = getIntent().getStringExtra("description");
+        detailedContentLabel.setText(description);
+        poster = getIntent().getStringExtra("poster");
+        originalPosterLabel.setText(poster);
+        musicArtist = getIntent().getStringExtra("musicArtist");
+        musicArtistLabel.setText(musicArtist);
+        musicTitle = getIntent().getStringExtra("musicTitle");
+        musicTitleLabel.setText(musicTitle);
+        color = getIntent().getStringExtra("color");
+
+        musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
             if (color.equals("yellow")) {
                 musicPlayer.setBackgroundResource(R.drawable.rounded_rectangle);
                 musicPlayer.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
@@ -56,12 +85,20 @@ public class DetailedPostActivity extends AppCompatActivity {
         musicPlayButton = (ImageButton)findViewById(R.id.musicPlayButton);
         backButton = (ImageButton)findViewById(R.id.backButton);
         recommendedPostMusicPlayButton = (ImageButton)findViewById(R.id.recommendedPostMusicPlayButton);
+        titleLabel = (TextView)findViewById(R.id.titleLabel);
+        currentLocationLabel = (TextView)findViewById(R.id.currentLocationLabel);
+        detailedContentLabel = (TextView)findViewById(R.id.detailedContentLabel);
+        originalPosterLabel = (TextView) findViewById(R.id.originalPosterLabel);
+        musicTitleLabel = (TextView)findViewById(R.id.musicTitleLabel);
+        musicArtistLabel = (TextView)findViewById(R.id.musicArtistLabel);
+        likeButton = (ImageButton) findViewById(R.id.likeButton);
     }
 
     public void setEventListeners() {
         backButton.setOnClickListener(backListener);
         musicPlayButton.setOnClickListener(musicPlayListener);
         recommendedPostMusicPlayButton.setOnClickListener(musicPlayListener);
+        likeButton.setOnClickListener(likeListener);
     }
 
     void playMusic() {
@@ -92,6 +129,19 @@ public class DetailedPostActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             playMusic();
+        }
+    };
+
+    View.OnClickListener likeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (liked == false) {
+                likeButton.setImageResource(R.drawable.favorite_fill);
+                liked = true;
+            } else {
+                likeButton.setImageResource(R.drawable.favorite);
+                liked = false;
+            }
         }
     };
 
