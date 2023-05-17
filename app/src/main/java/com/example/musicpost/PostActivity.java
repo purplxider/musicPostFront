@@ -38,8 +38,8 @@ public class PostActivity extends AppCompatActivity {
     TextView musicArtistLabel;
     MediaPlayer mediaPlayer = null;
     String musicURL = "";
-    Double x = 0.0;
-    Double y = 0.0;
+    Double longitude = 0.0;
+    Double latitude = 0.0;
     ActivityResultLauncher<Intent> searchActivityResultLauncher;
     private String address = "";
     private String name = "위치를 설정해주세요";
@@ -65,8 +65,8 @@ public class PostActivity extends AppCompatActivity {
                             if (data.getStringExtra("source").equals("location")) {
                                 if (data.getStringExtra("address") != null) address = data.getStringExtra("address");
                                 if (data.getStringExtra("name") != null) name = data.getStringExtra("name");
-                                x = data.getDoubleExtra("x", 0);
-                                y = data.getDoubleExtra("y", 0);
+                                longitude = data.getDoubleExtra("longitude", 0);
+                                latitude = data.getDoubleExtra("latitude", 0);
                             } else if (data.getStringExtra("source").equals("music")) {
                                 if (data.getStringExtra("musicURL") != null)
                                     musicURL = data.getStringExtra("musicURL");
@@ -165,7 +165,7 @@ public class PostActivity extends AppCompatActivity {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
-            PostRequestModel postRequestModel = new PostRequestModel(new UserDto(username), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(x, y), name, address);
+            PostRequestModel postRequestModel = new PostRequestModel(new UserDto(username), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(longitude, latitude), name, address);
             Call<PostResponseModel> call = postPostAPI.postPost(postRequestModel);
 
             call.enqueue(new Callback<PostResponseModel>() {

@@ -83,8 +83,8 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
                     putExtra("source", "location")
                     putExtra("name", name)
                     putExtra("address", address)
-                    putExtra("x", lon)
-                    putExtra("y", lat)
+                    putExtra("longitude", lon)
+                    putExtra("latitude", lat)
                 }
                 setResult(Activity.RESULT_OK, intent)
                 onBackPressedDispatcher.onBackPressed()

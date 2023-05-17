@@ -27,11 +27,11 @@ data class UserDto(
 data class MusicDto(
         var artist: String,
         var songName: String,
-        var musicURL: String
+        var music_url: String
 )
 data class Point(
-        var x: Double,
-        var y: Double
+        var longitude: Double,
+        var latitude: Double
 )
 
 data class CommentDto(

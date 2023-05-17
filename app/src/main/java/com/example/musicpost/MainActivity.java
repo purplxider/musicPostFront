@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetPostAPI getPostAPI = retrofit.create(GetPostAPI.class);
-        Call<ResultGetPosts> call = getPostAPI.getPosts(10);
+        Call<ResultGetPosts> call = getPostAPI.getPosts(0, 10); // TODO: 페이지 카운트 늘어나도록 변경해야함
         call.enqueue(new Callback<ResultGetPosts>() {
             @Override
             public void onResponse(Call<ResultGetPosts> call, Response<ResultGetPosts> response) {
@@ -434,13 +434,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             shortContentLabel.setText(currentPost.getDescription());
             musicTitleLabel.setText(currentPost.getMusic().getSongName());
             musicArtistLabel.setText(currentPost.getMusic().getArtist());
-            musicURL = currentPost.getMusic().getMusicURL();
+            musicURL = currentPost.getMusic().getMusic_url();
         } else {
             newTitleLabel.setText(currentPost.getTitle());
             newShortContentLabel.setText(currentPost.getDescription());
             newMusicTitleLabel.setText(currentPost.getMusic().getSongName());
             newMusicArtistLabel.setText(currentPost.getMusic().getArtist());
-            musicURL = currentPost.getMusic().getMusicURL();
+            musicURL = currentPost.getMusic().getMusic_url();
         }
     }
 }

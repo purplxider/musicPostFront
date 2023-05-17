@@ -8,6 +8,7 @@ interface GetPostAPI {
 
     @GET("/api/posts")
     fun getPosts(
+            @Query("page") page: Int,
             @Query("count") count : Int
     ): Call<ResultGetPosts>
 }
