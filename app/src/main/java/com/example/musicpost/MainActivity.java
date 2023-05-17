@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
             intent.putExtra("source", "main");
-            mediaPlayer.release();
+            mediaPlayer.stop();
             startActivity(intent);
             musicPlayButton.setImageResource(R.drawable.play);
             newMusicPlayButton.setImageResource(R.drawable.play);
@@ -371,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     @Override
     protected void onResume() {
         super.onResume();
-        mediaPlayer = new MediaPlayer();
 
         // Check for location updates
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

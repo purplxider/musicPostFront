@@ -22,6 +22,7 @@ public class DetailedPostActivity extends AppCompatActivity {
     String color = "yellow";
     String musicURL = "";
     MediaPlayer mediaPlayer;
+    ImageButton recommendedPostMusicPlayButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,7 @@ public class DetailedPostActivity extends AppCompatActivity {
                 musicPlayer.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
                 detailedPostCard.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
             }
-
-            System.out.println(musicURL);
+        setEventListeners(); // 이벤트 리스너 설정
     }
 
     public void bindComponents() {
@@ -55,17 +55,20 @@ public class DetailedPostActivity extends AppCompatActivity {
         setColor(recommendedPostCard);
         musicPlayButton = (ImageButton)findViewById(R.id.musicPlayButton);
         backButton = (ImageButton)findViewById(R.id.backButton);
-        setEventListeners(); // 이벤트 리스너 설정
+        recommendedPostMusicPlayButton = (ImageButton)findViewById(R.id.recommendedPostMusicPlayButton);
     }
 
     public void setEventListeners() {
         backButton.setOnClickListener(backListener);
         musicPlayButton.setOnClickListener(musicPlayListener);
+        recommendedPostMusicPlayButton.setOnClickListener(musicPlayListener);
     }
 
     void playMusic() {
-        mediaPlayer.reset();
-        if (musicURL != "" && musicURL != null) {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            musicPlayButton.setImageResource(R.drawable.play);
+        } else if (musicURL != "") {
             try {
                 mediaPlayer.setDataSource(musicURL);
                 mediaPlayer.prepare();
@@ -73,6 +76,7 @@ public class DetailedPostActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             mediaPlayer.start();
+            musicPlayButton.setImageResource(R.drawable.stop);
         }
     }
 
@@ -87,19 +91,7 @@ public class DetailedPostActivity extends AppCompatActivity {
     View.OnClickListener musicPlayListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-                musicPlayButton.setImageResource(R.drawable.play);
-            } else if (musicURL != "") {
-                try {
-                    mediaPlayer.setDataSource(musicURL);
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                mediaPlayer.start();
-                musicPlayButton.setImageResource(R.drawable.stop);
-            }
+            playMusic();
         }
     };
 

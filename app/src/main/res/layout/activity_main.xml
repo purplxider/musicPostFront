@@ -85,8 +85,8 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:background="@drawable/round"
-                android:src="@drawable/stop"
-                android:backgroundTint="@color/purple">
+                android:backgroundTint="@color/purple"
+                android:src="@drawable/stop">
 
             </ImageButton>
 

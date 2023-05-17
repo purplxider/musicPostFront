@@ -189,9 +189,6 @@
     <RelativeLayout
         android:id="@+id/recommendedPostCard"
         android:layout_gravity="center"
-        android:layout_marginTop="18dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:background="#FFF5C2"
