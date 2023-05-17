@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -160,23 +161,28 @@ public class PostActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            String username = "test";
+            String password = "1234";
+            String base = username + ":" + password;
+            String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://music_post_backend")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
             PostRequestModel postRequestModel = new PostRequestModel(new UserDto(username), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(longitude, latitude), name, address);
-            Call<PostResponseModel> call = postPostAPI.postPost(postRequestModel);
+            Call<PostResponseModel> call = postPostAPI.postPost(authHeader, postRequestModel);
 
             call.enqueue(new Callback<PostResponseModel>() {
                 @Override
                 public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
-
+                    System.out.println(response.body().getMessage());
+                    System.out.println(response.body().getStatusCode());
                 }
 
                 @Override
                 public void onFailure(Call<PostResponseModel> call, Throwable t) {
-
+                    t.printStackTrace();
                 }
             });
             PostActivity.super.onBackPressed();

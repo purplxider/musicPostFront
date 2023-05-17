@@ -35,6 +35,8 @@
         <activity android:name=".LocationSearchActivity"
             android:windowSoftInputMode="adjustNothing"></activity>
         <activity android:name=".MusicSearchActivity"></activity>
+        <activity android:name=".LoginActivity">
+        </activity>
 
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="76c2eeaa6f57d8057a0917641c853eb3"/>
     </application>

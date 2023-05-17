@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -404,12 +405,17 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     }
 
     private void getPosts() {
+        String username = "test";
+        String password = "1234";
+        String base = username + ":" + password;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+        System.out.println(authHeader);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://music_post_backend")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetPostAPI getPostAPI = retrofit.create(GetPostAPI.class);
-        Call<ResultGetPosts> call = getPostAPI.getPosts(0, 10); // TODO: 페이지 카운트 늘어나도록 변경해야함
+        Call<ResultGetPosts> call = getPostAPI.getPosts(authHeader, 0, 10); // TODO: 페이지 카운트 늘어나도록 변경해야함
         call.enqueue(new Callback<ResultGetPosts>() {
             @Override
             public void onResponse(Call<ResultGetPosts> call, Response<ResultGetPosts> response) {
@@ -422,6 +428,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
             @Override
             public void onFailure(Call<ResultGetPosts> call, Throwable t) {
+                t.printStackTrace();
                 Toast.makeText(MainActivity.this, "주변에 포스트가 없습니다.", Toast.LENGTH_SHORT).show();
             }
         });
