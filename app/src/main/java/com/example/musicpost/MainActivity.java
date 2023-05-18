@@ -141,8 +141,10 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         cropBackgroundToDevice();
         setEventListeners(); // 이벤트 리스너 설정
 
-        PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "마음을 편안하게 만드는 잠깐의 음악 여행", "안녕하세요! 과제를 하다가 잠시 쉴 때, 마음을 편안하게 만들어주는 음악을 소개해드리겠습니다. 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠시 동안 음악의 세계로 향해 함께 여행을 떠나볼까요?", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교", new ArrayList<CommentDto>());
+        PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "마음을 편안하게 만드는 잠깐의 음악 여행", "안녕하세요! 과제를 하다가 잠시 쉴 때, 마음을 편안하게 만들어주는 음악을 소개해드리겠습니다. 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠시 동안 음악의 세계로 향해 함께 여행을 떠나볼까요?", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 공과대학", new ArrayList<CommentDto>());
+        PostDto secondPost = new PostDto(1, new UserDto("carbabyis"), "축제 분위기를 내는 신나는 노래!", "대학 축제는 학생들에게 잊지 못할 추억을 선사하는 특별한 시간입니다. 이 글에서는 대학 축제 분위기를 더욱 업 시켜줄 신나는 노래를 소개해드리겠습니다. 함께 흥겨운 음악으로 축제 분위기를 한층 높여봅시다!", 3, new MusicDto("NewJeans", "Hype Boy", "https://p.scdn.co/mp3-preview/7c55950057fc446dc2ce59671dff4fa6b3ef52a7?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 서울캠퍼스 중앙마당", new ArrayList<CommentDto>());
         posts.add(firstPost);
+        posts.add(secondPost);
         setPost(0);
         playMusic();
     }
@@ -468,8 +470,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
     private void setPost(int i) {
         PostDto currentPost = posts.get(0);
-        System.out.println(currentPost);
-        //posts.remove(0);
+        posts.remove(0);
         if(i == 0) {
             titleLabel.setText(currentPost.getTitle());
             shortContentLabel.setText(currentPost.getDescription());
@@ -492,6 +493,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         poster = currentPost.getOriginalPoster().getUsername();
         musicArtist = currentPost.getMusic().getArtist();
         musicTitle = currentPost.getMusic().getSongName();
+
+        if(posts.size() == 1) {
+            PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "마음을 편안하게 만드는 잠깐의 음악 여행", "안녕하세요! 과제를 하다가 잠시 쉴 때, 마음을 편안하게 만들어주는 음악을 소개해드리겠습니다. 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠시 동안 음악의 세계로 향해 함께 여행을 떠나볼까요?", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 공과대학", new ArrayList<CommentDto>());
+            PostDto secondPost = new PostDto(1, new UserDto("carbabyis"), "축제 분위기를 내는 신나는 노래!", "대학 축제는 학생들에게 잊지 못할 추억을 선사하는 특별한 시간입니다. 이 글에서는 대학 축제 분위기를 더욱 업 시켜줄 신나는 노래를 소개해드리겠습니다. 함께 흥겨운 음악으로 축제 분위기를 한층 높여봅시다!", 3, new MusicDto("NewJeans", "Hype Boy", "https://p.scdn.co/mp3-preview/7c55950057fc446dc2ce59671dff4fa6b3ef52a7?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 서울캠퍼스 중앙마당", new ArrayList<CommentDto>());
+            posts.add(firstPost);
+            posts.add(secondPost);
+        }
     }
 }
 
