@@ -88,6 +88,7 @@ class MusicSearchActivity: AppCompatActivity() {
 
         val response = service.getAccessToken("client_credentials", CLIENT_ID, CLIENT_SECRET)
         accessToken = "Bearer " + response.access_token
+        System.out.println(accessToken);
     }
 
     private fun searchKeyword(keyword: String) {

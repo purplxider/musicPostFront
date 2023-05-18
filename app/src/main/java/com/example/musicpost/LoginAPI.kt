@@ -1,12 +1,12 @@
 package com.example.musicpost
 
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface LoginAPI {
-    @GET("/")
+    @POST("api/users/login")
     fun login(
-            @Header("Authorization") authHeader: String
-    ): Call<PostResponseModel>
+            @Body loginRequest: SignUpRequestModel
+    ): Call<LoginResponseModel>
 }

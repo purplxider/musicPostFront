@@ -6,7 +6,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface PostPostAPI {
-    @POST("/api/posts")
+    @POST("api/posts")
     fun postPost(
             @Header("Authorization") authHeader: String,
             @Body requestModel: PostRequestModel

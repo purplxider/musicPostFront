@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface GetPostAPI {
 
-    @GET("/api/posts")
+    @GET("api/posts")
     fun getPosts(
             @Header("Authorization") authHeader: String,
             @Query("page") page: Int,

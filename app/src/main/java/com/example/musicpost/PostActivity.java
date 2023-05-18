@@ -1,7 +1,9 @@
 package com.example.musicpost;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Base64;
@@ -46,7 +48,8 @@ public class PostActivity extends AppCompatActivity {
     private String name = "위치를 설정해주세요";
     private String musicTitle = "음악을 설정하세요";
     private String musicArtists = "";
-    private String username = "test";
+    private String savedUsername = "";
+    private String savedPassword = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,10 @@ public class PostActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        String[] credentials = getCredentials();
+        savedUsername = credentials[0];
+        savedPassword = credentials[1];
     }
 
     @Override
@@ -159,12 +166,12 @@ public class PostActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            String username = "test";
-            String password = "1234";
+            String username = "timmy";
+            String password = "timmy";
             String base = username + ":" + password;
             String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://music_post_backend")
+                    .baseUrl("https://music-post-backend-14235148.df.r.appspot.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
@@ -174,8 +181,7 @@ public class PostActivity extends AppCompatActivity {
             call.enqueue(new Callback<PostResponseModel>() {
                 @Override
                 public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
-                    System.out.println(response.body().getMessage());
-                    System.out.println(response.body().getStatusCode());
+                    System.out.println(response.code());
                 }
 
                 @Override
@@ -193,6 +199,13 @@ public class PostActivity extends AppCompatActivity {
         backButton.setOnClickListener(backListener);
         musicPlayButton.setOnClickListener(musicPlay);
         saveButton.setOnClickListener(savePostListener);
+    }
+
+    private String[] getCredentials() {
+        SharedPreferences sharedPref = getSharedPreferences("Credentials", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", "");
+        String password = sharedPref.getString("password", "");
+        return new String[]{username, password};
     }
 
 }

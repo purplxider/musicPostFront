@@ -38,14 +38,24 @@
 
     </EditText>
 
+    <CheckBox
+        android:id="@+id/saveID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordField"
+        android:layout_marginStart="60dp"
+        android:text="자동 로그인"
+        android:checked="false">
+
+    </CheckBox>
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
-        android:layout_below="@+id/passwordField"
+        android:layout_below="@+id/saveID"
         android:text="로그인">
     </Button>
 

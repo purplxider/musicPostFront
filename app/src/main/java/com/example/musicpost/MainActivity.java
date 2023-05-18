@@ -7,6 +7,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     LocationListener locationListener;
     MapReverseGeoCoder reverseGeoCoder;
     MediaPlayer mediaPlayer = null;
+    Button locationChangeButton;
     private String musicURL = "";
     private Boolean touchEnabled = true;
     private String color = "yellow";
@@ -71,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     private String poster = "";
     private String musicTitle = "";
     private String musicArtist = "";
+    private String savedUsername = "";
+    private String savedPassword = "";
 
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
@@ -128,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
         posts = new ArrayList<>();
-        //getPosts();
+        getPosts();
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -141,12 +146,24 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         cropBackgroundToDevice();
         setEventListeners(); // 이벤트 리스너 설정
 
+        String[] credentials = getCredentials();
+        savedUsername = credentials[0];
+        savedPassword = credentials[1];
+
         PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "마음을 편안하게 만드는 잠깐의 음악 여행", "안녕하세요! 과제를 하다가 잠시 쉴 때, 마음을 편안하게 만들어주는 음악을 소개해드리겠습니다. 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠시 동안 음악의 세계로 향해 함께 여행을 떠나볼까요?", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 공과대학", new ArrayList<CommentDto>());
         PostDto secondPost = new PostDto(1, new UserDto("carbabyis"), "축제 분위기를 내는 신나는 노래!", "대학 축제는 학생들에게 잊지 못할 추억을 선사하는 특별한 시간입니다. 이 글에서는 대학 축제 분위기를 더욱 업 시켜줄 신나는 노래를 소개해드리겠습니다. 함께 흥겨운 음악으로 축제 분위기를 한층 높여봅시다!", 3, new MusicDto("NewJeans", "Hype Boy", "https://p.scdn.co/mp3-preview/7c55950057fc446dc2ce59671dff4fa6b3ef52a7?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 서울캠퍼스 중앙마당", new ArrayList<CommentDto>());
+        PostDto thirdPost = new PostDto(1, new UserDto("limchanhe"), "점심 산책을 즐길 때 어울리는 음악", "학교에서 점심시간에 산책하며 즐길 수 있는 음악을 소개해드리겠습니다. 이 음악은 상쾌한 분위기와 함께 산책 도중에 듣기 좋은 멜로디와 가사로 구성되어 있습니다. 점심시간을 활용하여 마음을 편안히 쉬고, 자연과 함께하는 시간을 즐겨보세요!", 3, new MusicDto("NewJeans", "Hype Boy", "https://p.scdn.co/mp3-preview/7c55950057fc446dc2ce59671dff4fa6b3ef52a7?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 서울캠퍼스 중앙마당", new ArrayList<CommentDto>());
         posts.add(firstPost);
         posts.add(secondPost);
         setPost(0);
         playMusic();
+    }
+
+    private String[] getCredentials() {
+        SharedPreferences sharedPref = getSharedPreferences("Credentials", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", "");
+        String password = sharedPref.getString("password", "");
+        return new String[]{username, password};
     }
 
     public void bindComponents() {
@@ -166,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         newMusicPlayButton = (ImageButton)findViewById(R.id.newMusicPlayButton);
         newMusicTitleLabel = (TextView)findViewById(R.id.newMusicTitleLabel);
         newMusicArtistLabel = (TextView)findViewById(R.id.newMusicArtistLabel);
+        locationChangeButton = (Button) findViewById(R.id.locationChangeButton);
     }
 
     public void cropBackgroundToDevice() {
@@ -180,6 +198,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         musicPlayButton.setOnClickListener(musicPlay);
         newMusicPlayButton.setOnClickListener(musicPlay);
     }
+
+    View.OnClickListener locationChangeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 
     void playMusic() {
         //musicURL = "https://p.scdn.co/mp3-preview/c703198293891e3b276800ea6b187cf7951d3d7d?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
@@ -439,13 +464,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     }
 
     private void getPosts() {
-        String username = "test";
-        String password = "1234";
+        String username = savedUsername;
+        String password = savedPassword;
         String base = username + ":" + password;
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
         System.out.println(authHeader);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://music_post_backend")
+                .baseUrl("https://music-post-backend-14235148.df.r.appspot.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetPostAPI getPostAPI = retrofit.create(GetPostAPI.class);

@@ -204,11 +204,37 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
 
             if (lastKnownLocation != null) {
                 val locationPoint = MapPoint.mapPointWithGeoCoord(lastKnownLocation.latitude, lastKnownLocation.longitude)
+                lat = lastKnownLocation.latitude
+                lon = lastKnownLocation.longitude
+                val point = MapPOIItem()
+                point.apply {
+                    itemName = "current"
+                    mapPoint = locationPoint
+                    markerType = MapPOIItem.MarkerType.YellowPin
+                }
+                val radius = MapCircle(locationPoint, 50, Color.argb(0, 0,0,0), Color.argb(30,85,91,100))
+                binding.mapView.removeAllCircles()
+                binding.mapView.removeAllPOIItems()
+                binding.mapView.addPOIItem(point)
+                binding.mapView.addCircle(radius)
                 binding.mapView.setMapCenterPointAndZoomLevel(locationPoint, 0, false);
             } else {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                 if (lastKnownLocation != null) {
                     val locationPoint = MapPoint.mapPointWithGeoCoord(lastKnownLocation.latitude, lastKnownLocation.longitude)
+                    lat = lastKnownLocation.latitude
+                    lon = lastKnownLocation.longitude
+                    val point = MapPOIItem()
+                    point.apply {
+                        itemName = "current"
+                        mapPoint = locationPoint
+                        markerType = MapPOIItem.MarkerType.YellowPin
+                    }
+                    val radius = MapCircle(locationPoint, 50, Color.argb(0, 0,0,0), Color.argb(30,85,91,100))
+                    binding.mapView.removeAllCircles()
+                    binding.mapView.removeAllPOIItems()
+                    binding.mapView.addPOIItem(point)
+                    binding.mapView.addCircle(radius)
                     binding.mapView.setMapCenterPointAndZoomLevel(locationPoint, 0, false);
                 }
             }
