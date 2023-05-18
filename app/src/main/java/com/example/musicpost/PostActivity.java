@@ -174,6 +174,7 @@ public class PostActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            /*
             String username = savedUsername;
             String password = savedPassword;
             String base = username + ":" + password;
@@ -197,6 +198,7 @@ public class PostActivity extends AppCompatActivity {
                     t.printStackTrace();
                 }
             });
+             */
             PostActivity.super.onBackPressed();
         }
     };

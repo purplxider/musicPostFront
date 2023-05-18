@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
              idField.setText(savedUsername);
              passwordField.setText(savedPassword);
              saveID.setChecked(true);
-             loginButton.callOnClick();
+             //loginButton.callOnClick();
          }
     }
 
