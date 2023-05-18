@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     private String musicArtist = "";
     private String savedUsername = "";
     private String savedPassword = "";
+    private Double longitude = 0.0;
+    private Double latitude = 0.0;
 
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
@@ -132,15 +134,16 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
-        posts = new ArrayList<>();
-        getPosts();
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                reverseGeoCoder = new MapReverseGeoCoder("76c2eeaa6f57d8057a0917641c853eb3", MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), MainActivity.this, MainActivity.this);
-                reverseGeoCoder.startFindingAddress();
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
             }
         };
+
+        posts = new ArrayList<>();
+        getPosts();
 
         bindComponents(); // 화면에 있는 component 가져오기
         cropBackgroundToDevice();
@@ -202,7 +205,12 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     View.OnClickListener locationChangeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+            locationManager.removeUpdates(locationListener);
+            longitude = 126.93537476435486;
+            latitude = 37.52643919175901;
+            getPosts();
+            if(currentPostCard.getVisibility() == View.VISIBLE) setPost(0);
+            else setPost(1);
         }
     };
 
@@ -474,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetPostAPI getPostAPI = retrofit.create(GetPostAPI.class);
-        Call<ResultGetPosts> call = getPostAPI.getPosts(authHeader, 0, 10); // TODO: 페이지 카운트 늘어나도록 변경해야함
+        Call<ResultGetPosts> call = getPostAPI.getPosts(authHeader, 0, 10, longitude, latitude, 300); // TODO: 페이지 카운트 늘어나도록 변경해야함
         call.enqueue(new Callback<ResultGetPosts>() {
             @Override
             public void onResponse(Call<ResultGetPosts> call, Response<ResultGetPosts> response) {

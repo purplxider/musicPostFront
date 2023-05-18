@@ -39,6 +39,7 @@ public class PostActivity extends AppCompatActivity {
     ImageButton musicPlayButton;
     TextView musicTitleLabel;
     TextView musicArtistLabel;
+    Button changeLocationButton;
     MediaPlayer mediaPlayer = null;
     String musicURL = "";
     Double longitude = 0.0;
@@ -111,6 +112,7 @@ public class PostActivity extends AppCompatActivity {
         musicPlayButton = (ImageButton) findViewById(R.id.musicPlayButton);
         musicTitleLabel = (TextView) findViewById(R.id.musicTitleLabel);
         musicArtistLabel = (TextView) findViewById(R.id.musicArtistLabel);
+        changeLocationButton = (Button) findViewById(R.id.changeLocationButton);
     }
 
     View.OnClickListener searchMusicListener = new View.OnClickListener() {
@@ -166,8 +168,8 @@ public class PostActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            String username = "timmy";
-            String password = "timmy";
+            String username = savedUsername;
+            String password = savedPassword;
             String base = username + ":" + password;
             String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
             Retrofit retrofit = new Retrofit.Builder()
@@ -175,7 +177,7 @@ public class PostActivity extends AppCompatActivity {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
-            PostRequestModel postRequestModel = new PostRequestModel(new UserDto(username), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(longitude, latitude), name, address);
+            PostRequestModel postRequestModel = new PostRequestModel(new UserDto(savedUsername), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(longitude, latitude), selectedLocationLabel.toString(), detailedLocationLabel.toString());
             Call<PostResponseModel> call = postPostAPI.postPost(authHeader, postRequestModel);
 
             call.enqueue(new Callback<PostResponseModel>() {
@@ -193,12 +195,23 @@ public class PostActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener changeLocationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            longitude = 126.93537476435486;
+            latitude = 37.52643919175901;
+            selectedLocationLabel.setText("여의도 한강공원");
+            detailedLocationLabel.setText("서울 영등포구 여의동로 330");
+        }
+    };
+
     public void setEventListeners() {
         searchMusicButton.setOnClickListener(searchMusicListener);
         searchLocationButton.setOnClickListener(searchLocationListener);
         backButton.setOnClickListener(backListener);
         musicPlayButton.setOnClickListener(musicPlay);
         saveButton.setOnClickListener(savePostListener);
+        changeLocationButton.setOnClickListener(changeLocationListener);
     }
 
     private String[] getCredentials() {

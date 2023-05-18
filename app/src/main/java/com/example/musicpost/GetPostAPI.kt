@@ -11,6 +11,9 @@ interface GetPostAPI {
     fun getPosts(
             @Header("Authorization") authHeader: String,
             @Query("page") page: Int,
-            @Query("size") size : Int
+            @Query("size") size : Int,
+            @Query("currentLongitude") currentLongitude : Double,
+            @Query("currentLatitude") currentLatitude : Double,
+            @Query("radius") radius : Int
     ): Call<ResultGetPosts>
 }
