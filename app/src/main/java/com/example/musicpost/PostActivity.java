@@ -134,7 +134,7 @@ public class PostActivity extends AppCompatActivity {
     View.OnClickListener musicPlay = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (musicURL == null) {
+            if (musicURL == "") {
 
             } else {
                 if (mediaPlayer.isPlaying()) {

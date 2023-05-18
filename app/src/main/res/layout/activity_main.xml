@@ -46,13 +46,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
 
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:fontFamily="@font/spoqahansanssneo_meduim"
             android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요"
-            android:textSize="22sp"></TextView>
+            android:textSize="22sp"
+            android:textAlignment="center"></TextView>
 
         <TextView
             android:id="@+id/shortContentLabel"
@@ -130,14 +131,15 @@
         <TextView
             android:id="@+id/newTitleLabel"
             android:layout_marginTop="40dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spoqahansanssneo_meduim"
             android:textSize="22sp"
-            android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
+            android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요"
+            android:textAlignment="center">
         </TextView>
 
         <TextView

@@ -19,41 +19,23 @@
         android:elevation="4dp"
         >
 
-        <ImageButton
-            android:id="@+id/musicPlayButton"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="21dp"
-            android:background="@drawable/round"
-            android:layout_centerVertical="true"
-            android:src="@drawable/play"
-            android:backgroundTint="@color/purple"
-            >
-
-        </ImageButton>
-
         <TextView
             android:id="@+id/musicTitleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/musicPlayButton"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="21dp"
-            android:layout_marginStart="22dp"
-            android:layout_marginEnd="30dp"
-            android:text="You're So Great"
             android:fontFamily="@font/spoqahansanssneo_bold"
-            android:textSize="22sp">
-        </TextView>
+            android:text="You're So Great"
+            android:textSize="22sp"></TextView>
 
         <TextView
             android:id="@+id/musicArtistLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/musicTitleLabel"
-            android:layout_toRightOf="@id/musicPlayButton"
-            android:layout_marginStart="22dp"
-            android:layout_marginEnd="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="21dp"
             android:text="Blur"
             android:fontFamily="@font/spoqahansanssneo_light"
@@ -78,7 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
-            android:text="저는 친구들이랑 같이\n이곳에 오면 이 노래를 들어요"
+            android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@+id/backButton"
+            android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요"
             android:textSize="22sp"
             android:fontFamily="@font/spoqahansanssneo_bold">
 
@@ -88,12 +72,11 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="X"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
             android:textSize="20sp"
             android:textColor="@color/black"
-            android:layout_toRightOf="@id/titleLabel"
+            android:layout_alignParentRight="true"
             android:src="@drawable/close_round"
             android:backgroundTint="@color/transparent">
 
@@ -103,11 +86,12 @@
             android:id="@+id/currentLocationLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/titleLabel"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="30dp"
+            android:layout_below="@id/originalPosterLabel"
+            android:layout_marginEnd="30dp"
+            android:layout_alignParentRight="true"
             android:text="중앙대"
-            android:textSize="16sp">
+            android:fontFamily="@font/spoqahansanssneo_light"
+            android:textSize="14sp">
 
         </TextView>
 
@@ -116,11 +100,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/titleLabel"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
             android:layout_alignParentRight="true"
             android:text="User 1"
-            android:textSize="16sp">
+            android:fontFamily="@font/spoqahansanssneo_regular"
+            android:textSize="14sp">
 
         </TextView>
 
@@ -130,9 +115,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/currentLocationLabel"
             android:layout_centerInParent="true"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="70dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginEnd="70dp"
             android:fontFamily="@font/nanum_bs"
             android:text="노들섬에서 한강을 즐기며\n노래를 듣기에 딱인 곡입니다.\n가사도 그런 풍경을 노래하고 있어서\n더욱 분위기를 더해줍니다. 해가\n떠오르고 날씨가 좋을 때 듣기 좋은
 \n곡입니다. 밝고 경쾌한 멜로디와 가사가
@@ -201,12 +186,14 @@
     <TextView
         android:id="@+id/recommendedPostTitleLabel"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:fontFamily="@font/spoqahansanssneo_meduim"
         android:textSize="22sp"
+        android:textAlignment="center"
         android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
     </TextView>
 
@@ -218,6 +205,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recommendedPostTitleLabel"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:fontFamily="@font/nanum_bs"
         android:textSize="22sp"
         android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다...더보기">

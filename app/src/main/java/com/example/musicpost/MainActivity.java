@@ -215,9 +215,11 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             posts.clear();
             //getPosts();
             PostDto newPost1 = new PostDto(1, new UserDto("yesiamok"), "한강에서 여유롭게 친구들과 함께", "날씨가 좋아 이번주는 한강에 나왔습니다. 좋은 날씨와 편안한 분위기 덕분에 한강에서 즐거운 시간을 보냈습니다. 여러분도 함께 틀어두고 노래에 맞춰 즐거운 추억을 만들어보세요", 11, new MusicDto("The Weeknd", "Blinding Lights", "https://p.scdn.co/mp3-preview/1cce9eecdd36913ba1a15f27523550599ba995c3?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 330", "여의도 한강공원", new ArrayList<CommentDto>());
+            PostDto newPost4 = new PostDto(1, new UserDto("yesiamok"), "한강!", "정말 멋져요!", 8, new MusicDto("Quinn XCII", "Georgia Peach", "https://p.scdn.co/mp3-preview/b6cd84b94a981db0ab7512cf70a7fff94a2db943?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 330", "여의도 한강공원", new ArrayList<CommentDto>());
             PostDto newPost2 = new PostDto(1, new UserDto("carbabyis"), "유람선 다녀감", "The Way You Look Tonight의 사랑스러운 가사와 멜로디를 들으면서 한강 유람선을 탔어요", 1, new MusicDto("Frank Sinatra", "The Way You Look Tonight", "https://p.scdn.co/mp3-preview/70d0f573438d33e0742480411e8af8f867a71afb?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 338 한강아라호 선착장", "한강유람선 아라호", new ArrayList<CommentDto>());
             PostDto newPost3 = new PostDto(1, new UserDto("fitbathatba"), "야시장의 분위기를 한껏 뜨겁게", "어젯밤에 야시장에 다녀왔어요. 이 노래에 맞춰 다 같이 춤을 추던 어젯밤을 한동안 잊지 못할 것 같아요", 5, new MusicDto("ABBA", "Dancing Queen", "https://p.scdn.co/mp3-preview/1116076e3d1538852d6605ada1fd7130c8fc75a5?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의도동 84-9", "서울밤도깨비야시장", new ArrayList<CommentDto>());
             posts.add(newPost1);
+            posts.add(newPost4);
             posts.add(newPost2);
             posts.add(newPost3);
             if(currentPostCard.getVisibility() == View.VISIBLE) setPost(0);
@@ -234,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         if (musicURL != "") {
             try {
                 mediaPlayer.setDataSource(musicURL);
+                mediaPlayer.setLooping(true);
                 mediaPlayer.prepare();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -545,6 +548,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         poster = currentPost.getOriginalPoster().getUsername();
         musicArtist = currentPost.getMusic().getArtist();
         musicTitle = currentPost.getMusic().getSongName();
+
+        playMusic();
 
         if(posts.size() == 1) {
             PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "마음을 편안하게 만드는 잠깐의 음악 여행", "안녕하세요! 과제를 하다가 잠시 쉴 때, 마음을 편안하게 만들어주는 음악을 소개해드리겠습니다. 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠시 동안 음악의 세계로 향해 함께 여행을 떠나볼까요?", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 24", "중앙대학교 공과대학", new ArrayList<CommentDto>());
