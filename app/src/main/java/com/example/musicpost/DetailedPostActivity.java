@@ -114,6 +114,12 @@ public class DetailedPostActivity extends AppCompatActivity {
             }
             mediaPlayer.start();
             musicPlayButton.setImageResource(R.drawable.stop);
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    musicPlayButton.setImageResource(R.drawable.play);
+                }
+            });
         }
     }
 

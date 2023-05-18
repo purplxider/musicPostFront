@@ -41,13 +41,11 @@ class MusicListAdapter(val itemList: ArrayList<MusicListLayout>, val mediaPlayer
         holder.musicPlayButton.setOnClickListener{
             if (mediaPlayer!!.isPlaying) {
                 mediaPlayer.pause()
-                holder.musicPlayButton.setImageResource(R.drawable.play)
             } else {
                 mediaPlayer?.reset()
                 mediaPlayer?.setDataSource(itemList[position].preview_url)
                 mediaPlayer?.prepare()
                 mediaPlayer?.start()
-                holder.musicPlayButton.setImageResource(R.drawable.stop);
             }
         }
 
