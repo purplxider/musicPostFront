@@ -25,7 +25,6 @@ import com.example.musicpost.databinding.ActivityLocationSearchBinding
 import net.daum.mf.map.api.MapCircle
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapReverseGeoCoder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,13 +51,15 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
     private lateinit var locationManager: LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        overridePendingTransition(R.anim.horizontal_enter, R.anim.none)
         super.onCreate(savedInstanceState)
         // Get the location manager
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Request location updates
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0f, this)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0 , 0f, this);
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
@@ -135,6 +136,16 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
 // 검색 결과 있음
             listItems.clear() // 리스트 초기화
             binding.mapView.removeAllPOIItems() // 지도의 마커 모두 제거
+
+            val locationPoint = MapPoint.mapPointWithGeoCoord(lat, lon)
+            val currentPoint = MapPOIItem()
+            currentPoint.apply {
+                itemName = "current"
+                mapPoint = locationPoint
+                markerType = MapPOIItem.MarkerType.YellowPin
+            }
+            binding.mapView.addPOIItem(currentPoint)
+
             binding.constraintLayout.visibility = View.VISIBLE
             for (document in searchResult!!.documents) {
 
@@ -189,10 +200,17 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
 
     private fun getLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            var lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
             if (lastKnownLocation != null) {
                 val locationPoint = MapPoint.mapPointWithGeoCoord(lastKnownLocation.latitude, lastKnownLocation.longitude)
                 binding.mapView.setMapCenterPointAndZoomLevel(locationPoint, 0, false);
+            } else {
+                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                if (lastKnownLocation != null) {
+                    val locationPoint = MapPoint.mapPointWithGeoCoord(lastKnownLocation.latitude, lastKnownLocation.longitude)
+                    binding.mapView.setMapCenterPointAndZoomLevel(locationPoint, 0, false);
+                }
             }
         }
     }

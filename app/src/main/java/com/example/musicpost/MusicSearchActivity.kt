@@ -38,6 +38,7 @@ class MusicSearchActivity: AppCompatActivity() {
     private var musicURL = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        overridePendingTransition(R.anim.horizontal_enter, R.anim.none)
         super.onCreate(savedInstanceState)
         binding = ActivityMusicSearchBinding.inflate(layoutInflater)
         val view = binding.root

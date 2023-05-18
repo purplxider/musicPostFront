@@ -111,7 +111,6 @@ public class PostActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), MusicSearchActivity.class);
             intent.putExtra("source", "post");
-            overridePendingTransition(R.anim.horizontal_enter, R.anim.none);
             searchActivityResultLauncher.launch(intent);
         }
     };
@@ -152,7 +151,6 @@ public class PostActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), LocationSearchActivity.class);
             intent.putExtra("source", "post");
-            overridePendingTransition(R.anim.horizontal_enter, R.anim.none);
             searchActivityResultLauncher.launch(intent);
         }
     };
