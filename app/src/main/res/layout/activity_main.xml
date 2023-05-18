@@ -11,26 +11,14 @@
     </ImageView>
 
     <TextView
-        android:id="@+id/locationLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/spoqahansanssneo_regular"
-        android:textSize="18sp"
-        android:text="포스트 위치">
-    </TextView>
-
-    <TextView
         android:id="@+id/currentLocationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/locationLabel"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/spoqahansanssneo_regular"
         android:textSize="16sp"
-        android:text="서울특별시 동작구 흑석로 84">
+        android:text="중앙대학교">
     </TextView>
 
     <TextView
@@ -58,13 +46,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="30dp"
 
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="18dp"
-            android:fontFamily="@font/spoqahansanssneo_regular"
+            android:layout_marginEnd="30dp"
+            android:fontFamily="@font/spoqahansanssneo_meduim"
             android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요"
-            android:textSize="20sp"></TextView>
+            android:textSize="22sp"></TextView>
 
         <TextView
             android:id="@+id/shortContentLabel"
@@ -72,9 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleLabel"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginEnd="30dp"
             android:fontFamily="@font/nanum_bs"
             android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다"
             android:textAlignment="center"
@@ -85,7 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/shortContentLabel"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="40dp">
 
@@ -141,21 +130,21 @@
         <TextView
             android:id="@+id/newTitleLabel"
             android:layout_marginTop="40dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/spoqahansanssneo_regular"
-            android:textSize="20sp"
+            android:fontFamily="@font/spoqahansanssneo_meduim"
+            android:textSize="22sp"
             android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
         </TextView>
 
         <TextView
             android:id="@+id/newShortContentLabel"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/newTitleLabel"
@@ -169,7 +158,8 @@
         <RelativeLayout
             android:id="@+id/newEmbeddedMusicPlayer"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginBottom="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

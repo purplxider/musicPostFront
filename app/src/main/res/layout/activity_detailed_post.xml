@@ -182,6 +182,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
         android:text="근처 장소의 비슷한 노래"
         android:textSize="20sp"
@@ -191,7 +192,7 @@
     <RelativeLayout
         android:id="@+id/recommendedPostCard"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:background="#FFF5C2"
@@ -200,21 +201,20 @@
     <TextView
         android:id="@+id/recommendedPostTitleLabel"
         android:layout_marginTop="40dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqahansanssneo_regular"
-        android:textSize="24sp"
+        android:fontFamily="@font/spoqahansanssneo_meduim"
+        android:textSize="22sp"
         android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
     </TextView>
 
     <TextView
         android:id="@+id/recommendedPostShortContentLabel"
         android:layout_marginTop="14dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recommendedPostTitleLabel"
@@ -226,7 +226,8 @@
     <RelativeLayout
         android:id="@+id/recommendedPostEmbeddedMusicPlayer"
         android:layout_marginTop="14dp"
-        android:layout_marginLeft="14dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -42,7 +42,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements MapReverseGeoCoder.ReverseGeoCodingResultListener {
     ImageView backgroundImage;
-    TextView locationLabel;
     RelativeLayout currentPostCard;
     RelativeLayout newPostCard;
     TextView titleLabel;
@@ -150,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
     public void bindComponents() {
         backgroundImage = (ImageView)findViewById(R.id.backgroundImage);
-        locationLabel = (TextView)findViewById(R.id.locationLabel);
         currentPostCard = (RelativeLayout)findViewById(R.id.currentPostCard);
         titleLabel = (TextView)findViewById(R.id.titleLabel);
         currentLocationLabel = (TextView)findViewById(R.id.currentLocationLabel);
@@ -169,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     }
 
     public void cropBackgroundToDevice() {
-        backgroundImage.setImageResource(R.drawable.mainview1);
+        backgroundImage.setImageResource(R.drawable.mainview);
         backgroundImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
@@ -221,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                         float deltaX = currentX - startX;
                         float deltaY = currentY - startY;
 
-                        if (!isDragging && Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+                        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
                             // If the drag is mostly in the horizontal direction, start the curl animation
                             isDragging = true;
                             if (deltaX < 0) startLeftCurlAnimation(v);
@@ -236,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                         float distanceX = Math.abs(endX - startX);
                         float distanceY = Math.abs(endY - startY);
 
-                        if (!isDragging && distanceX < clickThreshold && distanceY < clickThreshold) {
+                        if (distanceX < clickThreshold && distanceY < clickThreshold) {
                             // Trigger a click event
                             v.performClick();
                             return true;
