@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     TextView currentAddressLabel;
     LocationManager locationManager;
     LocationListener locationListener;
-    MapReverseGeoCoder reverseGeoCoder;
+    List<Comment> comments;
     MediaPlayer mediaPlayer = null;
     Button locationChangeButton;
     private String musicURL = "";
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     private Double longitude = 0.0;
     private Double latitude = 0.0;
     private int likeCount = 0;
+    private int postId = 0;
 
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 intent.putExtra("musicTitle", musicTitle);
                 intent.putExtra("musicArtist", musicArtist);
                 intent.putExtra("likeCount", likeCount);
+                intent.putExtra("postId", postId);
+                intent.putParcelableArrayListExtra("comments", new ArrayList<>(comments));
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -572,6 +575,14 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             poster = currentPost.getOriginalPoster().getUsername();
             musicArtist = currentPost.getMusic().getArtist();
             musicTitle = currentPost.getMusic().getSongName();
+            postId = currentPost.getId();
+
+            if(currentPost.getComments() != null) {
+                for (CommentDto commentObject : currentPost.getComments()) {
+                    Comment comment = new Comment(commentObject.getCommenter().getUsername(), commentObject.getCommentText());
+                    comments.add(comment);
+                }
+            }
         }
         /*
         if (mediaPlayer != null) {

@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
-    private List<CommentDto> itemList;
+    private List<Comment> itemList;
 
-    public CommentAdapter(List<CommentDto> itemList) {
+    public CommentAdapter(List<Comment> itemList) {
         this.itemList = itemList;
     }
 
@@ -27,9 +27,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        CommentDto comment = itemList.get(position);
-        holder.commentWriter.setText(comment.getCommenter().getUsername());
-        holder.commentContent.setText(comment.getCommentText());
+        Comment comment = itemList.get(position);
+        holder.commentWriter.setText(comment.getCommentWriter());
+        holder.commentContent.setText(comment.getCommentContent());
     }
 
     @Override

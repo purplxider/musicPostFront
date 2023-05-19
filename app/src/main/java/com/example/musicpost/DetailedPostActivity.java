@@ -1,9 +1,12 @@
 package com.example.musicpost;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,7 +42,11 @@ public class DetailedPostActivity extends AppCompatActivity {
     Button toggleCommentButton;
     RecyclerView commentRecyclerView;
     CommentAdapter commentAdapter;
+    EditText commentEditText;
+    ImageButton postCommentButton;
+    List<Comment> comments = new ArrayList<>();
     Boolean liked = false;
+    private int postId = 0;
 
     private String title = "";
     private String location = "";
@@ -48,16 +55,20 @@ public class DetailedPostActivity extends AppCompatActivity {
     private String musicTitle = "";
     private String musicArtist = "";
     private int likeCount = 0;
+    private String savedUsername = "";
+    private String savedPassword = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_post);
 
-        List<CommentDto> comments = new ArrayList<>();
-
         bindComponents(); // 화면에 있는 component 가져오기
+        String[] credentials = getCredentials();
+        savedUsername = credentials[0];
+        savedPassword = credentials[1];
         mediaPlayer = new MediaPlayer();
+        postId = getIntent().getIntExtra("postId", 0);
         title = getIntent().getStringExtra("title");
         titleLabel.setText(title);
         location = getIntent().getStringExtra("location");
@@ -72,10 +83,14 @@ public class DetailedPostActivity extends AppCompatActivity {
         musicTitleLabel.setText(musicTitle);
         color = getIntent().getStringExtra("color");
         likeCount = getIntent().getIntExtra("likeCount", 0);
+        comments = getIntent().getParcelableArrayListExtra("comments");
         likeLabel.setText(String.valueOf(likeCount));
-        commentAdapter = new CommentAdapter(comments);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        commentRecyclerView.setAdapter(commentAdapter);
+
+        if (comments != null) {
+            commentAdapter = new CommentAdapter(comments);
+            commentRecyclerView.setAdapter(commentAdapter);
+        }
 
 
         musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
@@ -112,12 +127,15 @@ public class DetailedPostActivity extends AppCompatActivity {
         likeLabel = (TextView) findViewById(R.id.likeLabel);
         toggleCommentButton = (Button)findViewById(R.id.commentToggleButton);
         commentRecyclerView = (RecyclerView) findViewById(R.id.commentRecyclerView);
+        commentEditText = (EditText) findViewById(R.id.commentEditText);
+        postCommentButton = (ImageButton) findViewById(R.id.postCommentButton);
     }
 
     public void setEventListeners() {
         backButton.setOnClickListener(backListener);
         likeButton.setOnClickListener(likeListener);
         toggleCommentButton.setOnClickListener(toggleCommentListener);
+        postCommentButton.setOnClickListener(postCommentListener);
     }
 
     View.OnClickListener backListener = new View.OnClickListener() {
@@ -133,11 +151,33 @@ public class DetailedPostActivity extends AppCompatActivity {
         public void onClick(View view) {
             if(commentRecyclerView.getVisibility() == View.VISIBLE) {
                 commentRecyclerView.setVisibility(View.GONE);
+                commentEditText.setVisibility(View.GONE);
+                postCommentButton.setVisibility(View.GONE);
                 toggleCommentButton.setText("댓글 펼치기");
             } else {
-                //commentRecyclerView.setVisibility(View.VISIBLE);
+                if(comments != null) {
+                    commentRecyclerView.setVisibility(View.VISIBLE);
+                }
+                commentEditText.setVisibility(View.VISIBLE);
+                postCommentButton.setVisibility(View.VISIBLE);
                 toggleCommentButton.setText("댓글 접기");
             }
+        }
+    };
+
+    View.OnClickListener postCommentListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            UserDto commentUser = new UserDto(savedUsername);
+            String commentText = commentEditText.getText().toString();
+            CommentDto commentDto = new CommentDto(null, postId, commentUser, commentText);
+
+            if(comments == null) {
+                commentAdapter = new CommentAdapter(comments);
+                commentRecyclerView.setAdapter(commentAdapter);
+            }
+
+            getComments();
         }
     };
 
@@ -179,5 +219,19 @@ public class DetailedPostActivity extends AppCompatActivity {
             postcard.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
             color = "green";
         }
+    }
+
+    private String[] getCredentials() {
+        SharedPreferences sharedPref = getSharedPreferences("Credentials", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", "");
+        String password = sharedPref.getString("password", "");
+        return new String[]{username, password};
+    }
+
+    private void getComments() {
+        //TODO: get commments
+        commentAdapter.notifyDataSetChanged();
+        commentEditText.setVisibility(View.VISIBLE);
+        postCommentButton.setVisibility(View.VISIBLE);
     }
 }

@@ -29,7 +29,7 @@ data class PointDto(
 )
 
 data class CommentDto(
-        var id: Int,
+        var id: Int?,
         var postId: Int,
         var commenter: UserDto,
         var commentText: String
