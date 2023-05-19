@@ -184,7 +184,6 @@ public class PostActivity extends AppCompatActivity {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
-            PostRequestModel postRequestModel = new PostRequestModel(new UserDto(savedUsername), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(longitude, latitude), selectedLocationLabel.toString(), detailedLocationLabel.toString());
             PostRequestModel postRequestModel = new PostRequestModel(new UserDto(savedUsername), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new PointDto(longitude, latitude), selectedLocationLabel.getText().toString(), detailedLocationLabel.getText().toString());
             Call<PostResponseModel> call = postPostAPI.postPost(authHeader, postRequestModel);
 
