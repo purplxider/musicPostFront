@@ -15,5 +15,5 @@ interface GetPostAPI {
             @Query("currentLongitude") currentLongitude : Double,
             @Query("currentLatitude") currentLatitude : Double,
             @Query("radius") radius : Int
-    ): Call<ResultGetPosts>
+    ): Call<List<PostDto>>
 }

@@ -174,7 +174,7 @@ public class PostActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            /*
+
             String username = savedUsername;
             String password = savedPassword;
             String base = username + ":" + password;
@@ -185,6 +185,7 @@ public class PostActivity extends AppCompatActivity {
                     .build();
             PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
             PostRequestModel postRequestModel = new PostRequestModel(new UserDto(savedUsername), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new Point(longitude, latitude), selectedLocationLabel.toString(), detailedLocationLabel.toString());
+            PostRequestModel postRequestModel = new PostRequestModel(new UserDto(savedUsername), titleTextBox.getText().toString(), postContentTextBox.getText().toString(), new MusicDto(musicArtists, musicTitle, musicURL), new PointDto(longitude, latitude), selectedLocationLabel.getText().toString(), detailedLocationLabel.getText().toString());
             Call<PostResponseModel> call = postPostAPI.postPost(authHeader, postRequestModel);
 
             call.enqueue(new Callback<PostResponseModel>() {
@@ -198,7 +199,8 @@ public class PostActivity extends AppCompatActivity {
                     t.printStackTrace();
                 }
             });
-             */
+
+
             PostActivity.super.onBackPressed();
         }
     };

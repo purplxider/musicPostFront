@@ -47,13 +47,14 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="20dp"
-
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
             android:fontFamily="@font/spoqahansanssneo_meduim"
             android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요"
-            android:textSize="22sp"
-            android:textAlignment="center"></TextView>
+            android:textAlignment="center"
+            android:textSize="21sp"></TextView>
 
         <TextView
             android:id="@+id/shortContentLabel"
@@ -65,6 +66,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
             android:fontFamily="@font/nanum_bs"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
             android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다"
             android:textAlignment="center"
             android:textSize="20sp"></TextView>
@@ -133,7 +136,8 @@
             android:layout_marginTop="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spoqahansanssneo_meduim"
@@ -154,6 +158,8 @@
             android:layout_centerHorizontal="true"
             android:textSize="20sp"
             android:textAlignment="center"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
             android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다">
         </TextView>
 

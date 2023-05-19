@@ -5,7 +5,7 @@ data class PostRequestModel(
     var title: String,
     var description: String,
     var music: MusicDto,
-    var coordinate: Point,
+    var coordinate: PointDto,
     var address: String,
     var locationName: String
 )

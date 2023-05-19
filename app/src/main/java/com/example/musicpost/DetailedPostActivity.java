@@ -30,6 +30,7 @@ public class DetailedPostActivity extends AppCompatActivity {
     TextView musicTitleLabel;
     TextView musicArtistLabel;
     ImageButton likeButton;
+    TextView likeLabel;
     Boolean liked = false;
 
     private String title = "";
@@ -38,6 +39,7 @@ public class DetailedPostActivity extends AppCompatActivity {
     private String poster = "";
     private String musicTitle = "";
     private String musicArtist = "";
+    private int likeCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class DetailedPostActivity extends AppCompatActivity {
         musicTitle = getIntent().getStringExtra("musicTitle");
         musicTitleLabel.setText(musicTitle);
         color = getIntent().getStringExtra("color");
+        likeCount = getIntent().getIntExtra("likeCount", 0);
+        likeLabel.setText(likeCount);
+
 
         musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
             if (color.equals("yellow")) {
@@ -90,6 +95,7 @@ public class DetailedPostActivity extends AppCompatActivity {
         musicTitleLabel = (TextView)findViewById(R.id.musicTitleLabel);
         musicArtistLabel = (TextView)findViewById(R.id.musicArtistLabel);
         likeButton = (ImageButton) findViewById(R.id.likeButton);
+        likeLabel = (TextView) findViewById(R.id.likeLabel);
     }
 
     public void setEventListeners() {
@@ -138,9 +144,13 @@ public class DetailedPostActivity extends AppCompatActivity {
         public void onClick(View view) {
             if (liked == false) {
                 likeButton.setImageResource(R.drawable.favorite_fill);
+                likeCount--;
+                likeLabel.setText(likeCount);
                 liked = true;
             } else {
                 likeButton.setImageResource(R.drawable.favorite);
+                likeCount++;
+                likeLabel.setText(likeCount);
                 liked = false;
             }
         }

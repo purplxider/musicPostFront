@@ -1,10 +1,5 @@
 package com.example.musicpost
 
-
-data class ResultGetPosts (
-        var posts: List<PostDto>
-        )
-
 data class PostDto(
         var id: Int,
         var originalPoster: UserDto,
@@ -12,12 +7,11 @@ data class PostDto(
         var description: String,
         var likeCount: Int,
         var music: MusicDto,
-        var coordinate: Point,
+        var coordinate: PointDto,
         var commentEntities: List<CommentDto>,
         var address: String,
-        var location_name: String,
+        var locationName: String,
         var comments: List<CommentDto>
-
         )
 
 data class UserDto(
@@ -27,9 +21,9 @@ data class UserDto(
 data class MusicDto(
         var artist: String,
         var songName: String,
-        var music_url: String
+        var musicUrl: String
 )
-data class Point(
+data class PointDto(
         var longitude: Double,
         var latitude: Double
 )

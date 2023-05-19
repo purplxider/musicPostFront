@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     Button locationChangeButton;
     private String musicURL = "";
     private Boolean touchEnabled = true;
+    private Boolean clickEnabled = true;
     private String color = "yellow";
     private List<PostDto> posts;
     private String title = "";
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     private String savedPassword = "";
     private Double longitude = 0.0;
     private Double latitude = 0.0;
+    private int likeCount = 0;
 
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
             intent.putExtra("source", "main");
-            mediaPlayer.stop();
+            //mediaPlayer.stop();
             startActivity(intent);
             musicPlayButton.setImageResource(R.drawable.play);
             newMusicPlayButton.setImageResource(R.drawable.play);
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     View.OnClickListener detailedClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (touchEnabled) {
+            if (clickEnabled) {
                 Intent intent = new Intent(getApplicationContext(), DetailedPostActivity.class);
                 intent.putExtra("title", title);
                 intent.putExtra("location", location);
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 intent.putExtra("musicURL", musicURL);
                 intent.putExtra("musicTitle", musicTitle);
                 intent.putExtra("musicArtist", musicArtist);
+                intent.putExtra("likeCount", likeCount);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -129,11 +132,10 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -143,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         };
 
         posts = new ArrayList<>();
-        //getPosts();
 
         bindComponents(); // 화면에 있는 component 가져오기
         cropBackgroundToDevice();
@@ -153,16 +154,15 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         savedUsername = credentials[0];
         savedPassword = credentials[1];
 
-        PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "과제하다가 같이 잠시 쉬어요", "과제를 하다가 잠시 쉴 때, 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠깐 스트레스 받는 과제를 내려두고 쉬었다가 다시 시작해요. 다 잘 마무리 할 수 있을 거예요", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 24", "중앙대학교 공과대학", new ArrayList<CommentDto>());
-        PostDto secondPost = new PostDto(1, new UserDto("carbabyis"), "축제 기간 함께 즐겨요", "축제 기간동안 310관 바깥에 엄청 큰 푸앙이 인형보셨나요? 같이 사진 찍으면 엄청 잘 나와요! 여러분도 꼭 같이 찍어보세요~", 3, new MusicDto("NewJeans", "Hype Boy", "https://p.scdn.co/mp3-preview/7c55950057fc446dc2ce59671dff4fa6b3ef52a7?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 서울캠퍼스 중앙마당", new ArrayList<CommentDto>());
-        PostDto thirdPost = new PostDto(1, new UserDto("lim_chanhe"), "점심 산책을 즐길 때 어울리는 음악", "학교에서 점심시간에 산책하며 매일 듣는 노래입니다. 상쾌한 분위기와 함께 산책 도중에 듣기 좋은 멜로디와 가사가 있어서 좋아해요. 마음을 편안히 쉬고, 자연과 함께하는 시간을 같이 즐겨보아요~", 7, new MusicDto("The Beatles", "Here Comes the Sun", "https://p.scdn.co/mp3-preview/433dd3e00a82d231b060e2c7ab10f29249bf7942?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 17", "중앙대학교 서울캠퍼스 후문", new ArrayList<CommentDto>());
-        PostDto fourthPost = new PostDto(1, new UserDto("ppung.3.8"), "혼자여도 안 심심한 혼밥시간~", "The Lazy Song은 제가 제일 좋아하는 Bruno Mars 노래입니다. 혼자 밥을 먹으며 마음의 휴식을 취하고 싶을 때 저는 편안하고 부담없는 이 노래를 들어요", 2, new MusicDto("Bruno Mars", "The Lazy Song", "https://p.scdn.co/mp3-preview/8a6cd6679fc2a388b989a09b571194723d45cb71?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석동 211-46", "고구동산", new ArrayList<CommentDto>());
+        PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "과제하다가 같이 잠시 쉬어요", "과제를 하다가 잠시 쉴 때, 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠깐 스트레스 받는 과제를 내려두고 쉬었다가 다시 시작해요. 다 잘 마무리 할 수 있을 거예요", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 24", "중앙대학교 공과대학", new ArrayList<CommentDto>());
+        PostDto secondPost = new PostDto(1, new UserDto("carbabyis"), "축제 기간 함께 즐겨요", "축제 기간동안 310관 바깥에 엄청 큰 푸앙이 인형보셨나요? 같이 사진 찍으면 엄청 잘 나와요! 여러분도 꼭 같이 찍어보세요~", 3, new MusicDto("NewJeans", "Hype Boy", "https://p.scdn.co/mp3-preview/7c55950057fc446dc2ce59671dff4fa6b3ef52a7?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 서울캠퍼스 중앙마당", new ArrayList<CommentDto>());
+        PostDto thirdPost = new PostDto(1, new UserDto("lim_chanhe"), "점심 산책을 즐길 때 어울리는 음악", "학교에서 점심시간에 산책하며 매일 듣는 노래입니다. 상쾌한 분위기와 함께 산책 도중에 듣기 좋은 멜로디와 가사가 있어서 좋아해요. 마음을 편안히 쉬고, 자연과 함께하는 시간을 같이 즐겨보아요~", 7, new MusicDto("The Beatles", "Here Comes the Sun", "https://p.scdn.co/mp3-preview/433dd3e00a82d231b060e2c7ab10f29249bf7942?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 17", "중앙대학교 서울캠퍼스 후문", new ArrayList<CommentDto>());
+        PostDto fourthPost = new PostDto(1, new UserDto("ppung.3.8"), "혼자여도 안 심심한 혼밥시간~", "The Lazy Song은 제가 제일 좋아하는 Bruno Mars 노래입니다. 혼자 밥을 먹으며 마음의 휴식을 취하고 싶을 때 저는 편안하고 부담없는 이 노래를 들어요", 2, new MusicDto("Bruno Mars", "The Lazy Song", "https://p.scdn.co/mp3-preview/8a6cd6679fc2a388b989a09b571194723d45cb71?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석동 211-46", "고구동산", new ArrayList<CommentDto>());
         posts.add(firstPost);
-        posts.add(thirdPost);
-        posts.add(fourthPost);
-        posts.add(secondPost);
+        //posts.add(thirdPost);
+        //posts.add(fourthPost);
+        //posts.add(secondPost);
         setPost(0);
-        playMusic();
     }
 
     private String[] getCredentials() {
@@ -213,15 +213,18 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             longitude = 126.93537476435486;
             latitude = 37.52643919175901;
             posts.clear();
-            //getPosts();
-            PostDto newPost1 = new PostDto(1, new UserDto("yesiamok"), "한강에서 여유롭게 친구들과 함께", "날씨가 좋아 이번주는 한강에 나왔습니다. 좋은 날씨와 편안한 분위기 덕분에 한강에서 즐거운 시간을 보냈습니다. 여러분도 함께 틀어두고 노래에 맞춰 즐거운 추억을 만들어보세요", 11, new MusicDto("The Weeknd", "Blinding Lights", "https://p.scdn.co/mp3-preview/1cce9eecdd36913ba1a15f27523550599ba995c3?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 330", "여의도 한강공원", new ArrayList<CommentDto>());
-            PostDto newPost4 = new PostDto(1, new UserDto("yesiamok"), "한강!", "정말 멋져요!", 8, new MusicDto("Quinn XCII", "Georgia Peach", "https://p.scdn.co/mp3-preview/b6cd84b94a981db0ab7512cf70a7fff94a2db943?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 330", "여의도 한강공원", new ArrayList<CommentDto>());
-            PostDto newPost2 = new PostDto(1, new UserDto("carbabyis"), "유람선 다녀감", "The Way You Look Tonight의 사랑스러운 가사와 멜로디를 들으면서 한강 유람선을 탔어요", 1, new MusicDto("Frank Sinatra", "The Way You Look Tonight", "https://p.scdn.co/mp3-preview/70d0f573438d33e0742480411e8af8f867a71afb?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 338 한강아라호 선착장", "한강유람선 아라호", new ArrayList<CommentDto>());
-            PostDto newPost3 = new PostDto(1, new UserDto("fitbathatba"), "야시장의 분위기를 한껏 뜨겁게", "어젯밤에 야시장에 다녀왔어요. 이 노래에 맞춰 다 같이 춤을 추던 어젯밤을 한동안 잊지 못할 것 같아요", 5, new MusicDto("ABBA", "Dancing Queen", "https://p.scdn.co/mp3-preview/1116076e3d1538852d6605ada1fd7130c8fc75a5?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의도동 84-9", "서울밤도깨비야시장", new ArrayList<CommentDto>());
+            getPosts();
+            PostDto newPost1 = new PostDto(1, new UserDto("yesiamok"), "한강에서 여유롭게 친구들과 함께", "날씨가 좋아 이번주는 한강에 나왔습니다. 좋은 날씨와 편안한 분위기 덕분에 한강에서 즐거운 시간을 보냈습니다. 여러분도 함께 틀어두고 노래에 맞춰 즐거운 추억을 만들어보세요", 11, new MusicDto("The Weeknd", "Blinding Lights", "https://p.scdn.co/mp3-preview/1cce9eecdd36913ba1a15f27523550599ba995c3?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 330", "여의도 한강공원", new ArrayList<CommentDto>());
+            PostDto newPost4 = new PostDto(1, new UserDto("yesiamok"), "한강!", "정말 멋져요!", 8, new MusicDto("Quinn XCII", "Georgia Peach", "https://p.scdn.co/mp3-preview/b6cd84b94a981db0ab7512cf70a7fff94a2db943?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 330", "여의도 한강공원", new ArrayList<CommentDto>());
+            PostDto newPost2 = new PostDto(1, new UserDto("carbabyis"), "유람선 다녀감", "The Way You Look Tonight의 사랑스러운 가사와 멜로디를 들으면서 한강 유람선을 탔어요", 1, new MusicDto("Frank Sinatra", "The Way You Look Tonight", "https://p.scdn.co/mp3-preview/70d0f573438d33e0742480411e8af8f867a71afb?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의동로 338 한강아라호 선착장", "한강유람선 아라호", new ArrayList<CommentDto>());
+            PostDto newPost3 = new PostDto(1, new UserDto("fitbathatba"), "야시장의 분위기를 한껏 뜨겁게", "어젯밤에 야시장에 다녀왔어요. 이 노래에 맞춰 다 같이 춤을 추던 어젯밤을 한동안 잊지 못할 것 같아요", 5, new MusicDto("ABBA", "Dancing Queen", "https://p.scdn.co/mp3-preview/1116076e3d1538852d6605ada1fd7130c8fc75a5?cid=48ec963edf6147b49c54370210e3b278"), new PointDto(126.93537476435486, 37.52643919175901), new ArrayList<CommentDto>(), "서울 영등포구 여의도동 84-9", "서울밤도깨비야시장", new ArrayList<CommentDto>());
             posts.add(newPost1);
             posts.add(newPost4);
             posts.add(newPost2);
             posts.add(newPost3);
+            if(mediaPlayer != null) {
+                if (mediaPlayer.isPlaying()) mediaPlayer.release();
+            }
             if(currentPostCard.getVisibility() == View.VISIBLE) setPost(0);
             else setPost(1);
         }
@@ -230,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     void playMusic() {
         //musicURL = "https://p.scdn.co/mp3-preview/c703198293891e3b276800ea6b187cf7951d3d7d?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.reset();
         musicPlayButton.setImageResource(R.drawable.stop);
         newMusicPlayButton.setImageResource(R.drawable.stop);
         if (musicURL != "") {
@@ -350,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     newPostCard.setOnTouchListener(cardFlipListener);
                     newPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    mediaPlayer.release();
+                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 } else {
                     newPostCard.setVisibility(View.GONE);
@@ -361,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     currentPostCard.setOnTouchListener(cardFlipListener);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    mediaPlayer.release();
+                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 }
             }
@@ -410,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     newPostCard.setOnTouchListener(cardFlipListener);
                     newPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    mediaPlayer.release();
+                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 } else {
                     newPostCard.setVisibility(View.GONE);
@@ -421,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     currentPostCard.setOnTouchListener(cardFlipListener);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    mediaPlayer.release();
+                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 }
             }
@@ -481,13 +483,15 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnownLocation != null) {
-                reverseGeoCoder = new MapReverseGeoCoder("76c2eeaa6f57d8057a0917641c853eb3", MapPoint.mapPointWithGeoCoord(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), MainActivity.this, MainActivity.this);
-                reverseGeoCoder.startFindingAddress();
+                longitude = lastKnownLocation.getLongitude();
+                latitude = lastKnownLocation.getLatitude();
+                getPosts();
             } else {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if (lastKnownLocation != null) {
-                    reverseGeoCoder = new MapReverseGeoCoder("76c2eeaa6f57d8057a0917641c853eb3", MapPoint.mapPointWithGeoCoord(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), MainActivity.this, MainActivity.this);
-                    reverseGeoCoder.startFindingAddress();
+                    longitude = lastKnownLocation.getLongitude();
+                    latitude = lastKnownLocation.getLatitude();
+                    getPosts();
                 }
             }
         }
@@ -504,19 +508,20 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetPostAPI getPostAPI = retrofit.create(GetPostAPI.class);
-        Call<ResultGetPosts> call = getPostAPI.getPosts(authHeader, 0, 10, longitude, latitude, 300); // TODO: 페이지 카운트 늘어나도록 변경해야함
-        call.enqueue(new Callback<ResultGetPosts>() {
+        Call<List<PostDto>> call = getPostAPI.getPosts(authHeader, 0, 10, longitude, latitude, 99999999); // TODO: 페이지 카운트 늘어나도록 변경해야함
+        call.enqueue(new Callback<List<PostDto>>() {
             @Override
-            public void onResponse(Call<ResultGetPosts> call, Response<ResultGetPosts> response) {
-                if(response.body() != null && response.body().getPosts() != null && !response.body().getPosts().isEmpty()){
-                    for (PostDto post : response.body().getPosts()) {
+            public void onResponse(Call<List<PostDto>> call, Response<List<PostDto>> response) {
+                if(response.body() != null && !response.body().isEmpty()){
+                    for (PostDto post : response.body()) {
                         posts.add(post);
+                        System.out.println("here: " + post);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<ResultGetPosts> call, Throwable t) {
+            public void onFailure(Call<List<PostDto>> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(MainActivity.this, "주변에 포스트가 없습니다.", Toast.LENGTH_SHORT).show();
             }
@@ -524,42 +529,59 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     }
 
     private void setPost(int i) {
-        PostDto currentPost = posts.get(0);
-        posts.remove(0);
-        if(i == 0) {
-            titleLabel.setText(currentPost.getTitle());
-            shortContentLabel.setText(currentPost.getDescription());
-            musicTitleLabel.setText(currentPost.getMusic().getSongName());
-            musicArtistLabel.setText(currentPost.getMusic().getArtist());
+        if (posts.size() == 0) {
+            clickEnabled = false;
+            titleLabel.setText("모든 포스트를 읽었습니다");
+            shortContentLabel.setText(":(");
+            musicTitleLabel.setText("");
+            musicArtistLabel.setText("");
+            currentLocationLabel.setText("");
+            currentAddressLabel.setText("");
+            musicURL = "";
+            title = "";
+            description = "";
+            location = "";
+            poster = "";
+            musicArtist = "";
+            musicTitle = "";
+            likeCount = 0;
         } else {
-            newTitleLabel.setText(currentPost.getTitle());
-            newShortContentLabel.setText(currentPost.getDescription());
-            newMusicTitleLabel.setText(currentPost.getMusic().getSongName());
-            newMusicArtistLabel.setText(currentPost.getMusic().getArtist());
+            clickEnabled = true;
+            PostDto currentPost = posts.get(0);
+            posts.remove(0);
+            if (i == 0) {
+                titleLabel.setText(currentPost.getTitle());
+                shortContentLabel.setText(currentPost.getDescription());
+                musicTitleLabel.setText(currentPost.getMusic().getSongName());
+                musicArtistLabel.setText(currentPost.getMusic().getArtist());
+            } else {
+                newTitleLabel.setText(currentPost.getTitle());
+                newShortContentLabel.setText(currentPost.getDescription());
+                newMusicTitleLabel.setText(currentPost.getMusic().getSongName());
+                newMusicArtistLabel.setText(currentPost.getMusic().getArtist());
+            }
+
+            currentLocationLabel.setText(currentPost.getLocationName());
+            currentAddressLabel.setText(currentPost.getAddress());
+            musicURL = currentPost.getMusic().getMusicUrl();
+
+            likeCount = currentPost.getLikeCount();
+            title = currentPost.getTitle();
+            description = currentPost.getDescription();
+            location = currentPost.getLocationName();
+            poster = currentPost.getOriginalPoster().getUsername();
+            musicArtist = currentPost.getMusic().getArtist();
+            musicTitle = currentPost.getMusic().getSongName();
         }
+        /*
+        if (mediaPlayer != null) {
+            if(mediaPlayer.isLooping()) mediaPlayer.release();
+            else playMusic();
+        }  else playMusic();
+         */
 
-        currentLocationLabel.setText(currentPost.getLocation_name());
-        currentAddressLabel.setText(currentPost.getAddress());
-        musicURL = currentPost.getMusic().getMusic_url();
-
-        title = currentPost.getTitle();
-        description = currentPost.getDescription();
-        location = currentPost.getLocation_name();
-        poster = currentPost.getOriginalPoster().getUsername();
-        musicArtist = currentPost.getMusic().getArtist();
-        musicTitle = currentPost.getMusic().getSongName();
-
-        playMusic();
-
-        if(posts.size() == 1) {
-            PostDto firstPost = new PostDto(1, new UserDto("yesiamok"), "마음을 편안하게 만드는 잠깐의 음악 여행", "안녕하세요! 과제를 하다가 잠시 쉴 때, 마음을 편안하게 만들어주는 음악을 소개해드리겠습니다. 저는 이 음악을 들으면 스트레스가 풀리더라고요. 잠시 동안 음악의 세계로 향해 함께 여행을 떠나볼까요?", 5, new MusicDto("Claude Debussy, Alexis Weissenberg", "Claire de lune", "https://p.scdn.co/mp3-preview/b10ad4af310158240448e5a63985f0ef8a0deca1?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 24", "중앙대학교 공과대학", new ArrayList<CommentDto>());
-            PostDto secondPost = new PostDto(1, new UserDto("carbabyis"), "축제 분위기를 내는 신나는 노래!", "대학 축제는 학생들에게 잊지 못할 추억을 선사하는 특별한 시간입니다. 이 글에서는 대학 축제 분위기를 더욱 업 시켜줄 신나는 노래를 소개해드리겠습니다. 함께 흥겨운 음악으로 축제 분위기를 한층 높여봅시다!", 3, new MusicDto("NewJeans", "Hype Boy", "https://p.scdn.co/mp3-preview/7c55950057fc446dc2ce59671dff4fa6b3ef52a7?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 84", "중앙대학교 서울캠퍼스 중앙마당", new ArrayList<CommentDto>());
-            PostDto thirdPost = new PostDto(1, new UserDto("lim_chanhe"), "점심 산책을 즐길 때 어울리는 음악", "학교에서 점심시간에 산책하며 즐길 수 있는 음악을 소개해드리겠습니다. 이 음악은 상쾌한 분위기와 함께 산책 도중에 듣기 좋은 멜로디와 가사로 구성되어 있습니다. 점심시간을 활용하여 마음을 편안히 쉬고, 자연과 함께하는 시간을 즐겨보세요!", 7, new MusicDto("The Beatles", "Here Comes the Sun", "https://p.scdn.co/mp3-preview/433dd3e00a82d231b060e2c7ab10f29249bf7942?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석로 17", "중앙대학교 서울캠퍼스 후문", new ArrayList<CommentDto>());
-            PostDto fourthPost = new PostDto(1, new UserDto("ppung.3.8"), "혼밥시간을 풍성하게 채워줄 음악", "The Lazy Song은 브루노 마스의 유쾌한 노래입니다. 혼자 밥을 먹으며 마음의 휴식을 취하고 싶을 때, 이 곡은 일상의 부담을 잠시 잊게 해주고 즐거움을 선사합니다.", 7, new MusicDto("Bruno Mars", "The Lazy Song", "https://p.scdn.co/mp3-preview/8a6cd6679fc2a388b989a09b571194723d45cb71?cid=48ec963edf6147b49c54370210e3b278"), new Point(126.95785760879518, 37.50360217972531), new ArrayList<CommentDto>(), "서울특별시 동작구 흑석동 211-46", "고구동산", new ArrayList<CommentDto>());
-            posts.add(firstPost);
-            posts.add(thirdPost);
-            posts.add(fourthPost);
-            posts.add(secondPost);
+        if(posts.size() < 3) {
+            getPosts();
         }
     }
 }

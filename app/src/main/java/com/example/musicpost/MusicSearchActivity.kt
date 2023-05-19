@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -34,7 +35,7 @@ class MusicSearchActivity: AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var musicListAdapter: MusicListAdapter
     private var keyword = "" // 검색 키워드
-    private lateinit var accessToken : String
+    private var accessToken = ""
     private var musicURL = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,9 +68,11 @@ class MusicSearchActivity: AppCompatActivity() {
         })
 
         binding.btnSearch.setOnClickListener {
-            keyword = binding.searchEditText.text.toString()
-            searchKeyword(keyword)
-            hideKeyboard()
+            if (accessToken != "") {
+                keyword = binding.searchEditText.text.toString()
+                searchKeyword(keyword)
+                hideKeyboard()
+            }
         }
 
         binding.backButton.setOnClickListener{
