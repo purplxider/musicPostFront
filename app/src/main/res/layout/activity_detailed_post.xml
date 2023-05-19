@@ -61,9 +61,9 @@
             android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="10dp"
+            android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/backButton"
             android:breakStrategy="simple"
-            android:hyphenationFrequency="none"
             android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요"
             android:textSize="22sp"
             android:fontFamily="@font/spoqahansanssneo_bold">
@@ -122,7 +122,6 @@
             android:layout_marginEnd="70dp"
             android:breakStrategy="simple"
             android:fontFamily="@font/nanum_bs"
-            android:hyphenationFrequency="none"
             android:text="노들섬에서 한강을 즐기며\n노래를 듣기에 딱인 곡입니다.\n가사도 그런 풍경을 노래하고 있어서\n더욱 분위기를 더해줍니다. 해가\n떠오르고 날씨가 좋을 때 듣기 좋은
 \n곡입니다. 밝고 경쾌한 멜로디와 가사가
 \n기분 좋게 해줍니다. 노들섬에서 여름밤을
@@ -185,6 +184,14 @@
 
     </Button>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -216,7 +223,6 @@
         android:textSize="22sp"
         android:textAlignment="center"
         android:breakStrategy="simple"
-        android:hyphenationFrequency="none"
         android:text="저는 친구들이랑 같이 이곳에 오면 이 노래를 들어요">
     </TextView>
 
@@ -232,7 +238,6 @@
         android:textAlignment="center"
         android:fontFamily="@font/nanum_bs"
         android:breakStrategy="simple"
-        android:hyphenationFrequency="none"
         android:textSize="22sp"
         android:text="노들섬에서 한강을 즐기며 노래를 듣기에 딱인 곡입니다. 가사도 그런 풍경을 노래하고 있어서 더욱 분위기를 더해줍니다">
     </TextView>

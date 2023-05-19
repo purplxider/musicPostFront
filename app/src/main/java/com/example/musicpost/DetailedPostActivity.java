@@ -3,14 +3,19 @@ package com.example.musicpost;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DetailedPostActivity extends AppCompatActivity {
@@ -31,6 +36,9 @@ public class DetailedPostActivity extends AppCompatActivity {
     TextView musicArtistLabel;
     ImageButton likeButton;
     TextView likeLabel;
+    Button toggleCommentButton;
+    RecyclerView commentRecyclerView;
+    CommentAdapter commentAdapter;
     Boolean liked = false;
 
     private String title = "";
@@ -45,6 +53,9 @@ public class DetailedPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_post);
+
+        List<CommentDto> comments = new ArrayList<>();
+
         bindComponents(); // 화면에 있는 component 가져오기
         mediaPlayer = new MediaPlayer();
         title = getIntent().getStringExtra("title");
@@ -61,7 +72,10 @@ public class DetailedPostActivity extends AppCompatActivity {
         musicTitleLabel.setText(musicTitle);
         color = getIntent().getStringExtra("color");
         likeCount = getIntent().getIntExtra("likeCount", 0);
-        likeLabel.setText(likeCount);
+        likeLabel.setText(String.valueOf(likeCount));
+        commentAdapter = new CommentAdapter(comments);
+        commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        commentRecyclerView.setAdapter(commentAdapter);
 
 
         musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
@@ -96,32 +110,14 @@ public class DetailedPostActivity extends AppCompatActivity {
         musicArtistLabel = (TextView)findViewById(R.id.musicArtistLabel);
         likeButton = (ImageButton) findViewById(R.id.likeButton);
         likeLabel = (TextView) findViewById(R.id.likeLabel);
+        toggleCommentButton = (Button)findViewById(R.id.commentToggleButton);
+        commentRecyclerView = (RecyclerView) findViewById(R.id.commentRecyclerView);
     }
 
     public void setEventListeners() {
         backButton.setOnClickListener(backListener);
-        //recommendedPostMusicPlayButton.setOnClickListener(musicPlayListener);
         likeButton.setOnClickListener(likeListener);
-    }
-
-    void playMusic() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        } else if (musicURL != "") {
-            try {
-                mediaPlayer.setDataSource(musicURL);
-                mediaPlayer.prepare();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            mediaPlayer.start();
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    recommendedPostMusicPlayButton.setImageResource(R.drawable.play);
-                }
-            });
-        }
+        toggleCommentButton.setOnClickListener(toggleCommentListener);
     }
 
     View.OnClickListener backListener = new View.OnClickListener() {
@@ -132,10 +128,16 @@ public class DetailedPostActivity extends AppCompatActivity {
         }
     };
 
-    View.OnClickListener musicPlayListener = new View.OnClickListener() {
+    View.OnClickListener toggleCommentListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            playMusic();
+            if(commentRecyclerView.getVisibility() == View.VISIBLE) {
+                commentRecyclerView.setVisibility(View.GONE);
+                toggleCommentButton.setText("댓글 펼치기");
+            } else {
+                //commentRecyclerView.setVisibility(View.VISIBLE);
+                toggleCommentButton.setText("댓글 접기");
+            }
         }
     };
 
@@ -144,13 +146,13 @@ public class DetailedPostActivity extends AppCompatActivity {
         public void onClick(View view) {
             if (liked == false) {
                 likeButton.setImageResource(R.drawable.favorite_fill);
-                likeCount--;
-                likeLabel.setText(likeCount);
+                likeCount++;
+                likeLabel.setText(String.valueOf(likeCount));
                 liked = true;
             } else {
                 likeButton.setImageResource(R.drawable.favorite);
-                likeCount++;
-                likeLabel.setText(likeCount);
+                likeCount--;
+                likeLabel.setText(String.valueOf(likeCount));
                 liked = false;
             }
         }
