@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://music-post-backend-14235148.df.r.appspot.com/")
+                    .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             LoginAPI loginAPI = retrofit.create(LoginAPI.class);
@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://music-post-backend-14235148.df.r.appspot.com/")
+                    .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             SignUpAPI signUpAPI = retrofit.create(SignUpAPI.class);

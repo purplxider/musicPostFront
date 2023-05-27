@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
             intent.putExtra("source", "main");
-            //mediaPlayer.stop();
+            mediaPlayer.pause();
             startActivity(intent);
             musicPlayButton.setImageResource(R.drawable.play);
             newMusicPlayButton.setImageResource(R.drawable.play);
@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         getLocation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mediaPlayer = new MediaPlayer();
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         };
 
         posts = new ArrayList<>();
+        comments = new ArrayList<>();
 
         bindComponents(); // 화면에 있는 component 가져오기
         cropBackgroundToDevice();
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         //posts.add(fourthPost);
         //posts.add(secondPost);
         setPost(0);
+        playMusic();
     }
 
     private String[] getCredentials() {
@@ -225,21 +228,19 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             posts.add(newPost4);
             posts.add(newPost2);
             posts.add(newPost3);
-            if(mediaPlayer != null) {
-                if (mediaPlayer.isPlaying()) mediaPlayer.release();
-            }
             if(currentPostCard.getVisibility() == View.VISIBLE) setPost(0);
             else setPost(1);
+            playMusic();
         }
     };
 
     void playMusic() {
-        //musicURL = "https://p.scdn.co/mp3-preview/c703198293891e3b276800ea6b187cf7951d3d7d?cid=48ec963edf6147b49c54370210e3b278"; // TODO: must remove!!
-        mediaPlayer = new MediaPlayer();
         musicPlayButton.setImageResource(R.drawable.stop);
         newMusicPlayButton.setImageResource(R.drawable.stop);
+        System.out.println(musicURL);
         if (musicURL != "") {
             try {
+                mediaPlayer.reset();
                 mediaPlayer.setDataSource(musicURL);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.prepare();
@@ -247,13 +248,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 throw new RuntimeException(e);
             }
             mediaPlayer.start();
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    if (currentPostCard.getVisibility() == View.VISIBLE) musicPlayButton.setImageResource(R.drawable.play);
-                    else newMusicPlayButton.setImageResource(R.drawable.play);
-                }
-            });
         }
     }
 
@@ -355,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     newPostCard.setOnTouchListener(cardFlipListener);
                     newPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 } else {
                     newPostCard.setVisibility(View.GONE);
@@ -366,7 +359,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     currentPostCard.setOnTouchListener(cardFlipListener);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 }
             }
@@ -415,7 +407,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     newPostCard.setOnTouchListener(cardFlipListener);
                     newPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 } else {
                     newPostCard.setVisibility(View.GONE);
@@ -426,7 +417,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                     currentPostCard.setOnTouchListener(cardFlipListener);
                     currentPostCard.setOnClickListener(detailedClickListener);
                     touchEnabled = true;
-                    if(mediaPlayer != null) mediaPlayer.release();
                     playMusic();
                 }
             }
@@ -507,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
         System.out.println(authHeader);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://music-post-backend-14235148.df.r.appspot.com/")
+                .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetPostAPI getPostAPI = retrofit.create(GetPostAPI.class);
@@ -548,6 +538,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             musicArtist = "";
             musicTitle = "";
             likeCount = 0;
+            comments.clear();
         } else {
             clickEnabled = true;
             PostDto currentPost = posts.get(0);
@@ -584,12 +575,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 }
             }
         }
-        /*
-        if (mediaPlayer != null) {
-            if(mediaPlayer.isLooping()) mediaPlayer.release();
-            else playMusic();
-        }  else playMusic();
-         */
 
         if(posts.size() < 3) {
             getPosts();

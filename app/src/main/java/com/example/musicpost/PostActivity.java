@@ -180,7 +180,7 @@ public class PostActivity extends AppCompatActivity {
             String base = username + ":" + password;
             String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://music-post-backend-14235148.df.r.appspot.com/")
+                    .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             PostPostAPI postPostAPI = retrofit.create(PostPostAPI.class);
