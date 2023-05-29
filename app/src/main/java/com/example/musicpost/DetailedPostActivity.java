@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -176,8 +175,9 @@ public class DetailedPostActivity extends AppCompatActivity {
                 commentAdapter = new CommentAdapter(comments);
                 commentRecyclerView.setAdapter(commentAdapter);
             }
-
-            getComments();
+            Comment comment = new Comment(commentUser.getUsername(), commentText);
+            comments.add(comment);
+            commentAdapter.notifyDataSetChanged();
         }
     };
 
@@ -226,12 +226,5 @@ public class DetailedPostActivity extends AppCompatActivity {
         String username = sharedPref.getString("username", "");
         String password = sharedPref.getString("password", "");
         return new String[]{username, password};
-    }
-
-    private void getComments() {
-        //TODO: get commments
-        commentAdapter.notifyDataSetChanged();
-        commentEditText.setVisibility(View.VISIBLE);
-        postCommentButton.setVisibility(View.VISIBLE);
     }
 }

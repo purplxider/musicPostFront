@@ -156,6 +156,7 @@ class LocationSearchActivity : AppCompatActivity(), LocationListener {
                         document.x.toDouble(),
                         document.y.toDouble())
                 listItems.add(item)
+                listItems.add(item)
 
 // 지도에 마커 추가
                 val point = MapPOIItem()
