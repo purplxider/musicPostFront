@@ -27,7 +27,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PostActivity extends AppCompatActivity {
+public class PostActivity extends AppCompatActivity implements ShakeDetector.OnShakeListener {
     ImageButton backButton;
     Button saveButton;
     EditText titleTextBox;
@@ -52,12 +52,15 @@ public class PostActivity extends AppCompatActivity {
     private String musicArtists = "";
     private String savedUsername = "";
     private String savedPassword = "";
+    private ShakeDetector shakeDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         mediaPlayer = new MediaPlayer();
+        shakeDetector = new ShakeDetector(this);
+        shakeDetector.setOnShakeListener(this);
         bindComponents();
         setEventListeners();
         searchActivityResultLauncher = registerForActivityResult(
@@ -103,10 +106,27 @@ public class PostActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        shakeDetector.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        shakeDetector.stop();
+    }
+
+    @Override
     public void finish() {
         super.finish();
         mediaPlayer.release();
         overridePendingTransition(R.anim.none, R.anim.vertical_exit);
+    }
+
+    @Override
+    public void onShake() {
+        PostActivity.super.onBackPressed();
     }
 
     public void bindComponents() {
