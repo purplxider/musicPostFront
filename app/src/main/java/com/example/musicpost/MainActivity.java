@@ -33,8 +33,11 @@ import net.daum.mf.map.api.MapReverseGeoCoder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -158,6 +161,31 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         bindComponents(); // 화면에 있는 component 가져오기
         cropBackgroundToDevice();
         setEventListeners(); // 이벤트 리스너 설정
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+                if (hour > 19) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            backgroundImage.setImageResource(R.drawable.mainview); //TODO: 저녁용 이미지 만들기
+                        }
+                    });
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            backgroundImage.setImageResource(R.drawable.mainview);
+                        }
+                    });
+                }
+            }
+        }, 0, 60000);
 
         String[] credentials = getCredentials();
         savedUsername = credentials[0];
