@@ -40,6 +40,7 @@ public class PostActivity extends AppCompatActivity {
     TextView musicTitleLabel;
     TextView musicArtistLabel;
     Button changeLocationButton;
+    Button pinnedPostButton;
     MediaPlayer mediaPlayer = null;
     String musicURL = "";
     Double longitude = 0.0;
@@ -79,6 +80,14 @@ public class PostActivity extends AppCompatActivity {
                                     musicTitle = data.getStringExtra("musicTitle");
                                 if (data.getStringExtra("musicArtists") != null)
                                     musicArtists = data.getStringExtra("musicArtists");
+                            } else if (data.getStringExtra("source").equals("pinnedPost")) {
+                                address = data.getStringExtra("address");
+                                name = data.getStringExtra("location");
+                                musicURL = data.getStringExtra("musicURL");
+                                musicTitle = data.getStringExtra("musicTitle");
+                                musicArtists = data.getStringExtra("musicArtists");
+                                longitude = data.getDoubleExtra("longitude", 0);
+                                latitude = data.getDoubleExtra("latitude", 0);
                             }
                             selectedLocationLabel.setText(name);
                             detailedLocationLabel.setText(address);
@@ -113,6 +122,7 @@ public class PostActivity extends AppCompatActivity {
         musicTitleLabel = (TextView) findViewById(R.id.musicTitleLabel);
         musicArtistLabel = (TextView) findViewById(R.id.musicArtistLabel);
         changeLocationButton = (Button) findViewById(R.id.changeLocationButton);
+        pinnedPostButton = (Button) findViewById(R.id.pinnedPostButton);
     }
 
     View.OnClickListener searchMusicListener = new View.OnClickListener() {
@@ -170,6 +180,14 @@ public class PostActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener pinnedPostListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getApplicationContext(), PinnedPostActivity.class);
+            searchActivityResultLauncher.launch(intent);
+        }
+    };
+
     View.OnClickListener savePostListener = new View.OnClickListener() {
 
         @Override
@@ -221,6 +239,7 @@ public class PostActivity extends AppCompatActivity {
         musicPlayButton.setOnClickListener(musicPlay);
         saveButton.setOnClickListener(savePostListener);
         changeLocationButton.setOnClickListener(changeLocationListener);
+        pinnedPostButton.setOnClickListener(pinnedPostListener);
     }
 
     private String[] getCredentials() {

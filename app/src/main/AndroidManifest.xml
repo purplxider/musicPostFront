@@ -29,6 +29,7 @@
         <activity android:name=".LocationSearchActivity"
             android:windowSoftInputMode="adjustNothing"></activity>
         <activity android:name=".MusicSearchActivity"></activity>
+        <activity android:name=".PinnedPostActivity"></activity>
         <activity android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>

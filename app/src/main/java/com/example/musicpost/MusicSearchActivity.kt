@@ -61,7 +61,6 @@ class MusicSearchActivity: AppCompatActivity() {
                     putExtra("musicURL", musicURL)
                 }
                 setResult(Activity.RESULT_OK, intent)
-                System.out.println(musicURL);
                 onBackPressedDispatcher.onBackPressed()
                 overridePendingTransition(R.anim.none, R.anim.horizontal_exit)
             }

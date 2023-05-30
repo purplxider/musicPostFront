@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/musicPlayButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="28dp"
+            android:background="@drawable/round"
+            android:layout_centerVertical="true"
+            android:src="@drawable/play"
+            android:backgroundTint="@color/purple"
+            >
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/musicTitleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/musicPlayButton"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="22dp"
+            android:text="song"
+            android:fontFamily="@font/spoqahansanssneo_bold"
+            android:textSize="22sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/selectedLocationLabel"
+            android:layout_marginStart="22dp"
+            android:layout_marginBottom="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/musicPlayButton"
+            android:layout_below="@id/musicTitleLabel"
+            android:fontFamily="@font/spoqahansanssneo_light"
+            android:textSize="20sp"
+            android:text="location"
+            >
+
+        </TextView>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

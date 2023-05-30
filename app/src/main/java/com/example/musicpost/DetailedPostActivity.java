@@ -177,6 +177,7 @@ public class DetailedPostActivity extends AppCompatActivity {
             }
             Comment comment = new Comment(commentUser.getUsername(), commentText);
             comments.add(comment);
+            commentEditText.setText("");
             commentAdapter.notifyDataSetChanged();
         }
     };

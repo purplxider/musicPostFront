@@ -34,3 +34,12 @@ data class CommentDto(
         var commenter: UserDto,
         var commentText: String
 )
+
+data class PinDto(
+        var id: Long,
+        var originalPoster: UserDto,
+        var music: MusicDto,
+        var address: String,
+        var locationName: String,
+        var coordinate: PointDto
+)

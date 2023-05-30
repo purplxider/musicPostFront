@@ -19,7 +19,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:textSize="14sp"
-            android:fontFamily="@font/spoqahansanssneo_light"
+            android:fontFamily="@font/spoqahansanssneo_regular"
             android:text="작성자"/>
 
         <TextView
