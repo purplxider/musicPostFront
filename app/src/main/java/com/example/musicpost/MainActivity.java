@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     TextView currentAddressLabel;
     LocationManager locationManager;
     LocationListener locationListener;
+    MapReverseGeoCoder reverseGeoCoder;
     List<Comment> comments;
     MediaPlayer mediaPlayer = null;
     Button locationChangeButton;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     private Double latitude = 0.0;
     private int likeCount = 0;
     private int postId = 0;
+    private String userLocation = "";
 
 
     View.OnClickListener postClickListener = new View.OnClickListener() {
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), PostActivity.class);
             intent.putExtra("source", "main");
+            intent.putExtra("userLocation", userLocation);
             mediaPlayer.pause();
             startActivity(intent);
             musicPlayButton.setImageResource(R.drawable.play);
@@ -145,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             public void onLocationChanged(@NonNull Location location) {
                 longitude = location.getLongitude();
                 latitude = location.getLatitude();
+                reverseGeoCoder = new MapReverseGeoCoder("76c2eeaa6f57d8057a0917641c853eb3", MapPoint.mapPointWithGeoCoord(latitude, longitude), MainActivity.this, MainActivity.this);
             }
         };
 
@@ -464,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
 
     @Override
     public void onReverseGeoCoderFoundAddress(MapReverseGeoCoder mapReverseGeoCoder, String s) {
-        //currentLocationLabel.setText(s);
+        userLocation = s;
     }
 
     @Override
@@ -478,12 +482,15 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             if (lastKnownLocation != null) {
                 longitude = lastKnownLocation.getLongitude();
                 latitude = lastKnownLocation.getLatitude();
+                reverseGeoCoder = new MapReverseGeoCoder("76c2eeaa6f57d8057a0917641c853eb3", MapPoint.mapPointWithGeoCoord(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), MainActivity.this, MainActivity.this);
+                reverseGeoCoder.startFindingAddress();
                 getPosts();
             } else {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if (lastKnownLocation != null) {
                     longitude = lastKnownLocation.getLongitude();
                     latitude = lastKnownLocation.getLatitude();
+                    reverseGeoCoder = new MapReverseGeoCoder("76c2eeaa6f57d8057a0917641c853eb3", MapPoint.mapPointWithGeoCoord(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), MainActivity.this, MainActivity.this);
                     getPosts();
                 }
             }

@@ -63,6 +63,11 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
         shakeDetector.setOnShakeListener(this);
         bindComponents();
         setEventListeners();
+        Intent intent = getIntent();
+        String userLocation = intent.getStringExtra("userLocation");
+        if (!userLocation.equals("")) {
+            selectedLocationLabel.setText(userLocation);
+        }
         searchActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
