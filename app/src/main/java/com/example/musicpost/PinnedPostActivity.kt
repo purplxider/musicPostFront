@@ -29,7 +29,6 @@ class PinnedPostActivity: AppCompatActivity() {
     private val listItems = arrayListOf<PinDto>()
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var pinListAdapter: PinListAdapter
-    private var pins = mutableListOf<PinDto>()
     private var savedUsername = ""
     private var savedPassword = ""
 
@@ -49,6 +48,8 @@ class PinnedPostActivity: AppCompatActivity() {
             override fun onClick(v: View, position: Int) {
                 val intent = Intent().apply {
                     putExtra("source", "pinnedPost")
+                    println(listItems[position].id)
+                    putExtra("pinId", listItems[position].id)
                     putExtra("location", listItems[position].locationName)
                     putExtra("address", listItems[position].address)
                     putExtra("longitude", listItems[position].coordinate.longitude)
@@ -104,6 +105,7 @@ class PinnedPostActivity: AppCompatActivity() {
         if(!pins.isNullOrEmpty()) {
             listItems.clear()
             for (pin in pins) {
+                println(pin)
                 listItems.add(pin)
             }
             pinListAdapter.notifyDataSetChanged()

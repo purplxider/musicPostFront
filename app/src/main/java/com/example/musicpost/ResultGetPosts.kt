@@ -37,7 +37,7 @@ data class CommentDto(
 
 data class PinDto(
         var id: Long,
-        var originalPoster: UserDto,
+        var owner: UserDto,
         var music: MusicDto,
         var address: String,
         var locationName: String,

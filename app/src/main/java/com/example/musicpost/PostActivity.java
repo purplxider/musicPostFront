@@ -54,6 +54,7 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
     private String savedUsername = "";
     private String savedPassword = "";
     private String source = "";
+    private long pinId = 0;
     private ShakeDetector shakeDetector;
 
     @Override
@@ -92,6 +93,7 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
                                     musicArtists = data.getStringExtra("musicArtists");
                             } else if (data.getStringExtra("source").equals("pinnedPost")) {
                                 source = "pin";
+                                pinId = data.getLongExtra("pinId", 0);
                                 address = data.getStringExtra("address");
                                 name = data.getStringExtra("location");
                                 musicURL = data.getStringExtra("musicURL");
@@ -158,6 +160,7 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
         PostPinAPI postPinAPI = retrofit.create(PostPinAPI.class);
         PinRequestModel pinRequestModel = new PinRequestModel(new UserDto(savedUsername), new MusicDto(musicArtists, musicTitle, musicURL), detailedLocationLabel.getText().toString(), selectedLocationLabel.getText().toString(), new PointDto(longitude, latitude));
         Call<PostResponseModel> call = postPinAPI.pinPost(authHeader, pinRequestModel);
+        System.out.println(pinRequestModel);
 
         call.enqueue(new Callback<PostResponseModel>() {
             @Override
@@ -283,6 +286,21 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
                 }
             });
 
+            DeletePinAPI deletePinAPI = retrofit.create(DeletePinAPI.class);
+            Call<Void> deleteCall = deletePinAPI.deletePin(authHeader, pinId);
+
+            deleteCall.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    System.out.println("delete" + pinId);
+                    System.out.println("deleted " + response.code());
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
 
             PostActivity.super.onBackPressed();
         }
