@@ -131,7 +131,9 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
 
     @Override
     public void onShake() {
-        PostActivity.super.onBackPressed();
+
+        System.out.println("SHAKE");
+       // PostActivity.super.onBackPressed();
     }
 
     public void bindComponents() {

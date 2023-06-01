@@ -543,7 +543,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 if(response.body() != null && !response.body().isEmpty()){
                     for (PostDto post : response.body()) {
                         posts.add(post);
-                        System.out.println("here: " + post);
                     }
                 }
             }

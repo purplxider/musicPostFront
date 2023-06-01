@@ -52,6 +52,7 @@ public class ShakeDetector implements SensorEventListener {
 
             if (lastShakeTime + SHAKE_DURATION < currentTime) {
                 shakeListener.onShake();
+                lastShakeTime = currentTime;
             }
 
             lastShakeTimestamp = currentTime;
