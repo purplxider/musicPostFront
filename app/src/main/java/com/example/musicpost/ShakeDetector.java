@@ -15,6 +15,8 @@ public class ShakeDetector implements SensorEventListener {
     private long lastShakeTime;
     private long lastShakeTimestamp;
     private long lastForce;
+    private boolean isShakeStarted;
+    private float lastX, lastY, lastZ;
 
     public ShakeDetector(Context context) {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -44,18 +46,33 @@ public class ShakeDetector implements SensorEventListener {
         float delta = acceleration - lastForce;
         lastForce = (long) acceleration;
 
-        if (delta > SHAKE_THRESHOLD_GRAVITY) {
-            long currentTime = System.currentTimeMillis();
-            if (lastShakeTimestamp + SHAKE_TIMEOUT > currentTime) {
-                return;
+        if (!isShakeStarted) {
+            lastX = x;
+            lastY = y;
+            lastZ = z;
+            isShakeStarted = true;
+        } else {
+            float deltaX = Math.abs(x - lastX);
+            float deltaY = Math.abs(y - lastY);
+            float deltaZ = Math.abs(z - lastZ);
+
+            if (deltaX > deltaY && deltaX > deltaZ) {
+                if (delta > SHAKE_THRESHOLD_GRAVITY) {
+                    long currentTime = System.currentTimeMillis();
+                    if (lastShakeTimestamp + SHAKE_TIMEOUT > currentTime) {
+                        return;
+                    }
+
+                    if (lastShakeTime + SHAKE_DURATION < currentTime) {
+                        shakeListener.onShake();
+                        lastShakeTime = currentTime;
+                    }
+
+                    lastShakeTimestamp = currentTime;
+                }
             }
 
-            if (lastShakeTime + SHAKE_DURATION < currentTime) {
-                shakeListener.onShake();
-                lastShakeTime = currentTime;
-            }
-
-            lastShakeTimestamp = currentTime;
+            isShakeStarted = false;
         }
     }
 
