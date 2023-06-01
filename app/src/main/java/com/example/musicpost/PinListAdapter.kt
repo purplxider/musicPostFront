@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PinListAdapter(val itemList: ArrayList<PinListLayout>, val mediaPlayer: MediaPlayer?): RecyclerView.Adapter<PinListAdapter.ViewHolder>(){
+class PinListAdapter(val itemList: ArrayList<PinDto>, val mediaPlayer: MediaPlayer?): RecyclerView.Adapter<PinListAdapter.ViewHolder>(){
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val musicTitle: TextView = itemView.findViewById(R.id.musicTitleLabel)
         val selectedLocation: TextView = itemView.findViewById(R.id.selectedLocationLabel)
@@ -27,15 +27,15 @@ class PinListAdapter(val itemList: ArrayList<PinListLayout>, val mediaPlayer: Me
 
     override fun onBindViewHolder(holder: PinListAdapter.ViewHolder, position: Int) {
 
-        holder.musicTitle.text = itemList[position].musicTitle
-        holder.selectedLocation.text = itemList[position].selectedLocation
+        holder.musicTitle.text = itemList[position].music.songName
+        holder.selectedLocation.text = itemList[position].locationName
 
         holder.musicPlayButton.setOnClickListener{
             if (mediaPlayer!!.isPlaying) {
                 mediaPlayer.pause()
             } else {
                 mediaPlayer?.reset()
-                mediaPlayer?.setDataSource(itemList[position].musicURL)
+                mediaPlayer?.setDataSource(itemList[position].music.musicUrl)
                 mediaPlayer?.prepare()
                 mediaPlayer?.start()
             }

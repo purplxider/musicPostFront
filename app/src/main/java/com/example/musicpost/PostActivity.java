@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -52,6 +53,7 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
     private String musicArtists = "";
     private String savedUsername = "";
     private String savedPassword = "";
+    private String source = "";
     private ShakeDetector shakeDetector;
 
     @Override
@@ -89,6 +91,7 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
                                 if (data.getStringExtra("musicArtists") != null)
                                     musicArtists = data.getStringExtra("musicArtists");
                             } else if (data.getStringExtra("source").equals("pinnedPost")) {
+                                source = "pin";
                                 address = data.getStringExtra("address");
                                 name = data.getStringExtra("location");
                                 musicURL = data.getStringExtra("musicURL");
@@ -131,9 +134,45 @@ public class PostActivity extends AppCompatActivity implements ShakeDetector.OnS
 
     @Override
     public void onShake() {
+        if (musicURL.equals("")) {
+            Toast.makeText(this, "음악을 설정해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedLocationLabel.getText().toString().equals("")) {
+            Toast.makeText(this, "위치를 설정해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (source.equals("pin")) {
+            return;
+        }
 
-        System.out.println("SHAKE");
-       // PostActivity.super.onBackPressed();
+        String username = savedUsername;
+        String password = savedPassword;
+        String base = username + ":" + password;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        PostPinAPI postPinAPI = retrofit.create(PostPinAPI.class);
+        PinRequestModel pinRequestModel = new PinRequestModel(new UserDto(savedUsername), new MusicDto(musicArtists, musicTitle, musicURL), detailedLocationLabel.getText().toString(), selectedLocationLabel.getText().toString(), new PointDto(longitude, latitude));
+        Call<PostResponseModel> call = postPinAPI.pinPost(authHeader, pinRequestModel);
+
+        call.enqueue(new Callback<PostResponseModel>() {
+            @Override
+            public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
+                System.out.println("here " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<PostResponseModel> call, Throwable t) {
+                t.printStackTrace();
+                return;
+            }
+        });
+        Toast.makeText(this, "포스트가 임시저장 되었습니다", Toast.LENGTH_SHORT).show();
+        PostActivity.super.onBackPressed();
     }
 
     public void bindComponents() {

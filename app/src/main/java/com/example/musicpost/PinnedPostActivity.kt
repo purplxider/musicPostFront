@@ -6,13 +6,17 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicpost.databinding.ActivityPinnedPostBinding
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class PinnedPostActivity: AppCompatActivity() {
@@ -22,7 +26,7 @@ class PinnedPostActivity: AppCompatActivity() {
     }
 
     private lateinit var binding : ActivityPinnedPostBinding
-    private val listItems = arrayListOf<PinListLayout>()
+    private val listItems = arrayListOf<PinDto>()
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var pinListAdapter: PinListAdapter
     private var pins = mutableListOf<PinDto>()
@@ -45,13 +49,13 @@ class PinnedPostActivity: AppCompatActivity() {
             override fun onClick(v: View, position: Int) {
                 val intent = Intent().apply {
                     putExtra("source", "pinnedPost")
-                    putExtra("location", pins[position].locationName)
-                    putExtra("address", pins[position].address)
-                    putExtra("longitude", pins[position].coordinate.longitude)
-                    putExtra("latitude", pins[position].coordinate.latitude)
-                    putExtra("musicArtists", pins[position].music.artist)
-                    putExtra("musicTitle", pins[position].music.songName)
-                    putExtra("musicURL", pins[position].music.musicUrl)
+                    putExtra("location", listItems[position].locationName)
+                    putExtra("address", listItems[position].address)
+                    putExtra("longitude", listItems[position].coordinate.longitude)
+                    putExtra("latitude", listItems[position].coordinate.latitude)
+                    putExtra("musicArtists", listItems[position].music.artist)
+                    putExtra("musicTitle", listItems[position].music.songName)
+                    putExtra("musicURL", listItems[position].music.musicUrl)
                 }
                 setResult(Activity.RESULT_OK, intent)
                 onBackPressedDispatcher.onBackPressed()
@@ -73,12 +77,17 @@ class PinnedPostActivity: AppCompatActivity() {
     }
 
     private fun getPins() {
+        val username = savedUsername
+        val password = savedPassword
+        val base = "$username:$password"
+        val authHeader = "Basic " + Base64.encodeToString(base.toByteArray(), Base64.NO_WRAP)
+
         val retrofit = Retrofit.Builder()
                 .baseUrl(PinnedPostActivity.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         val api = retrofit.create(GetPinAPI::class.java)
-        val call = api.getPins(savedUsername)
+        val call = api.getPins(authHeader, savedUsername)
 
         call.enqueue(object: Callback<List<PinDto>>{
             override fun onResponse(call: Call<List<PinDto>>, response: Response<List<PinDto>>) {
@@ -95,10 +104,7 @@ class PinnedPostActivity: AppCompatActivity() {
         if(!pins.isNullOrEmpty()) {
             listItems.clear()
             for (pin in pins) {
-                val item = PinListLayout(pin.locationName,
-                pin.music.musicUrl,
-                pin.music.songName)
-                listItems.add(item)
+                listItems.add(pin)
             }
             pinListAdapter.notifyDataSetChanged()
         } else {
