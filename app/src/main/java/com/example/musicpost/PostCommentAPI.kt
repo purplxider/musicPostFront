@@ -6,7 +6,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface PostCommentAPI {
-    @POST("api/comments")
+    @POST("api/comment")
     fun commentPost(
             @Header("Authorization") authHeader: String,
             @Body requestModel: CommentDto

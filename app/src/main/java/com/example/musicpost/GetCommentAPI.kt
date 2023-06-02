@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface GetCommentAPI {
 
-    @GET("api/comments")
+    @GET("api/comment")
     fun getComments(
             @Header("Authorization") authHeader: String,
             @Query("postId") postId: Int

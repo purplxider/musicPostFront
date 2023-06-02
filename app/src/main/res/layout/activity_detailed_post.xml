@@ -184,22 +184,25 @@
         android:background="?android:attr/selectableItemBackground">
 
     </Button>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/commentRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="gone">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
 
         <EditText
             android:id="@+id/commentEditText"
@@ -208,7 +211,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:visibility="gone"
-            android:layout_toLeftOf="@+id/postCommentButton">
+            android:layout_below="@+id/commentRecyclerView"
+            android:layout_toStartOf="@+id/postCommentButton">
 
         </EditText>
         <ImageButton
@@ -220,6 +224,7 @@
             android:layout_alignParentEnd="true"
             android:backgroundTint="@color/purple"
             android:visibility="gone"
+            android:layout_below="@+id/commentRecyclerView"
             >
 
         </ImageButton>

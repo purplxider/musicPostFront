@@ -166,6 +166,7 @@ public class DetailedPostActivity extends AppCompatActivity {
                 }
                 commentEditText.setVisibility(View.VISIBLE);
                 postCommentButton.setVisibility(View.VISIBLE);
+                getComments();
                 toggleCommentButton.setText("댓글 접기");
             }
         }
@@ -222,6 +223,7 @@ public class DetailedPostActivity extends AppCompatActivity {
             PostCommentAPI postCommentAPI = retrofit.create(PostCommentAPI.class);
             CommentDto commentDto = new CommentDto(null, postId, commentUser, commentText);
             Call<PostResponseModel> call = postCommentAPI.commentPost(authHeader, commentDto);
+            System.out.println(commentDto);
 
             call.enqueue(new Callback<PostResponseModel>() {
                 @Override
