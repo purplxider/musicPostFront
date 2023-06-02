@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailedPostActivity extends AppCompatActivity {
 
@@ -164,21 +171,77 @@ public class DetailedPostActivity extends AppCompatActivity {
         }
     };
 
+    public void getComments() {
+        String username = savedUsername;
+        String password = savedPassword;
+        String base = username + ":" + password;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetCommentAPI getCommentAPI = retrofit.create(GetCommentAPI.class);
+        Call<List<CommentDto>> call = getCommentAPI.getComments(authHeader, postId);
+
+        call.enqueue(new Callback<List<CommentDto>>(){
+
+            @Override
+            public void onResponse(Call<List<CommentDto>> call, Response<List<CommentDto>> response) {
+                if(response.body() != null && !response.body().isEmpty()){
+                    for (CommentDto commentDto : response.body()) {
+                        Comment comment = new Comment(commentDto.getCommenter().getUsername(), commentDto.getCommentText());
+                        comments.add(comment);
+                    }
+                    commentAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommentDto>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     View.OnClickListener postCommentListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             UserDto commentUser = new UserDto(savedUsername);
             String commentText = commentEditText.getText().toString();
+
+            String username = savedUsername;
+            String password = savedPassword;
+            String base = username + ":" + password;
+            String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            PostCommentAPI postCommentAPI = retrofit.create(PostCommentAPI.class);
             CommentDto commentDto = new CommentDto(null, postId, commentUser, commentText);
+            Call<PostResponseModel> call = postCommentAPI.commentPost(authHeader, commentDto);
+
+            call.enqueue(new Callback<PostResponseModel>() {
+                @Override
+                public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
+                    System.out.println("here " + response.code());
+                }
+
+                @Override
+                public void onFailure(Call<PostResponseModel> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
 
             if(comments == null) {
                 commentAdapter = new CommentAdapter(comments);
                 commentRecyclerView.setAdapter(commentAdapter);
             }
             Comment comment = new Comment(commentUser.getUsername(), commentText);
-            comments.add(comment);
             commentEditText.setText("");
-            commentAdapter.notifyDataSetChanged();
+            getComments();
         }
     };
 
