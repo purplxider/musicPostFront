@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -31,12 +32,10 @@ public class DetailedPostActivity extends AppCompatActivity {
 
     RelativeLayout musicPlayer;
     RelativeLayout detailedPostCard;
-    RelativeLayout recommendedPostCard;
     ImageButton backButton;
     String color = "yellow";
     String musicURL = "";
     MediaPlayer mediaPlayer;
-    ImageButton recommendedPostMusicPlayButton;
     TextView titleLabel;
     TextView currentLocationLabel;
     TextView originalPosterLabel;
@@ -48,9 +47,12 @@ public class DetailedPostActivity extends AppCompatActivity {
     Button toggleCommentButton;
     RecyclerView commentRecyclerView;
     CommentAdapter commentAdapter;
+    RecyclerView recommendedPostRecyclerView;
+    RecommendedAdapter recommendedAdapter;
     EditText commentEditText;
     ImageButton postCommentButton;
     List<Comment> comments = new ArrayList<>();
+    List<PostDto> recommendedPosts = new ArrayList<>();
     Boolean liked = false;
     private int postId = 0;
 
@@ -92,12 +94,17 @@ public class DetailedPostActivity extends AppCompatActivity {
         comments = getIntent().getParcelableArrayListExtra("comments");
         likeLabel.setText(String.valueOf(likeCount));
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recommendedPostRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if (comments != null) {
             commentAdapter = new CommentAdapter(comments);
             commentRecyclerView.setAdapter(commentAdapter);
         }
 
+        recommendedAdapter = new RecommendedAdapter(recommendedPosts);
+        recommendedPostRecyclerView.setAdapter(recommendedAdapter);
+
+        getRelatedPosts();
 
         musicURL = getIntent().getStringExtra("musicURL") != null ? getIntent().getStringExtra("musicURL") : "";
             if (color.equals("yellow")) {
@@ -119,10 +126,7 @@ public class DetailedPostActivity extends AppCompatActivity {
     public void bindComponents() {
         musicPlayer = (RelativeLayout)findViewById(R.id.musicPlayer);
         detailedPostCard = (RelativeLayout)findViewById(R.id.detailedPostCard);
-        recommendedPostCard = (RelativeLayout)findViewById(R.id.recommendedPostCard);
-        setColor(recommendedPostCard);
         backButton = (ImageButton)findViewById(R.id.backButton);
-        recommendedPostMusicPlayButton = (ImageButton)findViewById(R.id.recommendedPostMusicPlayButton);
         titleLabel = (TextView)findViewById(R.id.titleLabel);
         currentLocationLabel = (TextView)findViewById(R.id.currentLocationLabel);
         detailedContentLabel = (TextView)findViewById(R.id.detailedContentLabel);
@@ -135,6 +139,7 @@ public class DetailedPostActivity extends AppCompatActivity {
         commentRecyclerView = (RecyclerView) findViewById(R.id.commentRecyclerView);
         commentEditText = (EditText) findViewById(R.id.commentEditText);
         postCommentButton = (ImageButton) findViewById(R.id.postCommentButton);
+        recommendedPostRecyclerView = (RecyclerView) findViewById(R.id.recommendedPostRecyclerView);
     }
 
     public void setEventListeners() {
@@ -200,6 +205,38 @@ public class DetailedPostActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<CommentDto>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void getRelatedPosts() {
+        String username = savedUsername;
+        String password = savedPassword;
+        String base = username + ":" + password;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+        System.out.println(authHeader);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ec2-52-91-17-50.compute-1.amazonaws.com:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRelatedPostAPI getRelatedPostAPI = retrofit.create(GetRelatedPostAPI.class);
+        Call<List<PostDto>> call = getRelatedPostAPI.getRelatedPosts(authHeader, postId);
+        call.enqueue(new Callback<List<PostDto>>() {
+            @Override
+            public void onResponse(Call<List<PostDto>> call, Response<List<PostDto>> response)
+            {
+                if(response.body() != null && !response.body().isEmpty()){
+                    for (PostDto post : response.body()) {
+                        System.out.println("get recommended" + response.code());
+                        recommendedPosts.add(post);
+                    }
+                }
+                recommendedAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<PostDto>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
