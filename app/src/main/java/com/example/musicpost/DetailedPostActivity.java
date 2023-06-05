@@ -47,6 +47,7 @@ public class DetailedPostActivity extends AppCompatActivity {
     Button toggleCommentButton;
     RecyclerView commentRecyclerView;
     CommentAdapter commentAdapter;
+    TextView recommendedPostsLabel;
     RecyclerView recommendedPostRecyclerView;
     RecommendedAdapter recommendedAdapter;
     EditText commentEditText;
@@ -139,6 +140,7 @@ public class DetailedPostActivity extends AppCompatActivity {
         commentRecyclerView = (RecyclerView) findViewById(R.id.commentRecyclerView);
         commentEditText = (EditText) findViewById(R.id.commentEditText);
         postCommentButton = (ImageButton) findViewById(R.id.postCommentButton);
+        recommendedPostsLabel = (TextView) findViewById(R.id.recommendedPostsLabel);
         recommendedPostRecyclerView = (RecyclerView) findViewById(R.id.recommendedPostRecyclerView);
     }
 
@@ -233,6 +235,8 @@ public class DetailedPostActivity extends AppCompatActivity {
                     }
                 }
                 recommendedAdapter.notifyDataSetChanged();
+                if(recommendedPosts.size() == 0) recommendedPostsLabel.setVisibility(View.GONE);
+                else recommendedPostsLabel.setVisibility(View.VISIBLE);
             }
 
             @Override
