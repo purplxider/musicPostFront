@@ -248,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         @Override
         public void onClick(View view) {
             locationManager.removeUpdates(locationListener);
+            backgroundImage.setImageResource(R.drawable.autumnmainview);
             longitude = 126.93537476435486;
             latitude = 37.52643919175901;
             posts.clear();
