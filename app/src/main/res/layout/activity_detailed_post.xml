@@ -232,11 +232,12 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/recommendedPostsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
-        android:text="근처 장소의 비슷한 노래"
+        android:text="추천 포스트"
         android:textSize="20sp"
         android:fontFamily="@font/spoqahansanssneo_bold">
     </TextView>
