@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
     LocationManager locationManager;
     LocationListener locationListener;
     MapReverseGeoCoder reverseGeoCoder;
-    List<Comment> comments;
     MediaPlayer mediaPlayer = null;
     Button locationChangeButton;
     private String musicURL = "";
@@ -117,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
                 intent.putExtra("musicArtist", musicArtist);
                 intent.putExtra("likeCount", likeCount);
                 intent.putExtra("postId", postId);
-                intent.putParcelableArrayListExtra("comments", new ArrayList<>(comments));
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -156,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         };
 
         posts = new ArrayList<>();
-        comments = new ArrayList<>();
 
         bindComponents(); // 화면에 있는 component 가져오기
         cropBackgroundToDevice();
@@ -352,11 +349,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         if (currentPostCard.getVisibility() == View.VISIBLE) {
             nextPostcard = newPostCard;
             currentPostCard.setOnTouchListener(null);
+            currentPostCard.setOnClickListener(null);
             setPost(1);
         }
         else {
             nextPostcard = currentPostCard;
             newPostCard.setOnTouchListener(null);
+            newPostCard.setOnClickListener(null);
             setPost(0);
         }
         nextPostcard.setAlpha(0f);
@@ -412,11 +411,13 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
         if (currentPostCard.getVisibility() == View.VISIBLE) {
             nextPostcard = newPostCard;
             currentPostCard.setOnTouchListener(null);
+            currentPostCard.setOnClickListener(null);
             setPost(1);
         }
         else {
             nextPostcard = currentPostCard;
             newPostCard.setOnTouchListener(null);
+            newPostCard.setOnClickListener(null);
             setPost(0);
         }
         nextPostcard.setAlpha(0f);
@@ -578,7 +579,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             musicArtist = "";
             musicTitle = "";
             likeCount = 0;
-            comments.clear();
         } else {
             clickEnabled = true;
             PostDto currentPost = posts.get(0);
@@ -608,12 +608,6 @@ public class MainActivity extends AppCompatActivity implements MapReverseGeoCode
             musicTitle = currentPost.getMusic().getSongName();
             postId = currentPost.getId();
 
-            if(currentPost.getComments() != null) {
-                for (CommentDto commentObject : currentPost.getComments()) {
-                    Comment comment = new Comment(commentObject.getCommenter().getUsername(), commentObject.getCommentText());
-                    comments.add(comment);
-                }
-            }
         }
 
         if(posts.size() < 3) {

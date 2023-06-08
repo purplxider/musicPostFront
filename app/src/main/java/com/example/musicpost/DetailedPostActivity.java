@@ -92,15 +92,12 @@ public class DetailedPostActivity extends AppCompatActivity {
         musicTitleLabel.setText(musicTitle);
         color = getIntent().getStringExtra("color");
         likeCount = getIntent().getIntExtra("likeCount", 0);
-        comments = getIntent().getParcelableArrayListExtra("comments");
         likeLabel.setText(String.valueOf(likeCount));
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recommendedPostRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (comments != null) {
-            commentAdapter = new CommentAdapter(comments);
-            commentRecyclerView.setAdapter(commentAdapter);
-        }
+        commentAdapter = new CommentAdapter(comments);
+        commentRecyclerView.setAdapter(commentAdapter);
 
         recommendedAdapter = new RecommendedAdapter(recommendedPosts);
         recommendedPostRecyclerView.setAdapter(recommendedAdapter);
@@ -171,9 +168,9 @@ public class DetailedPostActivity extends AppCompatActivity {
                 if(comments != null) {
                     commentRecyclerView.setVisibility(View.VISIBLE);
                 }
+                getComments();
                 commentEditText.setVisibility(View.VISIBLE);
                 postCommentButton.setVisibility(View.VISIBLE);
-                getComments();
                 toggleCommentButton.setText("댓글 접기");
             }
         }
@@ -197,6 +194,7 @@ public class DetailedPostActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<CommentDto>> call, Response<List<CommentDto>> response) {
                 if(response.body() != null && !response.body().isEmpty()){
+                    comments.clear();
                     for (CommentDto commentDto : response.body()) {
                         Comment comment = new Comment(commentDto.getCommenter().getUsername(), commentDto.getCommentText());
                         comments.add(comment);
@@ -270,6 +268,7 @@ public class DetailedPostActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
                     System.out.println("here " + response.code());
+                    getComments();
                 }
 
                 @Override
@@ -277,11 +276,6 @@ public class DetailedPostActivity extends AppCompatActivity {
                     t.printStackTrace();
                 }
             });
-
-            if(comments == null) {
-                commentAdapter = new CommentAdapter(comments);
-                commentRecyclerView.setAdapter(commentAdapter);
-            }
             Comment comment = new Comment(commentUser.getUsername(), commentText);
             commentEditText.setText("");
             getComments();
